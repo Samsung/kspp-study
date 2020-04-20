@@ -1,0 +1,558 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Compiler-based Security Checkers - Analysis on Kernel Self-Protection: Understanding Security and Performance Implication</title>
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+        <link rel="stylesheet" href="assets/css/custom.css">
+        
+
+        
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+<div class="sidebar-scrollbox"><ol class="chapter">
+<li><a href="stack-ovfl.html"><strong aria-hidden="true">1.&nbsp;</strong>Stack Overflows</a></li>
+  <li><ol class="section">
+<li><a href="stack-ovfl.html#preventing-stack-clash"><strong aria-hidden="true">1.1.&nbsp;</strong>Stack Clash</a></li>
+<li><a href="stack-ovfl.html#protecting-thread_info"><strong aria-hidden="true">1.2.&nbsp;</strong>Hardening thread_info</a></li>
+<li><a href="stack-ovfl.html#stack-canary-ssp"><strong aria-hidden="true">1.3.&nbsp;</strong>SSP</a></li>
+  </li></ol>
+<li><a href="heap-ovfl.html"><strong aria-hidden="true">2.&nbsp;</strong>Heap Overflows</a></li>
+  <li><ol class="section">
+<li><a href="heap-ovfl.html#kernel-address-space-layout-randomization-kaslr"><strong aria-hidden="true">2.1.&nbsp;</strong>KASLR</a></li>
+  </li></ol>
+<li><a href="int-ovfl.html"><strong aria-hidden="true">3.&nbsp;</strong>Integer Overflows</a></li>
+  <li><ol class="section">
+<li><a href="int-ovfl.html#preventing-refcount-overflows"><strong aria-hidden="true">3.1.&nbsp;</strong>Refcount</a></li>
+<li><a href="int-ovfl.html#tools-to-prevent-integer-overflows"><strong aria-hidden="true">3.2.&nbsp;</strong>Safe Interfaces</a></li>
+  </li></ol>
+<li><a href="infoleak.html"><strong aria-hidden="true">4.&nbsp;</strong>Information Leaks</a></li>
+<li><a href="side-channel.html"><strong aria-hidden="true">5.&nbsp;</strong>Side-channel Attacks</a></li>
+  <li><ol class="section">
+<li><a href="side-channel.html#mitigating-kaslr-and-meltdown"><strong aria-hidden="true">5.1.&nbsp;</strong>Meltdown</a></li>
+<li><a href="side-channel.html#mitigating-spectre"><strong aria-hidden="true">5.2.&nbsp;</strong>Spectre</a></li>
+  </li></ol>
+<li><a href="bpf.html"><strong aria-hidden="true">6.&nbsp;</strong>eBPF Security</a></li>
+  <li><ol class="section">
+<li><a href="bpf.html#constant-blinding-in-jit"><strong aria-hidden="true">6.1.&nbsp;</strong>Constant Blinding</a></li>
+<li><a href="bpf.html#preventing-spectre"><strong aria-hidden="true">6.2.&nbsp;</strong>Spectre</a></li>
+  </li></ol>
+<li><a href="rop.html"><strong aria-hidden="true">7.&nbsp;</strong>Code Reuse Attack</a></li>
+  <li><ol class="section">
+<li><a href="rop.html#pax-reuse-attack-protector-rap"><strong aria-hidden="true">7.1.&nbsp;</strong>PAX RAP</a></li>
+<li><a href="rop.html#arm's-memory-tagging-extensions-mte"><strong aria-hidden="true">7.2.&nbsp;</strong>MTE</a></li>
+  </li></ol>
+<li><a href="compiler.html"><strong aria-hidden="true">8.&nbsp;</strong>GCC Plugins</a></li>
+  <li><ol class="section">
+<li><a href="compiler.html#preventing-information-leaks"><strong aria-hidden="true">8.1.&nbsp;</strong>Information Leak Prevention</a></li>
+<li><a href="compiler.html#randomizing-kernel-data-structures"><strong aria-hidden="true">8.2.&nbsp;</strong>Kernel Structure Attack Mitigation</a></li>
+  </li></ol>
+<li><a href="misc.html"><strong aria-hidden="true">9.&nbsp;</strong>Miscellaneous Topics</a></li>
+  <li><ol class="section">
+<li><a href="misc.html#eliminating-variable-length-arrays-vla"><strong aria-hidden="true">9.1.&nbsp;</strong>VLA</a></li>
+<li><a href="misc.html#preventing-mistakes-in-switchcase"><strong aria-hidden="true">9.2.&nbsp;</strong>Fallthrough</a></li>
+<li><a href="misc.html#fortify"><strong aria-hidden="true">9.3.&nbsp;</strong>Fortify</a></li>
+<li><a href="misc.html#livepatch"><strong aria-hidden="true">9.4.&nbsp;</strong>Livepatch</a></li>
+  </li></ol>
+<li class="spacer"></li><li class="affix">
+<a href="authors.html">Contributors</a></li>
+</ol></div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title">Analysis on Kernel Self-Protection: Understanding Security and Performance Implication</h1>
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p><br/><table></p>
+<colgroup>
+<col width="40%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Kconfig</th>
+<th align="left">A</th>
+<th align="left">A+</th>
+<th align="left">F</th>
+<th align="left">U</th>
+<th align="left">U+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">GIN_STACKLEAK</td>
+<td align="left">N</td>
+<td align="left"><b>Y</b></td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+</tr>
+<tr class="even">
+<td align="left">GIN_STRUCTLEAK_USER</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+</tr>
+<tr class="odd">
+<td align="left">GIN_STRUCTLEAK_BYREF</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+</tr>
+<tr class="even">
+<td align="left">GIN_STRUCTLEAK_BYREF_ALL</td>
+<td align="left">N</td>
+<td align="left"><b>Y</b></td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+</tr>
+<tr class="odd">
+<td align="left">ACK_ALL</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+</tr>
+<tr class="even">
+<td align="left">GIN_RANDSTRUCT</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+</tr>
+<tr class="odd">
+<td align="left">GIN_RANDSTRUCT_PERFORMANCE</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+</tr>
+</tbody>
+</table>
+<center>
+<small>
+<p>
+<strong>A</strong>: Arch 5.1.8,<strong>A+</strong>: Arch Harden 5.1.11,<strong>F</strong>: Fedora 5.1.8,<strong>U</strong>: Ubuntu 5.0.0,<strong>U+</strong>: Ubuntu LTE 4.15.0
+</p>
+</small>
+</center>
+<br/>
+<h1><a class="header" href="#compiler-based-security-checkers" id="compiler-based-security-checkers">Compiler-based Security Checkers</a></h1>
+<h2><a class="header" href="#preventing-information-leaks" id="preventing-information-leaks">Preventing information leaks</a></h2>
+<p><strong>Stackleak Plugin.</strong></p>
+<p>There are three kinds of vulnerabilities that STACKLEAK kernel security feature
+wants to defend against: 1) Information disclosure coming frome leaving data on 
+the stack that can be exfiltrated to user space, 2) Targeting Uninitialized 
+variable on the kernel stack to get the stack location, and 3) Stack clash.</p>
+<p>The first two of the vulnerabilities are closely related. Chaining attacks 
+like getting information from left over values on the stack and targeting the 
+address could happen. These two vulnerabilities are blocked by the feature 
+called <code>stack poisoning</code>. This feature overwrites STACKLEAK_POISON(-0xBEEF) to 
+the used portion of the stack at the end of the syscall, before returning to 
+the caller. Below is the implementation of stack poisoning. This code checks 
+the count of unpoisoned space in the kernel stack, and then fills the
+STACKLEAK_POISON value from the lowest boundary of the current used stack.</p>
+<pre><code class="language-c">asmlinkage void stackleak_erase(void)
+{
+    unsigned long kstack_ptr = current -&gt; lowest_stack;
+    unsigned long boundary = (unsigned long)end_of_stack(current);
+    unsigned int poison_count = 0;
+    const unsigned int depth = STACKLEAK_SEARCH_DEPTH / sizeof(unsigned long);
+
+    if (skip_erasing())
+        return;
+
+    while (kstack_ptr &gt; boundary &amp;&amp; poison_count &lt;= depth) { 
+        if (*(unsigned long *)kstack_ptr == STACKLEAK_POISON)
+            poison_count++;
+        else
+            poison_count = 0;
+
+        kstack_ptr -= sizeof(unsigned long);
+    }
+
+    if (kstack_ptr == boundary)
+        kstack_ptr += sizeof(unsigned long);
+
+    ...
+    if (on_thread_stack())
+        boundary = current_stack_pointer;
+    else
+        boundary = current_top_of_stack();
+
+    while (kstack_ptr &lt; boundary) {
+        *(unsigned long *)kstack_ptr = STACKLEAK_POISON;
+        kstack_ptr += sizeof(unsigned long);
+    }
+
+    current-&gt;lowest_stack = current_top_of_stack() - THREAD_SIZE/64;
+}
+
+</code></pre>
+<p>Stack poisoning prevents the stack from leaving space to be exposed, but it 
+only works for multi-system-call attacks; it cannot protect against attacks 
+that complete during a single system call, since the stack poisoning is done at 
+the end of the system call. And one more, since the stack poison value could be 
+a valid pointer to the stack since the user space address range from 0x0000 to
+0x0fff and the kernel space address range from 0xf000 to 0xffff.</p>
+<p>The third vulnerability, stack clash, is about prohibiting the memory region. 
+It includes clashing the stack with another memory region, jumping over the 
+stack guard page, and smashing the stack(overwriting the stack with other memory 
+region). When the stack is full, it is automatically extended by using the page 
+fault. If the end of the current stack access to the already allocated page, 
+page fault will not happen and kernel cannot notice that they have reached the 
+stack's end so the stack clash would happen.</p>
+<p>Usually, variable length array like alloca() function call is used to consume 
+the stack's allocated space. So the STACKLEAK plugin tried to prevent stack 
+clash by checking all the alloca() calls using panic() and BUG_ON() function. 
+Now Stack-poisoning is included in linux kernel mainline, but alloca() checking 
+has been dropped since it is believed that all VLAs are removed instead.</p>
+<p><strong>Structleak Plugin.</strong></p>
+<p>There are many structures that are not initialized in kernel code. This may have 
+interesting values from kernel when copied to user space without initialization. 
+One example arised in CVE-2013-2141. According to CVE-2013-2141 report, <code>do_tkill</code>
+function in kernel/signal.c before kernel 3.8.9 did not initialize a data structure 
+variable <code>siginfo</code>. The function <code>do_tkill</code> is called in system calls tkill and tgkill 
+which can be invoked by user-level processes. When handling signals delivered 
+from tkill, kernel memory is visible. </p>
+<p>Structleak plugin resolves this issue by initializing uninitialized structures 
+in the kernel. After gcc finishes type parsing, plugin is invoked. The plugin 
+currently has three modes: Disabled, BYREF and <code>BYREF_ALL</code>. When BYREF is marked, 
+the plugin initializes structures which may had passed by reference and had not 
+been initialized. When <code>BYREF_ALL</code> is marked, the plugin initializes any stack 
+variables passed by reference. </p>
+<p>First, <code>PLUGIN_FINISH_TYPE</code> callback is called after finishing parsing type of code. 
+Function finish_type()  sets <code>TYPE_USERSPACE</code> on structure variables of interests 
+which have <code>__user</code> attribute on declaration.</p>
+<pre><code class="language-c">static bool is_userspace_type(tree type)
+{
+	tree field;
+
+	for (field = TYPE_FIELDS(type); field; field = TREE_CHAIN(field)) {
+		tree fieldtype = get_field_type(field);
+		enum tree_code code = TREE_CODE(fieldtype);
+
+		if (code == RECORD_TYPE || code == UNION_TYPE)
+			if (is_userspace_type(fieldtype))
+				return true;
+
+		if (lookup_attribute(&quot;user&quot;, DECL_ATTRIBUTES(field)))
+			return true;
+	}
+	return false;
+}
+
+</code></pre>
+<p>After some declarations are marked as interests, structleak_execute() is executed. 
+Execution function iterates all local variables and initialize the targets. Execeptions are 
+auto variables (local variables which are stored in stack region), record or union types 
+unless <code>BYREF_ALL</code> is set. If the local declaration is type of our interest(user annotated), 
+or addressable structures with BYREF set, plugin call initialize functions. </p>
+<pre><code class="language-c">static unsigned int structleak_execute(void)
+{
+    ...
+
+	/* enumerate all local variables and forcibly initialize our targets */
+	FOR_EACH_LOCAL_DECL(cfun, i, var) {
+		tree type = TREE_TYPE(var);
+
+		gcc_assert(DECL_P(var));
+		if (!auto_var_in_fn_p(var, current_function_decl))
+			continue;
+
+		if (byref != BYREF_ALL &amp;&amp; TREE_CODE(type) != RECORD_TYPE &amp;&amp; TREE_CODE(type) != UNION_TYPE)
+			continue;
+
+		if (TYPE_USERSPACE(type) ||
+		    (byref &amp;&amp; TREE_ADDRESSABLE(var)))
+			initialize(var);
+	}
+
+	return ret;
+}
+</code></pre>
+<p>However, the plugin has false positive problems because <code>__user</code> attribute is just for kernel 
+static analysis tool such as Sparse, but not an true indication of pointers whether the pointer will 
+be copied to user space or not. Conversely, there might be another pointers 
+without <code>__user</code> attribute but copied to user space. </p>
+<p>PaX team, who originally proposed the plugin, are aware of the false positive problems and 
+suggests better solutions to analyzing calls to copy_to_user(). 
+But it seems that they do no longer pay attention to this problem since the original problem CVE-2013-2141 is solved. </p>
+<p>Since the plugin initializes structrues passed by reference if <code>BYREF</code> is set as stated 
+in the function structleak_execute(), it is highly suggested to set <code>BYREF</code> or <code>BYREF_ALL</code> 
+when using this plugin to make it work as expected. </p>
+<h2><a class="header" href="#randomizing-kernel-data-structures" id="randomizing-kernel-data-structures">Randomizing kernel data structures</a></h2>
+<p>There are lots of juicy target members for attackers in kernel structures
+(struct or union), for example, function pointers, stack pointers, process
+credentials, and important flags etc.. Attackers usually try to trick kernel
+into executing their exploit code by overwriting such members in structures.</p>
+<p><strong>Randstruct plugin.</strong>
+In order to mitigate such attacks, <code>Randstruct</code> plugin randomizes structure
+layout at compile time. Once structure layout is randomized, it will be much
+harder for attackers to overwrite specific members of those structure since
+they now do not know the layout of the structure.</p>
+<p><code>Randstruct</code> plugin works in three steps:</p>
+<ol>
+<li>Detect structure to randomize.</li>
+<li>Randomize layout of the structure.</li>
+<li>Find bad casts from/to randomized structure pointer and notify it.</li>
+</ol>
+<p><em>Note: Step 3 works after step 1 and 2 are done for all structures.</em>
+<br />
+<br />
+<br />
+Let's see what it does at each step with code.</p>
+<p><strong>1. Detection.</strong></p>
+<p>When detecting target structure, plugin picks the structure marked with
+&quot;__randomize_layout&quot; attribute on its declaration, or the structure which
+contain only function pointers automatically.</p>
+<pre><code class="language-c">static int is_pure_ops_struct(const_tree node)
+{
+...
+  (Return 1 if the structure contains only function pointers.)
+  (There was a bug here which could cause false negative, and we patched it.)
+  (See `Bug patch` below.)
+...
+}
+
+static void randomize_type(tree type)
+{
+...
+  if (lookup_attribute(&quot;randomize_layout&quot;, TYPE_ATTRIBUTES(TYPE_MAIN_VARIANT(type))) || is_pure_ops_struct(type))
+    relayout_struct(type);
+...
+}
+</code></pre>
+<p><strong>2. Randomization.</strong></p>
+<p>Once it has picked the target structure, it randomizes the position of fields
+with modern in-place Fisher-Yates shuffle algorithm. If the target structure
+has flexible array member, however, the plugin does not randomize the member
+(field).</p>
+<pre><code class="language-c">static int relayout_struct(tree type){
+...
+  /*
+   * enforce that we don't randomize the layout of the last
+   * element of a struct if it's a 0 or 1-length array
+   * or a proper flexible array
+   */
+  if (is_flexible_array(newtree[num_fields - 1])) {
+    has_flexarray = true;
+    shuffle_length--;
+  }
+
+  shuffle(type, (tree *)newtree, shuffle_length);
+...
+}
+</code></pre>
+<p><strong>3. Bad casts notification.</strong></p>
+<p>\textbf{\textcolor{red}{TODO: M(odot@}}</p>
+<h3><a class="header" href="#references" id="references">References</a></h3>
+<ul>
+<li><a href="https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next/+/60f2c82ed20bde57c362e66f796cf9e0e38a6dbb">Check member structs in is_pure_ops_struct()</a></li>
+<li><a href="https://lwn.net/Articles/722293/">Randomizing structure layout</a></li>
+<li><a href="https://lwn.net/Articles/719732/">Introduce struct layout randomization plugin</a></li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="rop.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="misc.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="rop.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="misc.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+        <script type="text/javascript" src="assets/js/custom.js"></script>
+        
+
+        
+
+    </body>
+</html>

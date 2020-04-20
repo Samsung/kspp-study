@@ -1,0 +1,264 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Contributors - Analysis on Kernel Self-Protection: Understanding Security and Performance Implication</title>
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+        <link rel="stylesheet" href="assets/css/custom.css">
+        
+
+        
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+<div class="sidebar-scrollbox"><ol class="chapter">
+<li><a href="stack-ovfl.html"><strong aria-hidden="true">1.&nbsp;</strong>Stack Overflows</a></li>
+  <li><ol class="section">
+<li><a href="stack-ovfl.html#preventing-stack-clash"><strong aria-hidden="true">1.1.&nbsp;</strong>Stack Clash</a></li>
+<li><a href="stack-ovfl.html#protecting-thread_info"><strong aria-hidden="true">1.2.&nbsp;</strong>Hardening thread_info</a></li>
+<li><a href="stack-ovfl.html#stack-canary-ssp"><strong aria-hidden="true">1.3.&nbsp;</strong>SSP</a></li>
+  </li></ol>
+<li><a href="heap-ovfl.html"><strong aria-hidden="true">2.&nbsp;</strong>Heap Overflows</a></li>
+  <li><ol class="section">
+<li><a href="heap-ovfl.html#kernel-address-space-layout-randomization-kaslr"><strong aria-hidden="true">2.1.&nbsp;</strong>KASLR</a></li>
+  </li></ol>
+<li><a href="int-ovfl.html"><strong aria-hidden="true">3.&nbsp;</strong>Integer Overflows</a></li>
+  <li><ol class="section">
+<li><a href="int-ovfl.html#preventing-refcount-overflows"><strong aria-hidden="true">3.1.&nbsp;</strong>Refcount</a></li>
+<li><a href="int-ovfl.html#tools-to-prevent-integer-overflows"><strong aria-hidden="true">3.2.&nbsp;</strong>Safe Interfaces</a></li>
+  </li></ol>
+<li><a href="infoleak.html"><strong aria-hidden="true">4.&nbsp;</strong>Information Leaks</a></li>
+<li><a href="side-channel.html"><strong aria-hidden="true">5.&nbsp;</strong>Side-channel Attacks</a></li>
+  <li><ol class="section">
+<li><a href="side-channel.html#mitigating-kaslr-and-meltdown"><strong aria-hidden="true">5.1.&nbsp;</strong>Meltdown</a></li>
+<li><a href="side-channel.html#mitigating-spectre"><strong aria-hidden="true">5.2.&nbsp;</strong>Spectre</a></li>
+  </li></ol>
+<li><a href="bpf.html"><strong aria-hidden="true">6.&nbsp;</strong>eBPF Security</a></li>
+  <li><ol class="section">
+<li><a href="bpf.html#constant-blinding-in-jit"><strong aria-hidden="true">6.1.&nbsp;</strong>Constant Blinding</a></li>
+<li><a href="bpf.html#preventing-spectre"><strong aria-hidden="true">6.2.&nbsp;</strong>Spectre</a></li>
+  </li></ol>
+<li><a href="rop.html"><strong aria-hidden="true">7.&nbsp;</strong>Code Reuse Attack</a></li>
+  <li><ol class="section">
+<li><a href="rop.html#pax-reuse-attack-protector-rap"><strong aria-hidden="true">7.1.&nbsp;</strong>PAX RAP</a></li>
+<li><a href="rop.html#arm's-memory-tagging-extensions-mte"><strong aria-hidden="true">7.2.&nbsp;</strong>MTE</a></li>
+  </li></ol>
+<li><a href="compiler.html"><strong aria-hidden="true">8.&nbsp;</strong>GCC Plugins</a></li>
+  <li><ol class="section">
+<li><a href="compiler.html#preventing-information-leaks"><strong aria-hidden="true">8.1.&nbsp;</strong>Information Leak Prevention</a></li>
+<li><a href="compiler.html#randomizing-kernel-data-structures"><strong aria-hidden="true">8.2.&nbsp;</strong>Kernel Structure Attack Mitigation</a></li>
+  </li></ol>
+<li><a href="misc.html"><strong aria-hidden="true">9.&nbsp;</strong>Miscellaneous Topics</a></li>
+  <li><ol class="section">
+<li><a href="misc.html#eliminating-variable-length-arrays-vla"><strong aria-hidden="true">9.1.&nbsp;</strong>VLA</a></li>
+<li><a href="misc.html#preventing-mistakes-in-switchcase"><strong aria-hidden="true">9.2.&nbsp;</strong>Fallthrough</a></li>
+<li><a href="misc.html#fortify"><strong aria-hidden="true">9.3.&nbsp;</strong>Fortify</a></li>
+<li><a href="misc.html#livepatch"><strong aria-hidden="true">9.4.&nbsp;</strong>Livepatch</a></li>
+  </li></ol>
+<li class="spacer"></li><li class="affix">
+<a href="authors.html">Contributors</a></li>
+</ol></div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title">Analysis on Kernel Self-Protection: Understanding Security and Performance Implication</h1>
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <ul>
+<li><a href="https://taesoo.kim">Taesoo Kim</a>, <a href="mailto:taesoo@gatech.edu">taesoo@gatech.edu</a></li>
+<li><a href="https://jinb-park.github.io">Jinbum Park</a>, <a href="mailto:jinb.park@samsung.com">jinb.park@samsung.com</a></li>
+<li>Jaemin Ryu, <a href="mailto:jm77.ryu@samsung.com">jm77.ryu@samsung.com</a></li>
+<li><a href="https://freest4r.github.io">Jonghyuk Song</a>, <a href="mailto:jonghyk.song@gmail.com">jonghyk.song@gmail.com</a></li>
+<li><a href="https://www.linkedin.com/in/heeill395519173">Heeill Wang</a>, <a href="mailto:showx0123@gmail.com">showx0123@gmail.com</a></li>
+<li>Yujeong Lee, <a href="mailto:yujeong.lee.14@gmail.com">yujeong.lee.14@gmail.com</a></li>
+<li>Joonwon Kang, <a href="mailto:kjw1627@gmail.com">kjw1627@gmail.com</a></li>
+<li>Yeonju Ro, &lt;yeonju.ro@samsung.com, yeonju.samsung@gmail.com&gt;</li>
+<li>Sungbae Yoo, <a href="mailto:ysbnim@gmail.com">ysbnim@gmail.com</a></li>
+<li><a href="https://sangwan.dev">Sangwan Kwon</a>, <a href="mailto:bitboom9@gmail.com">bitboom9@gmail.com</a></li>
+<li>Yeji Kim, <a href="mailto:yeji01.kim@samsung.com">yeji01.kim@samsung.com</a></li>
+<li>Sunmin Lee, <a href="mailto:sunm.lee@samsung.com">sunm.lee@samsung.com</a></li>
+<li><a href="https://www.linkedin.com/in/daehwan-oh-1004b1144/">Daehwan Oh</a>, <a href="mailto:returnwellbeing@gmail.com">returnwellbeing@gmail.com</a></li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="misc.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="misc.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+        <script type="text/javascript" src="assets/js/custom.js"></script>
+        
+
+        
+
+    </body>
+</html>

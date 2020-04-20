@@ -1,0 +1,509 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Miscellaneous Topics - Analysis on Kernel Self-Protection: Understanding Security and Performance Implication</title>
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+        <link rel="stylesheet" href="assets/css/custom.css">
+        
+
+        
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+<div class="sidebar-scrollbox"><ol class="chapter">
+<li><a href="stack-ovfl.html"><strong aria-hidden="true">1.&nbsp;</strong>Stack Overflows</a></li>
+  <li><ol class="section">
+<li><a href="stack-ovfl.html#preventing-stack-clash"><strong aria-hidden="true">1.1.&nbsp;</strong>Stack Clash</a></li>
+<li><a href="stack-ovfl.html#protecting-thread_info"><strong aria-hidden="true">1.2.&nbsp;</strong>Hardening thread_info</a></li>
+<li><a href="stack-ovfl.html#stack-canary-ssp"><strong aria-hidden="true">1.3.&nbsp;</strong>SSP</a></li>
+  </li></ol>
+<li><a href="heap-ovfl.html"><strong aria-hidden="true">2.&nbsp;</strong>Heap Overflows</a></li>
+  <li><ol class="section">
+<li><a href="heap-ovfl.html#kernel-address-space-layout-randomization-kaslr"><strong aria-hidden="true">2.1.&nbsp;</strong>KASLR</a></li>
+  </li></ol>
+<li><a href="int-ovfl.html"><strong aria-hidden="true">3.&nbsp;</strong>Integer Overflows</a></li>
+  <li><ol class="section">
+<li><a href="int-ovfl.html#preventing-refcount-overflows"><strong aria-hidden="true">3.1.&nbsp;</strong>Refcount</a></li>
+<li><a href="int-ovfl.html#tools-to-prevent-integer-overflows"><strong aria-hidden="true">3.2.&nbsp;</strong>Safe Interfaces</a></li>
+  </li></ol>
+<li><a href="infoleak.html"><strong aria-hidden="true">4.&nbsp;</strong>Information Leaks</a></li>
+<li><a href="side-channel.html"><strong aria-hidden="true">5.&nbsp;</strong>Side-channel Attacks</a></li>
+  <li><ol class="section">
+<li><a href="side-channel.html#mitigating-kaslr-and-meltdown"><strong aria-hidden="true">5.1.&nbsp;</strong>Meltdown</a></li>
+<li><a href="side-channel.html#mitigating-spectre"><strong aria-hidden="true">5.2.&nbsp;</strong>Spectre</a></li>
+  </li></ol>
+<li><a href="bpf.html"><strong aria-hidden="true">6.&nbsp;</strong>eBPF Security</a></li>
+  <li><ol class="section">
+<li><a href="bpf.html#constant-blinding-in-jit"><strong aria-hidden="true">6.1.&nbsp;</strong>Constant Blinding</a></li>
+<li><a href="bpf.html#preventing-spectre"><strong aria-hidden="true">6.2.&nbsp;</strong>Spectre</a></li>
+  </li></ol>
+<li><a href="rop.html"><strong aria-hidden="true">7.&nbsp;</strong>Code Reuse Attack</a></li>
+  <li><ol class="section">
+<li><a href="rop.html#pax-reuse-attack-protector-rap"><strong aria-hidden="true">7.1.&nbsp;</strong>PAX RAP</a></li>
+<li><a href="rop.html#arm's-memory-tagging-extensions-mte"><strong aria-hidden="true">7.2.&nbsp;</strong>MTE</a></li>
+  </li></ol>
+<li><a href="compiler.html"><strong aria-hidden="true">8.&nbsp;</strong>GCC Plugins</a></li>
+  <li><ol class="section">
+<li><a href="compiler.html#preventing-information-leaks"><strong aria-hidden="true">8.1.&nbsp;</strong>Information Leak Prevention</a></li>
+<li><a href="compiler.html#randomizing-kernel-data-structures"><strong aria-hidden="true">8.2.&nbsp;</strong>Kernel Structure Attack Mitigation</a></li>
+  </li></ol>
+<li><a href="misc.html"><strong aria-hidden="true">9.&nbsp;</strong>Miscellaneous Topics</a></li>
+  <li><ol class="section">
+<li><a href="misc.html#eliminating-variable-length-arrays-vla"><strong aria-hidden="true">9.1.&nbsp;</strong>VLA</a></li>
+<li><a href="misc.html#preventing-mistakes-in-switchcase"><strong aria-hidden="true">9.2.&nbsp;</strong>Fallthrough</a></li>
+<li><a href="misc.html#fortify"><strong aria-hidden="true">9.3.&nbsp;</strong>Fortify</a></li>
+<li><a href="misc.html#livepatch"><strong aria-hidden="true">9.4.&nbsp;</strong>Livepatch</a></li>
+  </li></ol>
+<li class="spacer"></li><li class="affix">
+<a href="authors.html">Contributors</a></li>
+</ol></div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title">Analysis on Kernel Self-Protection: Understanding Security and Performance Implication</h1>
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p><br/><table></p>
+<colgroup>
+<col width="40%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Kconfig</th>
+<th align="left">A</th>
+<th align="left">A+</th>
+<th align="left">F</th>
+<th align="left">U</th>
+<th align="left">U+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">FORTIFY_SOURCE</td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+</tr>
+<tr class="even">
+<td align="left">LIVEPATCH</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+</tr>
+</tbody>
+</table>
+<center>
+<small>
+<p>
+<strong>A</strong>: Arch 5.1.8,<strong>A+</strong>: Arch Harden 5.1.11,<strong>F</strong>: Fedora 5.1.8,<strong>U</strong>: Ubuntu 5.0.0,<strong>U+</strong>: Ubuntu LTE 4.15.0
+</p>
+</small>
+</center>
+<br/>
+<h1><a class="header" href="#miscellaneous-topics" id="miscellaneous-topics">Miscellaneous Topics</a></h1>
+<h2><a class="header" href="#eliminating-variable-length-arrays-vla" id="eliminating-variable-length-arrays-vla">Eliminating Variable-length Arrays (VLA)</a></h2>
+<p>VLA allows programmers to specify the length of an array 
+at runtime: 
+e.g., using a variable instead of a constant 
+for the array size.
+This makes it easier to write certain types of programming logics 
+such as packet/buffer handling or string manipulation, 
+but has two critical problems, 
+namely security and performance. </p>
+<pre><code class="language-c">void test_vla(int i) {
+  long buf[i];
+
+  // =&gt; 30 instructions w/ div/mul
+  // char *buf;
+  // buf -= ((i &lt;&lt; 0x3) + 0xf) / 0x10 * 0x10
+}
+</code></pre>
+<p>In terms of security, 
+such a code pattern makes it hard 
+to estimate the stack usage, 
+otherwise incurring a stack clash in the kernel space.
+Also, although often not emphasized enough,
+this pattern 
+makes it easier to exploit the uninitialized-use vulnerability: 
+e.g., placing arbitrary data to the proper offset
+of the kernel stack.
+In terms of performance,
+this benign looking code 
+is translated to 
+a set of about 30 native instructions 
+that calculate the proper offset size 
+and enforce alignment of the stack, 
+otherwise incurring an exception 
+in many architectures.
+The translated instructions 
+include a few computational intensive instructions 
+such as <code>div</code> and <code>imul</code>,
+so impose unwanted performance overheads
+in a common path.
+Since v4.20 [1], 
+the compilation warning on the usage of VLA (i.e., <code>-Wvla</code>)
+has been globally turned on; 
+any use of VLA prevents 
+the kernel from compilation,
+thereby guiding developers to properly fix 
+the use of VLA.</p>
+<h2><a class="header" href="#preventing-mistakes-in-switchcase" id="preventing-mistakes-in-switchcase">Preventing mistakes in <code>switch/case</code></a></h2>
+<p>The usage of <code>switch</code> <code>case</code> in C is rather error-prone:
+an optional <code>break</code> statement can be used
+in each <code>case</code> block to indicate the break 
+of the logic, 
+otherwise simply executing the next <code>case</code> block. 
+As both usage patterns are prevalent,
+it is hard to recognize
+whether which one is intended code flow or not.
+The most recent <code>break</code> mistake (04/2019 at the time of writing)
+is in <code>sock_ioctl()</code> 
+that is widely used and heavily audited function!</p>
+<pre><code class="language-c">// @net/socket.c
+long sock_ioctl(struct file *file, unsigned cmd, unsigned long arg) {
+...
+    case SIOCGSTAMP_OLD:
+    case SIOCGSTAMPNS_OLD:
+      if (!sock-&gt;ops-&gt;gettstamp) {
+        err = -ENOIOCTLCMD;
+        break;
+      }
+      err = sock-&gt;ops-&gt;gettstamp(sock, argp,
+               cmd == SIOCGSTAMP_OLD,
+               !IS_ENABLED(CONFIG_64BIT));
++    break;
+    case SIOCGSTAMP_NEW:
+    case SIOCGSTAMPNS_NEW:
+      ...
+      break;
+</code></pre>
+<p>To address this error-prone situation,
+GCC introduces a compilation warning 
+on an implicit use of case fall through 
+(i.e., <code>-Wimplicit-fallthrough</code>):
+to avoid the warning of the fall through case,
+developers should <em>explicitly</em> express 
+the intention, either as a comment 
+(<code>/* fall through */</code>) or 
+as an attribute (<code>__attribute__((fallthrough))</code>).</p>
+<pre><code class="language-diff">+++ b/kernel/compat.c
+@@ -346,8 +346,11 @@ get_compat_sigset(...)
+                return -EFAULT;
+        switch (_NSIG_WORDS) {
+        case 4: set-&gt;sig[3] = v.sig[6] | (((long)v.sig[7]) &lt;&lt; 32 );
++               /* fall through */
+        case 3: set-&gt;sig[2] = v.sig[4] | (((long)v.sig[5]) &lt;&lt; 32 );
++               /* fall through */
+</code></pre>
+<h2><a class="header" href="#fortify" id="fortify">Fortify</a></h2>
+<p>FORTIFY_SOURCE was originally feature from gcc, but adopted to linux kernel later. This option provides support for detecting buffer overflows within various functions. Unfortunately, this option cannot detect all types of buffer overflows(will be discussed in below), but it is useful since it provides extra level of validation with low performance overhead. 
+FORTIFY_SOURCE checks buffer overflow for functions below : </p>
+<pre><code>memcpy, mempcpy, memmove, memset, strcpy, stpcpy, strncpy, strcat, 
+strncat, sprintf, vsprintf, snprintf, vsnprintf, gets
+</code></pre>
+<p>Let's dive into some functions : strcpy() and memcpy().</p>
+<p>At first, strcpy() checks object size via __butiltin_object_size(). This function returns object size that is determined on compile-time. However, if the object size is determined on run-time, e.g. object is allocated via kmalloc(), __butiltin_object_size() just returns -1. If both object size determined on run-time, strcpy() skips the overflow tests and passes objects to __builtin_strcpy(). Otherwise, it passes objects to memcpy() which is also fortified. Actual buffer-overflow checks would be done in memcpy(). As you can imagine, fortified strcpy() cannot detect buffer-overflows if size of both objects are determined on run-time, i.e. the case that strcpy passes objects to __builtin_strcpy().</p>
+<pre><code class="language-c">/* defined after fortified strlen and memcpy to reuse them */
+__FORTIFY_INLINE char *strcpy(char *p, const char *q)
+{
+	size_t p_size = __builtin_object_size(p, 0);
+	size_t q_size = __builtin_object_size(q, 0);
+	if (p_size == (size_t)-1 &amp;&amp; q_size == (size_t)-1)
+		return __builtin_strcpy(p, q);
+	memcpy(p, q, strlen(q) + 1);
+	return p;
+}
+</code></pre>
+<p>memcpy() also checks object size via __butiltin_object_size(). Both read-overflow and write-overflow check are performed here. If no overflow detected, then it assumes overflow-safe and runs __builtin_memcpy().</p>
+<pre><code class="language-c">__FORTIFY_INLINE void *memcpy(void *p, const void *q, __kernel_size_t size)
+{
+	size_t p_size = __builtin_object_size(p, 0);
+	size_t q_size = __builtin_object_size(q, 0);
+	if (__builtin_constant_p(size)) {
+		if (p_size &lt; size)
+			__write_overflow();
+		if (q_size &lt; size)
+			__read_overflow2();
+	}
+	if (p_size &lt; size || q_size &lt; size)
+		fortify_panic(__func__);
+	return __builtin_memcpy(p, q, size);
+}
+</code></pre>
+<h3><a class="header" href="#references" id="references">References</a></h3>
+<ol>
+<li><a href="http://lkml.iu.edu/hypermail/linux/kernel/1810.3/02834.html">VLA removal for v4.20-rc1</a></li>
+</ol>
+<h2><a class="header" href="#livepatch" id="livepatch">Livepatch</a></h2>
+<p>Livepatch is a feature that applies kernel patches without any system reboot. There are many situations where systems have to keep running and up because of some critical issues such as huge economical costs. For example, In Facebook, it would take about over than 20 minutes to reboot for just one machine. But it is reluctant not to apply patches on kernel when some bugs were found as soon as possible. In order to meet these two requirements, livepatch gives the ways to redirect the buggy code to new code with keeping running.</p>
+<h3><a class="header" href="#consistency-model" id="consistency-model">Consistency model</a></h3>
+<p>\textbf{\textcolor{red}{Assigned to Sungbae Yoo}}</p>
+<h3><a class="header" href="#design-pattern-for-modules" id="design-pattern-for-modules">Design pattern for modules</a></h3>
+<p>\textbf{\textcolor{red}{Assigned to Sungbae Yoo}}</p>
+<h3><a class="header" href="#how-it-works" id="how-it-works">How it works</a></h3>
+<p>\textbf{\textcolor{red}{Assigned to Sungbae Yoo}}</p>
+<h3><a class="header" href="#shadow-data" id="shadow-data">Shadow data</a></h3>
+<p>\textbf{\textcolor{red}{Assigned to Sungbae Yoo}}</p>
+<h3><a class="header" href="#userspace-toolkpatch" id="userspace-toolkpatch">Userspace tool(kpatch)</a></h3>
+<p><a href="https://github.com/dynup/kpatch">Kpatch</a> is a feature of the Linux kernel for livepatching made by Red Hat.<br />
+kpatch-build is one of the kpatch modules that convert patch files into kernel module.</p>
+<pre><code class="language-c">+---------+    +---------------------+    +--------------+
+| patch   |    | kpatch-build        |    | patch module |
++---------+ =&gt; | ============        | =&gt; +--------------+
+| *.patch |    | Create patch module |    | *.ko         |
++---------+    +---------------------+    +--------------+
+</code></pre>
+<h4><a class="header" href="#how-to-make-kernel-module" id="how-to-make-kernel-module">How to make kernel module</a></h4>
+<ol>
+<li>Download and unpack kernel source matching with patches's distro.</li>
+<li>Test patch file with option <a href="https://www.gnu.org/software/diffutils/manual/html_node/Dry-Runs.html">dry-run</a></li>
+<li>Read special section data with command (readelf -wi &quot;$VMLINUX&quot;)
+<ul>
+<li>alt_instr, bug_entry size,  jump_entry size ...</li>
+</ul>
+</li>
+<li>Build original source with compile options &quot;-ffunction-sections and -fdata-sections&quot;</li>
+<li>Build patched source with compile options &quot;-ffunction-sections and -fdata-sections&quot;</li>
+<li>Extract new and modified ELF sections
+<ul>
+<li>Compare #4's output and #5's output at a section level</li>
+<li>Result: Elf object included {.kpatch.strings, .kpatch.symbols, .kpatch.relocations}</li>
+</ul>
+</li>
+<li>Build patch module with #6's output</li>
+</ol>
+<h4><a class="header" href="#core-data-structure-a-href5bhttpsgithubcomdynupkpatchblobmasterkpatch-buildkpatch-elfh5dhttpsgithubcomdynupkpatchblobmasterkpatch-buildkpatch-elfhkpatch-elfa" id="core-data-structure-a-href5bhttpsgithubcomdynupkpatchblobmasterkpatch-buildkpatch-elfh5dhttpsgithubcomdynupkpatchblobmasterkpatch-buildkpatch-elfhkpatch-elfa">Core data structure: <a href="%5Bhttps://github.com/dynup/kpatch/blob/master/kpatch-build/kpatch-elf.h%5D(https://github.com/dynup/kpatch/blob/master/kpatch-build/kpatch-elf.h)">kpatch-elf</a></a></h4>
+<p>kpatch-build uses own data structure which added special data structures to elf format. The special data structures are able to include difference section between the origin object and the patched object.<br />
+The intermediate objects of kpatch-build are used in the form of kpatch-elf.</p>
+<pre><code class="language-c">struct kpatch_elf {
+  Elf *elf;
+  struct list_head sections;
+  struct list_head symbols;
+  struct list_head strings;
+  int fd;
+};
+</code></pre>
+<h4><a class="header" href="#core-module-a-href5bhttpsgithubcomdynupkpatchblobmasterkpatch-buildcreate-diff-objectc5dhttpsgithubcomdynupkpatchblobmasterkpatch-buildcreate-diff-objectccreate-diff-objectca" id="core-module-a-href5bhttpsgithubcomdynupkpatchblobmasterkpatch-buildcreate-diff-objectc5dhttpsgithubcomdynupkpatchblobmasterkpatch-buildcreate-diff-objectccreate-diff-objectca">Core module: <a href="%5Bhttps://github.com/dynup/kpatch/blob/master/kpatch-build/create-diff-object.c%5D(https://github.com/dynup/kpatch/blob/master/kpatch-build/create-diff-object.c)">create-diff-object.c</a></a></h4>
+<p>This file contains the heart of the ELF object differencing engine.</p>
+<ul>
+<li>The tool takes two ELF objects from two versions of the same source file.
+<ul>
+<li>a &quot;base&quot; object and a &quot;patched&quot; object</li>
+</ul>
+</li>
+<li>These object need to have been compiled with the GCC options.
+<ul>
+<li>-ffunction-sections and -fdata-sections</li>
+</ul>
+</li>
+<li>The tool compares the objects at a section level to determine what sections have changed.</li>
+<li>Once a list of changed sections has been generated, various rules are applied.</li>
+</ul>
+<h3><a class="header" href="#references-1" id="references-1">References</a></h3>
+<ol>
+<li><a href="https://lkml.org/lkml/2014/11/7/354">Kernel Live Patching: Consistency Model</a></li>
+<li><a href="https://github.com/dynup/kpatch">kpatch - live kernel patching</a></li>
+<li><a href="http://bitboom.github.io/anatomy-of-kpatch">Anatomy of kpatch</a></li>
+<li><a href="http://bitboom.github.io/kpatch-build-internal">An overview of kpatch-build</a></li>
+</ol>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="compiler.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="authors.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="compiler.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="authors.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+        <script type="text/javascript" src="assets/js/custom.js"></script>
+        
+
+        
+
+    </body>
+</html>

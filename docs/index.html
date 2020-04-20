@@ -1,0 +1,499 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Mitigating Stack Overflows - Analysis on Kernel Self-Protection: Understanding Security and Performance Implication</title>
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+        <link rel="stylesheet" href="assets/css/custom.css">
+        
+
+        
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+<div class="sidebar-scrollbox"><ol class="chapter">
+<li><a href="stack-ovfl.html"><strong aria-hidden="true">1.&nbsp;</strong>Stack Overflows</a></li>
+  <li><ol class="section">
+<li><a href="stack-ovfl.html#preventing-stack-clash"><strong aria-hidden="true">1.1.&nbsp;</strong>Stack Clash</a></li>
+<li><a href="stack-ovfl.html#protecting-thread_info"><strong aria-hidden="true">1.2.&nbsp;</strong>Hardening thread_info</a></li>
+<li><a href="stack-ovfl.html#stack-canary-ssp"><strong aria-hidden="true">1.3.&nbsp;</strong>SSP</a></li>
+  </li></ol>
+<li><a href="heap-ovfl.html"><strong aria-hidden="true">2.&nbsp;</strong>Heap Overflows</a></li>
+  <li><ol class="section">
+<li><a href="heap-ovfl.html#kernel-address-space-layout-randomization-kaslr"><strong aria-hidden="true">2.1.&nbsp;</strong>KASLR</a></li>
+  </li></ol>
+<li><a href="int-ovfl.html"><strong aria-hidden="true">3.&nbsp;</strong>Integer Overflows</a></li>
+  <li><ol class="section">
+<li><a href="int-ovfl.html#preventing-refcount-overflows"><strong aria-hidden="true">3.1.&nbsp;</strong>Refcount</a></li>
+<li><a href="int-ovfl.html#tools-to-prevent-integer-overflows"><strong aria-hidden="true">3.2.&nbsp;</strong>Safe Interfaces</a></li>
+  </li></ol>
+<li><a href="infoleak.html"><strong aria-hidden="true">4.&nbsp;</strong>Information Leaks</a></li>
+<li><a href="side-channel.html"><strong aria-hidden="true">5.&nbsp;</strong>Side-channel Attacks</a></li>
+  <li><ol class="section">
+<li><a href="side-channel.html#mitigating-kaslr-and-meltdown"><strong aria-hidden="true">5.1.&nbsp;</strong>Meltdown</a></li>
+<li><a href="side-channel.html#mitigating-spectre"><strong aria-hidden="true">5.2.&nbsp;</strong>Spectre</a></li>
+  </li></ol>
+<li><a href="bpf.html"><strong aria-hidden="true">6.&nbsp;</strong>eBPF Security</a></li>
+  <li><ol class="section">
+<li><a href="bpf.html#constant-blinding-in-jit"><strong aria-hidden="true">6.1.&nbsp;</strong>Constant Blinding</a></li>
+<li><a href="bpf.html#preventing-spectre"><strong aria-hidden="true">6.2.&nbsp;</strong>Spectre</a></li>
+  </li></ol>
+<li><a href="rop.html"><strong aria-hidden="true">7.&nbsp;</strong>Code Reuse Attack</a></li>
+  <li><ol class="section">
+<li><a href="rop.html#pax-reuse-attack-protector-rap"><strong aria-hidden="true">7.1.&nbsp;</strong>PAX RAP</a></li>
+<li><a href="rop.html#arm's-memory-tagging-extensions-mte"><strong aria-hidden="true">7.2.&nbsp;</strong>MTE</a></li>
+  </li></ol>
+<li><a href="compiler.html"><strong aria-hidden="true">8.&nbsp;</strong>GCC Plugins</a></li>
+  <li><ol class="section">
+<li><a href="compiler.html#preventing-information-leaks"><strong aria-hidden="true">8.1.&nbsp;</strong>Information Leak Prevention</a></li>
+<li><a href="compiler.html#randomizing-kernel-data-structures"><strong aria-hidden="true">8.2.&nbsp;</strong>Kernel Structure Attack Mitigation</a></li>
+  </li></ol>
+<li><a href="misc.html"><strong aria-hidden="true">9.&nbsp;</strong>Miscellaneous Topics</a></li>
+  <li><ol class="section">
+<li><a href="misc.html#eliminating-variable-length-arrays-vla"><strong aria-hidden="true">9.1.&nbsp;</strong>VLA</a></li>
+<li><a href="misc.html#preventing-mistakes-in-switchcase"><strong aria-hidden="true">9.2.&nbsp;</strong>Fallthrough</a></li>
+<li><a href="misc.html#fortify"><strong aria-hidden="true">9.3.&nbsp;</strong>Fortify</a></li>
+<li><a href="misc.html#livepatch"><strong aria-hidden="true">9.4.&nbsp;</strong>Livepatch</a></li>
+  </li></ol>
+<li class="spacer"></li><li class="affix">
+<a href="authors.html">Contributors</a></li>
+</ol></div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title">Analysis on Kernel Self-Protection: Understanding Security and Performance Implication</h1>
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p><br/><table></p>
+<colgroup>
+<col width="40%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Kconfig</th>
+<th align="left">A</th>
+<th align="left">A+</th>
+<th align="left">F</th>
+<th align="left">U</th>
+<th align="left">U+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">VMAP_STACK</td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+</tr>
+<tr class="even">
+<td align="left">THREAD_INFO_IN_TASK</td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left">N</td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+</tr>
+<tr class="odd">
+<td align="left">STACKPROTECTOR_STRONG</td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left">N</td>
+</tr>
+</tbody>
+</table>
+<center>
+<small>
+<p>
+<strong>A</strong>: Arch 5.1.8,<strong>A+</strong>: Arch Harden 5.1.11,<strong>F</strong>: Fedora 5.1.8,<strong>U</strong>: Ubuntu 5.0.0,<strong>U+</strong>: Ubuntu LTE 4.15.0
+</p>
+</small>
+</center>
+<br/>
+<h1><a class="header" href="#mitigating-stack-overflows" id="mitigating-stack-overflows">Mitigating Stack Overflows</a></h1>
+<p>When a stack is overflowed, an attacker has a chance to overwrite a
+security-critical data structure located in another task's stack. For
+example, <code>thread_info</code> traditionally locates at the bottom of the
+stack, which one long-size overflow can overwrite to. By overwriting
+the <code>thread_info</code>, an attacker can escalate its privilege by
+overwriting the <code>cred</code> structure.</p>
+<h2><a class="header" href="#preventing-stack-clash" id="preventing-stack-clash">Preventing stack clash</a></h2>
+<p>Using virtually-mapped (vmap) stacks has two benefits: 1) flexible in
+allocating larger, non-continuous pages, 2) preventing a potential
+stack overflow by placing one guard page between vmapped regions. Such
+a guard page can mitigate a stack clash that is overwritten by another task,
+if consequently located. As virtually mapped, the guard page
+won't be wasting any real page unlike <code>kmalloc()</code>-based stack.</p>
+<pre><code class="language-c">// @kernel/fork.c
+alloc_thread_stack_node()
+  -&gt; __vmalloc_node_range()
+     -&gt; __get_vm_area_node()
+
+    // by default, vmap_area includes one more page as a guard
+    if (!(flags &amp; VM_NO_GUARD))
+      size += PAGE_SIZE;
+</code></pre>
+<p>The way the kernel handles a stack overflow is pretty
+interesting. When the kernel mode touches a guard page, it generates a
+page fault, so its handler specifically checks such a condition like below.</p>
+<pre><code class="language-c">// @arch/x86/mm/fault.c
+// do_page_fault()
+//   -&gt; __do_page_fault()
+//      -&gt; do_kern_addr_fault()
+//         -&gt; bad_area_nosemaphore()
+//            -&gt; __bad_area_nosemaphore()
+static noinline void
+no_context(struct pt_regs *regs, unsigned long error_code,
+	   unsigned long address, int signal, int si_code)
+{
+...
+  if (is_vmalloc_addr((void *)address) &amp;&amp;
+       (((unsigned long)tsk-&gt;stack - 1 - address &lt; PAGE_SIZE) ||
+         address - ((unsigned long)tsk-&gt;stack + THREAD_SIZE) &lt; PAGE_SIZE)) {
+
+    // NB. as the stack is likely out-of-space, use the stack for double-fault
+    unsigned long stack = __this_cpu_ist_top_va(DF) - sizeof(void *);
+
+    // NB. invoke handle_stack_overflow() to inform an oops.
+    asm volatile (&quot;movq %[stack], %%rsp\n\t&quot;
+                   &quot;call handle_stack_overflow\n\t&quot;
+                   &quot;1: jmp 1b&quot;
+                   : ASM_CALL_CONSTRAINT
+                   : &quot;D&quot; (&quot;kernel stack overflow (page fault)&quot;),
+                     &quot;S&quot; (regs), &quot;d&quot; (address),
+                   [stack] &quot;rm&quot; (stack));
+     unreachable();
+  }
+...
+}
+</code></pre>
+<p>It's likely that the page fault handler touches the guard page,
+<em>again</em> as we are running out of the stack space, which generates a
+double-fault.</p>
+<pre><code class="language-c">// @arch/x86/kernel/traps.c
+void do_double_fault(struct pt_regs *regs, long error_code)
+{
+...
+  cr2 = read_cr2();
+  if ((unsigned long)task_stack_page(tsk) - 1 - cr2 &lt; PAGE_SIZE)
+    handle_stack_overflow(&quot;kernel stack overflow (double-fault)&quot;, regs, cr2);
+...
+}
+</code></pre>
+<p>One difference is that the page fault handler checks one page
+before/after the stack, but the double-fault handler checks only the
+overflow (when growing downward). This likely misdiagnoses the
+condition for <code>STACK_GROWSUP</code> yet rarely used in practice.</p>
+<p><strong>Related CVEs.</strong> Numerous CVEs (e.g., CVE-2016-10153, CVE-2017-8068,
+CVE-2017-8070, etc) relevant to <code>VMAP_STACK</code> are recently assigned due
+to its implication of DoS or potential memory corruption (unlikely
+controllable). The basic idea is that during iterating the
+scatter-gather list by a DMA engine, the stack-allocated, vmapped
+buffer is unlikely physically contiguous across the page
+boundary, potentially overwriting irrelevant page. It's unlikely that
+the buffer is large enough to cross the page boundary, otherwise
+a developer allocated DMA-able region at the first place. One caveat
+however was that under a certain condition
+(e.g., <code>DEBUG_VIRTUAL</code>), <code>__phys_addr()</code> can trigger <code>BUG()</code>
+when the provided address is <code>vmalloc()</code>-region, resulting in a DoS.</p>
+<h3><a class="header" href="#performance-implication" id="performance-implication">Performance implication</a></h3>
+<table><thead><tr><th align="left"></th><th align="right">VMAP=n</th><th align="right">VMAP=y, #C=0</th><th align="right">#C=2</th><th align="right">#C=3</th><th align="right">#C=5</th></tr></thead><tbody>
+<tr><td align="left"><strong>kbuild(seconds)</strong></td><td align="right">27.648798683</td><td align="right">-</td><td align="right">27.545090630</td><td align="right">-</td><td align="right">-</td></tr>
+<tr><td align="left"><strong>iterations, cpu 0</strong></td><td align="right">106343</td><td align="right">99673</td><td align="right">101130</td><td align="right">100568</td><td align="right">100025</td></tr>
+<tr><td align="left"><strong>iterations, cpu 2</strong></td><td align="right">118526</td><td align="right">93372</td><td align="right">119380</td><td align="right">117901</td><td align="right">116726</td></tr>
+<tr><td align="left"><strong>iterations, cpu 7</strong></td><td align="right">117700</td><td align="right">94010</td><td align="right">117651</td><td align="right">117719</td><td align="right">115385</td></tr>
+</tbody></table>
+<p>The table above shows thread performance results measured using microbenchmarks.
+The higher the number of iterations, It means the faster the performance.
+And #C means number of cache entries.</p>
+<p>Allocating a stack from the vmalloc area, makes creating a process
+with <code>clone()</code> take about 1.5µs longer.[1] So for fixing this problem,
+caching two thread stacks per cpu was introduced.[4]</p>
+<p>Thread performance is slower when using virtual mapped stacks.
+and the performance is affected by number of cache entries.
+Currently, the number of cache entries is two, and if it is increased than two,
+the performance is slower a bit. And if <code>CONFIG_VMAP_STACK</code> set when kernel build,
+it is about 0.1 seconds faster then without <code>CONFIG_VMAP_STACK</code>.
+So It's better using <code>CONFIG_VMAP_STACK</code> and two cache entries can complement
+the performance.</p>
+<h3><a class="header" href="#references" id="references">References</a></h3>
+<ol>
+<li><a href="https://lwn.net/Articles/692208/">LWN: Virtually mapped kernel stacks</a></li>
+<li><a href="https://googleprojectzero.blogspot.com/2016/06/exploiting-recursion-in-linux-kernel_20.html">CVE-2016-1583: Exploiting Recursion in the Linux Kernel</a></li>
+<li><a href="https://lwn.net/Articles/726593/">Mailing: Can someone explain all the CONFIG_VMAP_STACK CVEs lately?</a></li>
+<li><a href="https://patchwork.kernel.org/patch/9199707/">fork: Cache two thread stacks per cpu if CONFIG_VMAP_STACK is set</a></li>
+</ol>
+<h2><a class="header" href="#protecting-thread_info" id="protecting-thread_info">Protecting <code>thread_info</code></a></h2>
+<p>Hijacking <code>thread_info</code> or <code>task_struct</code> is a straight way to achieve
+a privilege escalation: overwriting its <code>uid</code> to the root's, zero. As
+they are used to locate at the bottom of the stack (e.g.,
+<code>task_struct</code> in &lt;2.6 or <code>thread_info</code> in later versions), bugs such
+as stack clash, stack overflow, or arbitrary write after a stack
+pointer leak, can launch an exploit against them.</p>
+<p>An easy mitigation is to completely remove them from the stack:
+THREAD_INFO_IN_TASK, as its name implicates, embeds <code>thread_info</code> into
+<code>task_struct</code>. Since the <code>current</code> task can be accessed with per-cpu
+data structure, <code>thread_info</code> can be accessed with one additional
+memory access. Note that <code>thread_info</code> is supposed to contain the
+architecture-specific information and <code>task_struct</code> does for
+architecture-neutral data. The current effort in x86 virtually
+migrates all information to the <code>task_struct</code>.</p>
+<pre><code class="language-c">// @include/linux/sched.h
+struct task_struct {
+#ifdef CONFIG_THREAD_INFO_IN_TASK
+  /*
+   * For reasons of header soup (see current_thread_info()), this
+   * must be the first element of task_struct.
+   */
+   struct thread_info thread_info;
+#endif
+...
+}
+</code></pre>
+<p>The bottom of the stack contains <code>thread_info</code> if not
+THREAD_INFO_IN_TASK, which is protected by a magic value,
+<code>STACK_END_MAGIC</code> that shouldn't be considered as security enhancement
+or mechanism. <code>end_of_stack()</code> simply returns the usable stack region
+and handles both situation seamlessly.</p>
+<pre><code class="language-c">// @include/linux/sched/task_stack.h
+void set_task_stack_end_magic(struct task_struct *tsk)
+{
+  unsigned long *stackend;
+  stackend = end_of_stack(tsk);
+
+  // NB. indicating that current stack is overwritten by an overflow
+  *stackend = STACK_END_MAGIC;
+}
+
+#ifdef CONFIG_THREAD_INFO_IN_TASK
+unsigned long *end_of_stack(const struct task_struct *task)
+{
+  return task-&gt;stack;
+}
+// NB. thread_info will be copied as part of task_struct
+#define setup_thread_stack(new,old) do { } while(0)
+
+#else
+unsigned long *end_of_stack(struct task_struct *p)
+{
+  return (unsigned long *)(task_thread_info(p) + 1);
+}
+void setup_thread_stack(struct task_struct *p, struct task_struct *org)
+{
+  // NB. copied to the stack end (top)
+  *task_thread_info(p) = *task_thread_info(org);
+  task_thread_info(p)-&gt;task = p;
+}
+#endif
+</code></pre>
+<h3><a class="header" href="#performance-implication-1" id="performance-implication-1">Performance implication</a></h3>
+<ul>
+<li>don't expect much</li>
+</ul>
+<h2><a class="header" href="#stack-canary-ssp" id="stack-canary-ssp">Stack canary (SSP)</a></h2>
+<p>FIX. config in 4.15 is named differently</p>
+<h3><a class="header" href="#performance-implication-2" id="performance-implication-2">Performance implication</a></h3>
+<hr />
+<p>Option                   Size (KB)               Protected functions</p>
+<hr />
+<p>None                     53,519 KB                          0/48,606</p>
+<p>STACKPROTECTOR           53,490 KB    (-0.05%)          1,390/48,607    (+2.86%)</p>
+<h2><a class="header" href="#stackprotector_strong----55312-kb----335----------992248608---2041" id="stackprotector_strong----55312-kb----335----------992248608---2041">STACKPROTECTOR_STRONG    55,312 KB    (+3.35%)          9,922/48,608   (+20.41%)</a></h2>
+<p><code>STACKPROTECTOR_STRONG</code> inserts a canary to 20% of functions in the
+kernel, unlike <code>STACKPROTECTOR</code> protects 3%, resulting in about 3%
+increment of the binary size. For example, <code>bstat()</code> is newly
+protected with <code>STACKPROTECTOR_STRONG</code> as it has <code>struct kstat</code> as a
+local variable.</p>
+<p>What's interesting is the binary size of <code>STACKPROTECTOR</code> compared
+with the unprotected binary: inserting canary indeed reduces the
+binary size. According to our analysis, checking canary at the
+epilogue tends to encourage the reuse of common gadgets (e.g., <code>pop</code> or
+<code>ret</code>) at exit paths, rendering better utilization of instructions.</p>
+<h3><a class="header" href="#references-1" id="references-1">References</a></h3>
+<ul>
+<li><a href="https://docs.google.com/document/d/1xXBH6rRZue4f296vGt9YQcuLVQHeE516stHwt8M9xyU/edit">Google: New stack protector option for gcc</a></li>
+<li><a href="https://lwn.net/Articles/584225/">LWN: &quot;Strong&quot; stack protection for GCC</a></li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+        <script type="text/javascript" src="assets/js/custom.js"></script>
+        
+
+        
+
+    </body>
+</html>

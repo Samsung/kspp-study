@@ -1,0 +1,589 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Mitigating Microarchitecture Side-channel - Analysis on Kernel Self-Protection: Understanding Security and Performance Implication</title>
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+        <link rel="stylesheet" href="assets/css/custom.css">
+        
+
+        
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+<div class="sidebar-scrollbox"><ol class="chapter">
+<li><a href="stack-ovfl.html"><strong aria-hidden="true">1.&nbsp;</strong>Stack Overflows</a></li>
+  <li><ol class="section">
+<li><a href="stack-ovfl.html#preventing-stack-clash"><strong aria-hidden="true">1.1.&nbsp;</strong>Stack Clash</a></li>
+<li><a href="stack-ovfl.html#protecting-thread_info"><strong aria-hidden="true">1.2.&nbsp;</strong>Hardening thread_info</a></li>
+<li><a href="stack-ovfl.html#stack-canary-ssp"><strong aria-hidden="true">1.3.&nbsp;</strong>SSP</a></li>
+  </li></ol>
+<li><a href="heap-ovfl.html"><strong aria-hidden="true">2.&nbsp;</strong>Heap Overflows</a></li>
+  <li><ol class="section">
+<li><a href="heap-ovfl.html#kernel-address-space-layout-randomization-kaslr"><strong aria-hidden="true">2.1.&nbsp;</strong>KASLR</a></li>
+  </li></ol>
+<li><a href="int-ovfl.html"><strong aria-hidden="true">3.&nbsp;</strong>Integer Overflows</a></li>
+  <li><ol class="section">
+<li><a href="int-ovfl.html#preventing-refcount-overflows"><strong aria-hidden="true">3.1.&nbsp;</strong>Refcount</a></li>
+<li><a href="int-ovfl.html#tools-to-prevent-integer-overflows"><strong aria-hidden="true">3.2.&nbsp;</strong>Safe Interfaces</a></li>
+  </li></ol>
+<li><a href="infoleak.html"><strong aria-hidden="true">4.&nbsp;</strong>Information Leaks</a></li>
+<li><a href="side-channel.html"><strong aria-hidden="true">5.&nbsp;</strong>Side-channel Attacks</a></li>
+  <li><ol class="section">
+<li><a href="side-channel.html#mitigating-kaslr-and-meltdown"><strong aria-hidden="true">5.1.&nbsp;</strong>Meltdown</a></li>
+<li><a href="side-channel.html#mitigating-spectre"><strong aria-hidden="true">5.2.&nbsp;</strong>Spectre</a></li>
+  </li></ol>
+<li><a href="bpf.html"><strong aria-hidden="true">6.&nbsp;</strong>eBPF Security</a></li>
+  <li><ol class="section">
+<li><a href="bpf.html#constant-blinding-in-jit"><strong aria-hidden="true">6.1.&nbsp;</strong>Constant Blinding</a></li>
+<li><a href="bpf.html#preventing-spectre"><strong aria-hidden="true">6.2.&nbsp;</strong>Spectre</a></li>
+  </li></ol>
+<li><a href="rop.html"><strong aria-hidden="true">7.&nbsp;</strong>Code Reuse Attack</a></li>
+  <li><ol class="section">
+<li><a href="rop.html#pax-reuse-attack-protector-rap"><strong aria-hidden="true">7.1.&nbsp;</strong>PAX RAP</a></li>
+<li><a href="rop.html#arm's-memory-tagging-extensions-mte"><strong aria-hidden="true">7.2.&nbsp;</strong>MTE</a></li>
+  </li></ol>
+<li><a href="compiler.html"><strong aria-hidden="true">8.&nbsp;</strong>GCC Plugins</a></li>
+  <li><ol class="section">
+<li><a href="compiler.html#preventing-information-leaks"><strong aria-hidden="true">8.1.&nbsp;</strong>Information Leak Prevention</a></li>
+<li><a href="compiler.html#randomizing-kernel-data-structures"><strong aria-hidden="true">8.2.&nbsp;</strong>Kernel Structure Attack Mitigation</a></li>
+  </li></ol>
+<li><a href="misc.html"><strong aria-hidden="true">9.&nbsp;</strong>Miscellaneous Topics</a></li>
+  <li><ol class="section">
+<li><a href="misc.html#eliminating-variable-length-arrays-vla"><strong aria-hidden="true">9.1.&nbsp;</strong>VLA</a></li>
+<li><a href="misc.html#preventing-mistakes-in-switchcase"><strong aria-hidden="true">9.2.&nbsp;</strong>Fallthrough</a></li>
+<li><a href="misc.html#fortify"><strong aria-hidden="true">9.3.&nbsp;</strong>Fortify</a></li>
+<li><a href="misc.html#livepatch"><strong aria-hidden="true">9.4.&nbsp;</strong>Livepatch</a></li>
+  </li></ol>
+<li class="spacer"></li><li class="affix">
+<a href="authors.html">Contributors</a></li>
+</ol></div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title">Analysis on Kernel Self-Protection: Understanding Security and Performance Implication</h1>
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p><br/><table></p>
+<colgroup>
+<col width="40%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Kconfig</th>
+<th align="left">A</th>
+<th align="left">A+</th>
+<th align="left">F</th>
+<th align="left">U</th>
+<th align="left">U+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">PAGE_TABLE_ISOLATION</td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+</tr>
+<tr class="even">
+<td align="left">RETPOLINE</td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+</tr>
+</tbody>
+</table>
+<center>
+<small>
+<p>
+<strong>A</strong>: Arch 5.1.8,<strong>A+</strong>: Arch Harden 5.1.11,<strong>F</strong>: Fedora 5.1.8,<strong>U</strong>: Ubuntu 5.0.0,<strong>U+</strong>: Ubuntu LTE 4.15.0
+</p>
+</small>
+</center>
+<br/>
+<h1><a class="header" href="#mitigating-microarchitecture-side-channel" id="mitigating-microarchitecture-side-channel">Mitigating Microarchitecture Side-channel</a></h1>
+<h2><a class="header" href="#mitigating-kaslr-and-meltdown" id="mitigating-kaslr-and-meltdown">Mitigating KASLR and Meltdown</a></h2>
+<p>Mapping both user-space and kernel-space in one page-table
+takes a lot of advantages to the linux kernel.
+But on the other side, it has negative impact on security.
+Many researchers have exploited that for a profit
+via a variety of side channels.
+It allows an attacker to bypass KASLR, even worse,
+to read kernel memory from user-space
+that is known as Meltdown.
+So the linux kernel ended up to isolate the page-table
+based on its execution mode, either user or kernel.
+That is dubbed as page table isolation or pti.
+The implementation of pti is straightforward.
+allocate two page tables for a process,
+one is for user mode, another one is for kernel mode,
+and kernel mode can see entire memory space,
+on the other hand,
+user mode is limited not to see kernel space.
+It effectively closes both KASLR-attacks and Meltdown.</p>
+<p>Allocating two page tables in a contiguous area.</p>
+<pre><code class="language-c">// arch/x86/include/asm/pgalloc.h
+// #ifdef CONFIG_PAGE_TABLE_ISOLATION
+// #define PGD_ALLOCATION_ORDER 1
+// #else
+// #define PGD_ALLOCATION_ORDER 0
+// #endif
+....
+....
+// arch/x86/mm/pgtable.c
+static inline pgd_t *_pgd_alloc(void)
+{
+  return (pgd_t *)__get_free_pages(PGALLOC_GFP, PGD_ALLOCATION_ORDER);
+  // NB. CONFIG_PAGE_TABLE_ISOLATION --&gt; 8kb, two page tables.
+  // !CONFIG_PAGE_TABLE_ISOLATION --&gt; 4kb, one page table.
+}
+</code></pre>
+<p>Locating the page table at a syscall entry,
+either user-to-kernel or kernel-to-user.</p>
+<pre><code class="language-c">ENTRY(entry_SYSCALL_64)
+    UNWIND_HINT_EMPTY
+
+    swapgs
+    // NB. percpu-access before SWITCH_TO_KERNEL_CR3
+    // the percpu-area should be mapped in user page table.
+    movq    %rsp, PER_CPU_VAR(cpu_tss_rw + TSS_sp2)
+    // NB. locating the page table, user-to-kernel.
+    SWITCH_TO_KERNEL_CR3 scratch_reg=%rsp
+    movq    PER_CPU_VAR(cpu_current_top_of_stack), %rsp
+</code></pre>
+<p>As shown in above code,
+the kernel entry code accesses per-cpu areas before
+locating the page table.
+So the per-cpu areas are needed to be mapped
+in the page table for user mode.</p>
+<pre><code class="language-c">static void __init setup_cpu_entry_area(unsigned int cpu)
+{
+....
+....
+// NB. create a mapping for per-cpu areas
+ cea_set_pte(&amp;cea-&gt;gdt, get_cpu_gdt_paddr(cpu), gdt_prot);
+
+    cea_map_percpu_pages(&amp;cea-&gt;entry_stack_page,
+                 per_cpu_ptr(&amp;entry_stack_storage, cpu), 1,
+                 PAGE_KERNEL);
+....
+ cea_map_percpu_pages(&amp;cea-&gt;tss, &amp;per_cpu(cpu_tss_rw, cpu),
+                 sizeof(struct tss_struct) / PAGE_SIZE, tss_prot);
+}
+....
+....
+void cea_set_pte(void *cea_vaddr, phys_addr_t pa, pgprot_t flags)
+{
+    unsigned long va = (unsigned long) cea_vaddr;
+    pte_t pte = pfn_pte(pa &gt;&gt; PAGE_SHIFT, flags);
+
+    // NB. _PAGE_GLOBAL indicates a mapping for all page tables
+    // including both user and kernel.
+    if (boot_cpu_has(X86_FEATURE_PGE) &amp;&amp;
+        (pgprot_val(flags) &amp; _PAGE_PRESENT))
+        pte = pte_set_flags(pte, _PAGE_GLOBAL);
+</code></pre>
+<p>Lastly, the pti leverages PCID or Process Context IDentifier
+to avoid a TLB collision between user-space and kernel-space.
+It works by assigning a different PCID to each execution mode.
+With this hardware support of Intel,
+the pti has a negligible performance impact.</p>
+<pre><code class="language-c">.macro ADJUST_KERNEL_CR3 reg:req
+    ALTERNATIVE &quot;&quot;, &quot;SET_NOFLUSH_BIT \reg&quot;, X86_FEATURE_PCID
+    // NB. CR3 register contains an address of page table.
+    // Since the lowest 12 bits are unused, (page-aligned)
+    // they are used to represent a PCID.
+    andq    $(~PTI_USER_PGTABLE_AND_PCID_MASK), \reg
+.endm
+
+.macro SWITCH_TO_KERNEL_CR3 scratch_reg:req
+    ALTERNATIVE &quot;jmp .Lend_\@&quot;, &quot;&quot;, X86_FEATURE_PTI
+    mov %cr3, \scratch_reg
+    ADJUST_KERNEL_CR3 \scratch_reg
+    mov \scratch_reg, %cr3
+.Lend_\@:
+.endm
+</code></pre>
+<h3><a class="header" href="#references" id="references">References</a></h3>
+<ol>
+<li><a href="https://gruss.cc/files/kaiser.pdf">KASLR is Dead: Long Live KASLR</a></li>
+<li><a href="https://meltdownattack.com/meltdown.pdf">Meltdown: Reading Kernel Memory from User Space</a></li>
+<li><a href="https://jinb-park.blogspot.com/2019/06/side-channel-attacks-on-linux-kernel.html">Side Channel Attacks on Linux Kernel</a></li>
+<li><a href="https://jinb-park.blogspot.com/2019/06/deep-dive-into-page-table-isolation.html">Deep dive into Page Table Isolation</a></li>
+<li><a href="https://jinb-park.blogspot.com/2019/06/deep-dive-into-defense-against-btb.html">Deep dive into Defense against BTB attacks</a></li>
+</ol>
+<h2><a class="header" href="#mitigating-spectre" id="mitigating-spectre">Mitigating Spectre</a></h2>
+<p>Modren CPUs have a branch predictor
+to optimize their performance.
+It works by referencing Branch Target Buffer or BTB
+that is a storage for a key(PC)-value(Target PC) pair.
+But its size limitation causes a BTB collision
+that leads to a new side-channel attack.
+The root cause of the attack is that
+BTB stores some parts of the bits of PC,
+not the full bits of PC.
+Using this primitive, an attacker is able to inject
+an indirect branch target into the BTB,
+and consequently run some codes in a speculative context.
+It can leak a sensitive data across some boundaries.
+(e.g. between VMs, Processes, ...)
+The attack is called Spectre Variant2.
+and retpoline has been introducted to stop the attack.
+The concept of retpoline is straightforward,
+but the implementation is a little tricky.
+Retpoline aims to eliminate all speculating behaviors
+that can be controlled by an attacker.</p>
+<p>Indirect jump replacement with Retpoline.
+Take a look at how to implement
+an indirect branch with no speculation.</p>
+<pre><code class="language-c">// Before Retpoline
+jmp *%rax
+
+// After Retpoline
+(1) call load_label
+    capture_ret_spec:
+(2) pause; LFENCE
+(3) jmp capture_ret_spec
+    load_label:
+(4) mov %rax, (%rsp)
+(5) ret
+
+// NB. Let's follow a Retpoline gadget.
+// two executions are performing in parallel.
+// o: original execution
+// s: speculative execution
+// (1-o) Direct branch to (4).
+//     Push (2) onto the stack as a return.
+// (4-o) Overwrite the return with the real target.
+// (5-o) Load the real target from the stack memory.
+// (5-s) If speculating here by RSB (Return Stack Buffer),
+//     consumes RSB entry created in (1-o),
+//     jumps to (2)
+// (2-s) relaxing cpu for the spin-wait loop.
+// (3-s) jumps to (2) again.
+//     it forces the speculative execution
+//     not be outside of (2)-(3).
+// (5-o) Jump to the real target.
+// --&gt; There are no speculation!
+</code></pre>
+<p>The linux kernel supports Retpoline
+as an alternaitve section, which means that
+an admin can determine to enable/disable retpoline
+when boot-time via a kernel command-line.</p>
+<pre><code class="language-c">// NB. A retpoline gadget replacing an indirect branch.
+.macro RETPOLINE_JMP reg:req
+ call    .Ldo_rop_\@
+.Lspec_trap_\@:
+ pause
+ lfence
+ jmp .Lspec_trap_\@
+.Ldo_rop_\@:
+ mov \reg, (%_ASM_SP)
+ ret
+.endm
+
+.macro JMP_NOSPEC reg:req
+#ifdef CONFIG_RETPOLINE
+// NB. register an indirect branch as an alternative insn.
+    ANNOTATE_NOSPEC_ALTERNATIVE
+    ALTERNATIVE_2 __stringify(ANNOTATE_RETPOLINE_SAFE; jmp *\reg),  \
+        __stringify(RETPOLINE_JMP \reg), X86_FEATURE_RETPOLINE, \
+        __stringify(lfence; ANNOTATE_RETPOLINE_SAFE; jmp *\reg), X86_FEATURE_RETPOLINE_AMD
+#else
+    jmp *\reg
+#endif
+.endm
+
+void __init alternative_instructions(void)
+{
+  ...
+  // NB. runtime patching to apply retpoline gadgets.
+  // (__alt_instructions ~ __alt_instructions_end) includes
+  // a lot of sites for indirect branches.
+  apply_alternatives(__alt_instructions, __alt_instructions_end);
+  ...
+}
+</code></pre>
+<p><strong>MDS (Microarchitectural Data Sampling).</strong></p>
+<p>When performing store, load, L1 refill,
+processors write data into a variety of temporary buffers
+defined by microarchitecture such as
+Load Buffer, Store Buffer, Line Fill Buffer.
+The data in the buffers can be forwarded to load operations
+as an optimization.
+Unfortunately this kind of forwarding can across boundary,
+which means a kernel data can be forwarded to a load operation
+inside user space.
+If an attacker can stick the data
+into a leak gadget inside user space,
+it eventually leaks a kernel memory.
+The mitigation against this attack is very straightforward.
+It's to clear the cpu buffers when returning to user.</p>
+<pre><code class="language-c">static inline void mds_clear_cpu_buffers(void)
+{
+    static const u16 ds = __KERNEL_DS;
+    ....
+    asm volatile(&quot;verw %[ds]&quot; : : [ds] &quot;m&quot; (ds) : &quot;cc&quot;);
+}
+
+static inline void mds_user_clear_cpu_buffers(void)
+{
+    if (static_branch_likely(&amp;mds_user_clear))
+        mds_clear_cpu_buffers();
+}
+
+__visible inline void prepare_exit_to_usermode(struct pt_regs *regs)
+{
+    ....
+    // NB. When returning from kernel to user,
+    // it clears cpu buffers that contain in-fligt data.
+    mds_user_clear_cpu_buffers();
+}
+</code></pre>
+<p><strong>L1TF - L1 Terminal Fault.</strong>
+L1TF is a hardware vulnerability which allows
+unprivileged speculative access to data
+in the Level 1 Data Cache.
+The root cause in it is that
+a physical address in a PTE (page table entry) could be
+speculative accessed despite the PTE is invalid
+when peforming page table walk.</p>
+<p>Linux kernel applies PTE inversion to
+some codes relevant to page table maintenance.
+That modifies PTE to make sure that
+a physical address in a invalid PTE
+always points to invalid physical memory.
+This is an unconditional defense.</p>
+<pre><code class="language-c">// PTE inversion
+
+static inline bool __pte_needs_invert(u64 val)
+{
+    // NB. PTE is exist, but invalid.
+    return val &amp;&amp; !(val &amp; _PAGE_PRESENT);
+}
+
+static inline u64 protnone_mask(u64 val)
+{
+    // NB. If PTE inversion needed,
+    // return the mask for PTE to point to invalid memory.
+    return __pte_needs_invert(val) ?  ~0ull : 0;
+}
+
+static inline unsigned long pte_pfn(pte_t pte)
+{
+    phys_addr_t pfn = pte_val(pte);
+    // NB. Masking PFN (physical address)
+    // after masking, it's pointing to invalid memory.
+    pfn ^= protnone_mask(pfn);
+    return (pfn &amp; PTE_PFN_MASK) &gt;&gt; PAGE_SHIFT;
+}
+</code></pre>
+<h3><a class="header" href="#references-1" id="references-1">References</a></h3>
+<ol>
+<li><a href="https://security.googleblog.com/2018/01/more-details-about-mitigations-for-cpu_4.html">More details about mitigations for the CPU Speculative Execution issue</a></li>
+<li><a href="https://support.google.com/faqs/answer/7625886">Retpoline: a software construct for preventing branch-target-injection</a></li>
+<li><a href="https://www.usenix.org/system/files/conference/woot18/woot18-paper-koruyeh.pdf">Spectre Returns! Speculation Attacks using the Return Stack Buffer</a></li>
+<li><a href="Documentation/admin-guide/hw-vuln/mds.rst">MDS - Microarchitectural Data Sampling</a></li>
+<li><a href="Documentation/admin-guide/hw-vuln/l1tf.rst">L1TF - L1 Terminal Fault</a></li>
+<li><a href="https://lwn.net/Articles/762570/">Meltdown strikes back: the L1 terminal fault vulnerability</a></li>
+</ol>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="infoleak.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="bpf.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="infoleak.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="bpf.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+        <script type="text/javascript" src="assets/js/custom.js"></script>
+        
+
+        
+
+    </body>
+</html>

@@ -1,0 +1,14 @@
+[book]
+authors = ["Taesoo Kim"]
+language = "en"
+multilingual = false
+src = "src-html"
+title = "Analysis on Kernel Self-Protection: Understanding Security and Performance Implication"
+
+[output.html]
+additional-css = ["assets/css/custom.css"]
+additional-js = ["assets/js/custom.js"]
+
+[build]
+build-dir = "out-html"
+create-missing = false

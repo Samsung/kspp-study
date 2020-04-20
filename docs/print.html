@@ -1,0 +1,2614 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Analysis on Kernel Self-Protection: Understanding Security and Performance Implication</title>
+        
+        <meta name="robots" content="noindex" />
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+        <link rel="stylesheet" href="assets/css/custom.css">
+        
+
+        
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+<div class="sidebar-scrollbox"><ol class="chapter">
+<li><a href="stack-ovfl.html"><strong aria-hidden="true">1.&nbsp;</strong>Stack Overflows</a></li>
+  <li><ol class="section">
+<li><a href="stack-ovfl.html#preventing-stack-clash"><strong aria-hidden="true">1.1.&nbsp;</strong>Stack Clash</a></li>
+<li><a href="stack-ovfl.html#protecting-thread_info"><strong aria-hidden="true">1.2.&nbsp;</strong>Hardening thread_info</a></li>
+<li><a href="stack-ovfl.html#stack-canary-ssp"><strong aria-hidden="true">1.3.&nbsp;</strong>SSP</a></li>
+  </li></ol>
+<li><a href="heap-ovfl.html"><strong aria-hidden="true">2.&nbsp;</strong>Heap Overflows</a></li>
+  <li><ol class="section">
+<li><a href="heap-ovfl.html#kernel-address-space-layout-randomization-kaslr"><strong aria-hidden="true">2.1.&nbsp;</strong>KASLR</a></li>
+  </li></ol>
+<li><a href="int-ovfl.html"><strong aria-hidden="true">3.&nbsp;</strong>Integer Overflows</a></li>
+  <li><ol class="section">
+<li><a href="int-ovfl.html#preventing-refcount-overflows"><strong aria-hidden="true">3.1.&nbsp;</strong>Refcount</a></li>
+<li><a href="int-ovfl.html#tools-to-prevent-integer-overflows"><strong aria-hidden="true">3.2.&nbsp;</strong>Safe Interfaces</a></li>
+  </li></ol>
+<li><a href="infoleak.html"><strong aria-hidden="true">4.&nbsp;</strong>Information Leaks</a></li>
+<li><a href="side-channel.html"><strong aria-hidden="true">5.&nbsp;</strong>Side-channel Attacks</a></li>
+  <li><ol class="section">
+<li><a href="side-channel.html#mitigating-kaslr-and-meltdown"><strong aria-hidden="true">5.1.&nbsp;</strong>Meltdown</a></li>
+<li><a href="side-channel.html#mitigating-spectre"><strong aria-hidden="true">5.2.&nbsp;</strong>Spectre</a></li>
+  </li></ol>
+<li><a href="bpf.html"><strong aria-hidden="true">6.&nbsp;</strong>eBPF Security</a></li>
+  <li><ol class="section">
+<li><a href="bpf.html#constant-blinding-in-jit"><strong aria-hidden="true">6.1.&nbsp;</strong>Constant Blinding</a></li>
+<li><a href="bpf.html#preventing-spectre"><strong aria-hidden="true">6.2.&nbsp;</strong>Spectre</a></li>
+  </li></ol>
+<li><a href="rop.html"><strong aria-hidden="true">7.&nbsp;</strong>Code Reuse Attack</a></li>
+  <li><ol class="section">
+<li><a href="rop.html#pax-reuse-attack-protector-rap"><strong aria-hidden="true">7.1.&nbsp;</strong>PAX RAP</a></li>
+<li><a href="rop.html#arm's-memory-tagging-extensions-mte"><strong aria-hidden="true">7.2.&nbsp;</strong>MTE</a></li>
+  </li></ol>
+<li><a href="compiler.html"><strong aria-hidden="true">8.&nbsp;</strong>GCC Plugins</a></li>
+  <li><ol class="section">
+<li><a href="compiler.html#preventing-information-leaks"><strong aria-hidden="true">8.1.&nbsp;</strong>Information Leak Prevention</a></li>
+<li><a href="compiler.html#randomizing-kernel-data-structures"><strong aria-hidden="true">8.2.&nbsp;</strong>Kernel Structure Attack Mitigation</a></li>
+  </li></ol>
+<li><a href="misc.html"><strong aria-hidden="true">9.&nbsp;</strong>Miscellaneous Topics</a></li>
+  <li><ol class="section">
+<li><a href="misc.html#eliminating-variable-length-arrays-vla"><strong aria-hidden="true">9.1.&nbsp;</strong>VLA</a></li>
+<li><a href="misc.html#preventing-mistakes-in-switchcase"><strong aria-hidden="true">9.2.&nbsp;</strong>Fallthrough</a></li>
+<li><a href="misc.html#fortify"><strong aria-hidden="true">9.3.&nbsp;</strong>Fortify</a></li>
+<li><a href="misc.html#livepatch"><strong aria-hidden="true">9.4.&nbsp;</strong>Livepatch</a></li>
+  </li></ol>
+<li class="spacer"></li><li class="affix">
+<a href="authors.html">Contributors</a></li>
+</ol></div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title">Analysis on Kernel Self-Protection: Understanding Security and Performance Implication</h1>
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p><br/><table></p>
+<colgroup>
+<col width="40%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Kconfig</th>
+<th align="left">A</th>
+<th align="left">A+</th>
+<th align="left">F</th>
+<th align="left">U</th>
+<th align="left">U+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">VMAP_STACK</td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+</tr>
+<tr class="even">
+<td align="left">THREAD_INFO_IN_TASK</td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left">N</td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+</tr>
+<tr class="odd">
+<td align="left">STACKPROTECTOR_STRONG</td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left">N</td>
+</tr>
+</tbody>
+</table>
+<center>
+<small>
+<p>
+<strong>A</strong>: Arch 5.1.8,<strong>A+</strong>: Arch Harden 5.1.11,<strong>F</strong>: Fedora 5.1.8,<strong>U</strong>: Ubuntu 5.0.0,<strong>U+</strong>: Ubuntu LTE 4.15.0
+</p>
+</small>
+</center>
+<br/>
+<h1><a class="header" href="#mitigating-stack-overflows" id="mitigating-stack-overflows">Mitigating Stack Overflows</a></h1>
+<p>When a stack is overflowed, an attacker has a chance to overwrite a
+security-critical data structure located in another task's stack. For
+example, <code>thread_info</code> traditionally locates at the bottom of the
+stack, which one long-size overflow can overwrite to. By overwriting
+the <code>thread_info</code>, an attacker can escalate its privilege by
+overwriting the <code>cred</code> structure.</p>
+<h2><a class="header" href="#preventing-stack-clash" id="preventing-stack-clash">Preventing stack clash</a></h2>
+<p>Using virtually-mapped (vmap) stacks has two benefits: 1) flexible in
+allocating larger, non-continuous pages, 2) preventing a potential
+stack overflow by placing one guard page between vmapped regions. Such
+a guard page can mitigate a stack clash that is overwritten by another task,
+if consequently located. As virtually mapped, the guard page
+won't be wasting any real page unlike <code>kmalloc()</code>-based stack.</p>
+<pre><code class="language-c">// @kernel/fork.c
+alloc_thread_stack_node()
+  -&gt; __vmalloc_node_range()
+     -&gt; __get_vm_area_node()
+
+    // by default, vmap_area includes one more page as a guard
+    if (!(flags &amp; VM_NO_GUARD))
+      size += PAGE_SIZE;
+</code></pre>
+<p>The way the kernel handles a stack overflow is pretty
+interesting. When the kernel mode touches a guard page, it generates a
+page fault, so its handler specifically checks such a condition like below.</p>
+<pre><code class="language-c">// @arch/x86/mm/fault.c
+// do_page_fault()
+//   -&gt; __do_page_fault()
+//      -&gt; do_kern_addr_fault()
+//         -&gt; bad_area_nosemaphore()
+//            -&gt; __bad_area_nosemaphore()
+static noinline void
+no_context(struct pt_regs *regs, unsigned long error_code,
+	   unsigned long address, int signal, int si_code)
+{
+...
+  if (is_vmalloc_addr((void *)address) &amp;&amp;
+       (((unsigned long)tsk-&gt;stack - 1 - address &lt; PAGE_SIZE) ||
+         address - ((unsigned long)tsk-&gt;stack + THREAD_SIZE) &lt; PAGE_SIZE)) {
+
+    // NB. as the stack is likely out-of-space, use the stack for double-fault
+    unsigned long stack = __this_cpu_ist_top_va(DF) - sizeof(void *);
+
+    // NB. invoke handle_stack_overflow() to inform an oops.
+    asm volatile (&quot;movq %[stack], %%rsp\n\t&quot;
+                   &quot;call handle_stack_overflow\n\t&quot;
+                   &quot;1: jmp 1b&quot;
+                   : ASM_CALL_CONSTRAINT
+                   : &quot;D&quot; (&quot;kernel stack overflow (page fault)&quot;),
+                     &quot;S&quot; (regs), &quot;d&quot; (address),
+                   [stack] &quot;rm&quot; (stack));
+     unreachable();
+  }
+...
+}
+</code></pre>
+<p>It's likely that the page fault handler touches the guard page,
+<em>again</em> as we are running out of the stack space, which generates a
+double-fault.</p>
+<pre><code class="language-c">// @arch/x86/kernel/traps.c
+void do_double_fault(struct pt_regs *regs, long error_code)
+{
+...
+  cr2 = read_cr2();
+  if ((unsigned long)task_stack_page(tsk) - 1 - cr2 &lt; PAGE_SIZE)
+    handle_stack_overflow(&quot;kernel stack overflow (double-fault)&quot;, regs, cr2);
+...
+}
+</code></pre>
+<p>One difference is that the page fault handler checks one page
+before/after the stack, but the double-fault handler checks only the
+overflow (when growing downward). This likely misdiagnoses the
+condition for <code>STACK_GROWSUP</code> yet rarely used in practice.</p>
+<p><strong>Related CVEs.</strong> Numerous CVEs (e.g., CVE-2016-10153, CVE-2017-8068,
+CVE-2017-8070, etc) relevant to <code>VMAP_STACK</code> are recently assigned due
+to its implication of DoS or potential memory corruption (unlikely
+controllable). The basic idea is that during iterating the
+scatter-gather list by a DMA engine, the stack-allocated, vmapped
+buffer is unlikely physically contiguous across the page
+boundary, potentially overwriting irrelevant page. It's unlikely that
+the buffer is large enough to cross the page boundary, otherwise
+a developer allocated DMA-able region at the first place. One caveat
+however was that under a certain condition
+(e.g., <code>DEBUG_VIRTUAL</code>), <code>__phys_addr()</code> can trigger <code>BUG()</code>
+when the provided address is <code>vmalloc()</code>-region, resulting in a DoS.</p>
+<h3><a class="header" href="#performance-implication" id="performance-implication">Performance implication</a></h3>
+<table><thead><tr><th align="left"></th><th align="right">VMAP=n</th><th align="right">VMAP=y, #C=0</th><th align="right">#C=2</th><th align="right">#C=3</th><th align="right">#C=5</th></tr></thead><tbody>
+<tr><td align="left"><strong>kbuild(seconds)</strong></td><td align="right">27.648798683</td><td align="right">-</td><td align="right">27.545090630</td><td align="right">-</td><td align="right">-</td></tr>
+<tr><td align="left"><strong>iterations, cpu 0</strong></td><td align="right">106343</td><td align="right">99673</td><td align="right">101130</td><td align="right">100568</td><td align="right">100025</td></tr>
+<tr><td align="left"><strong>iterations, cpu 2</strong></td><td align="right">118526</td><td align="right">93372</td><td align="right">119380</td><td align="right">117901</td><td align="right">116726</td></tr>
+<tr><td align="left"><strong>iterations, cpu 7</strong></td><td align="right">117700</td><td align="right">94010</td><td align="right">117651</td><td align="right">117719</td><td align="right">115385</td></tr>
+</tbody></table>
+<p>The table above shows thread performance results measured using microbenchmarks.
+The higher the number of iterations, It means the faster the performance.
+And #C means number of cache entries.</p>
+<p>Allocating a stack from the vmalloc area, makes creating a process
+with <code>clone()</code> take about 1.5µs longer.[1] So for fixing this problem,
+caching two thread stacks per cpu was introduced.[4]</p>
+<p>Thread performance is slower when using virtual mapped stacks.
+and the performance is affected by number of cache entries.
+Currently, the number of cache entries is two, and if it is increased than two,
+the performance is slower a bit. And if <code>CONFIG_VMAP_STACK</code> set when kernel build,
+it is about 0.1 seconds faster then without <code>CONFIG_VMAP_STACK</code>.
+So It's better using <code>CONFIG_VMAP_STACK</code> and two cache entries can complement
+the performance.</p>
+<h3><a class="header" href="#references" id="references">References</a></h3>
+<ol>
+<li><a href="https://lwn.net/Articles/692208/">LWN: Virtually mapped kernel stacks</a></li>
+<li><a href="https://googleprojectzero.blogspot.com/2016/06/exploiting-recursion-in-linux-kernel_20.html">CVE-2016-1583: Exploiting Recursion in the Linux Kernel</a></li>
+<li><a href="https://lwn.net/Articles/726593/">Mailing: Can someone explain all the CONFIG_VMAP_STACK CVEs lately?</a></li>
+<li><a href="https://patchwork.kernel.org/patch/9199707/">fork: Cache two thread stacks per cpu if CONFIG_VMAP_STACK is set</a></li>
+</ol>
+<h2><a class="header" href="#protecting-thread_info" id="protecting-thread_info">Protecting <code>thread_info</code></a></h2>
+<p>Hijacking <code>thread_info</code> or <code>task_struct</code> is a straight way to achieve
+a privilege escalation: overwriting its <code>uid</code> to the root's, zero. As
+they are used to locate at the bottom of the stack (e.g.,
+<code>task_struct</code> in &lt;2.6 or <code>thread_info</code> in later versions), bugs such
+as stack clash, stack overflow, or arbitrary write after a stack
+pointer leak, can launch an exploit against them.</p>
+<p>An easy mitigation is to completely remove them from the stack:
+THREAD_INFO_IN_TASK, as its name implicates, embeds <code>thread_info</code> into
+<code>task_struct</code>. Since the <code>current</code> task can be accessed with per-cpu
+data structure, <code>thread_info</code> can be accessed with one additional
+memory access. Note that <code>thread_info</code> is supposed to contain the
+architecture-specific information and <code>task_struct</code> does for
+architecture-neutral data. The current effort in x86 virtually
+migrates all information to the <code>task_struct</code>.</p>
+<pre><code class="language-c">// @include/linux/sched.h
+struct task_struct {
+#ifdef CONFIG_THREAD_INFO_IN_TASK
+  /*
+   * For reasons of header soup (see current_thread_info()), this
+   * must be the first element of task_struct.
+   */
+   struct thread_info thread_info;
+#endif
+...
+}
+</code></pre>
+<p>The bottom of the stack contains <code>thread_info</code> if not
+THREAD_INFO_IN_TASK, which is protected by a magic value,
+<code>STACK_END_MAGIC</code> that shouldn't be considered as security enhancement
+or mechanism. <code>end_of_stack()</code> simply returns the usable stack region
+and handles both situation seamlessly.</p>
+<pre><code class="language-c">// @include/linux/sched/task_stack.h
+void set_task_stack_end_magic(struct task_struct *tsk)
+{
+  unsigned long *stackend;
+  stackend = end_of_stack(tsk);
+
+  // NB. indicating that current stack is overwritten by an overflow
+  *stackend = STACK_END_MAGIC;
+}
+
+#ifdef CONFIG_THREAD_INFO_IN_TASK
+unsigned long *end_of_stack(const struct task_struct *task)
+{
+  return task-&gt;stack;
+}
+// NB. thread_info will be copied as part of task_struct
+#define setup_thread_stack(new,old) do { } while(0)
+
+#else
+unsigned long *end_of_stack(struct task_struct *p)
+{
+  return (unsigned long *)(task_thread_info(p) + 1);
+}
+void setup_thread_stack(struct task_struct *p, struct task_struct *org)
+{
+  // NB. copied to the stack end (top)
+  *task_thread_info(p) = *task_thread_info(org);
+  task_thread_info(p)-&gt;task = p;
+}
+#endif
+</code></pre>
+<h3><a class="header" href="#performance-implication-1" id="performance-implication-1">Performance implication</a></h3>
+<ul>
+<li>don't expect much</li>
+</ul>
+<h2><a class="header" href="#stack-canary-ssp" id="stack-canary-ssp">Stack canary (SSP)</a></h2>
+<p>FIX. config in 4.15 is named differently</p>
+<h3><a class="header" href="#performance-implication-2" id="performance-implication-2">Performance implication</a></h3>
+<hr />
+<p>Option                   Size (KB)               Protected functions</p>
+<hr />
+<p>None                     53,519 KB                          0/48,606</p>
+<p>STACKPROTECTOR           53,490 KB    (-0.05%)          1,390/48,607    (+2.86%)</p>
+<h2><a class="header" href="#stackprotector_strong----55312-kb----335----------992248608---2041" id="stackprotector_strong----55312-kb----335----------992248608---2041">STACKPROTECTOR_STRONG    55,312 KB    (+3.35%)          9,922/48,608   (+20.41%)</a></h2>
+<p><code>STACKPROTECTOR_STRONG</code> inserts a canary to 20% of functions in the
+kernel, unlike <code>STACKPROTECTOR</code> protects 3%, resulting in about 3%
+increment of the binary size. For example, <code>bstat()</code> is newly
+protected with <code>STACKPROTECTOR_STRONG</code> as it has <code>struct kstat</code> as a
+local variable.</p>
+<p>What's interesting is the binary size of <code>STACKPROTECTOR</code> compared
+with the unprotected binary: inserting canary indeed reduces the
+binary size. According to our analysis, checking canary at the
+epilogue tends to encourage the reuse of common gadgets (e.g., <code>pop</code> or
+<code>ret</code>) at exit paths, rendering better utilization of instructions.</p>
+<h3><a class="header" href="#references-1" id="references-1">References</a></h3>
+<ul>
+<li><a href="https://docs.google.com/document/d/1xXBH6rRZue4f296vGt9YQcuLVQHeE516stHwt8M9xyU/edit">Google: New stack protector option for gcc</a></li>
+<li><a href="https://lwn.net/Articles/584225/">LWN: &quot;Strong&quot; stack protection for GCC</a></li>
+</ul>
+<p><br/><table></p>
+<colgroup>
+<col width="40%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Kconfig</th>
+<th align="left">A</th>
+<th align="left">A+</th>
+<th align="left">F</th>
+<th align="left">U</th>
+<th align="left">U+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">DEBUG_LIST</td>
+<td align="left">N</td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left">N</td>
+<td align="left">N</td>
+</tr>
+<tr class="even">
+<td align="left">SLAB_FREELIST_HARDENED</td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+</tr>
+<tr class="odd">
+<td align="left">SLAB_FREELIST_RANDOM</td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+</tr>
+</tbody>
+</table>
+<center>
+<small>
+<p>
+<strong>A</strong>: Arch 5.1.8,<strong>A+</strong>: Arch Harden 5.1.11,<strong>F</strong>: Fedora 5.1.8,<strong>U</strong>: Ubuntu 5.0.0,<strong>U+</strong>: Ubuntu LTE 4.15.0
+</p>
+</small>
+</center>
+<br/>
+<h1><a class="header" href="#mitigating-heap-overflows" id="mitigating-heap-overflows">Mitigating Heap Overflows</a></h1>
+<h2><a class="header" href="#protecting-the-integrity-of-heap-metadata" id="protecting-the-integrity-of-heap-metadata">Protecting the integrity of heap metadata</a></h2>
+<p>Manipulating a list entry, if crafted, introduces a traditionally,
+well-known attack vector, as known as <em>usafe unlink</em>. Simply put, an
+attacker can launch an semi-arbitrary memory write by overwriting the
+list entry (e.g., via heap overflow), illustrated like below:</p>
+<pre><code># TODO. draw a real figure
+
+  prev           cur            next
+ +------+       +------+       +------+
+ |      |------&gt;| PPPP-|------&gt;|      |
+ |      |&lt;------|-VVVV |&lt;------|      |
+ +------+       +------+       +------+
+
+ *(PPPP+8) = VVVV
+ *VVVV = PPPP (restricted)
+
+ so to do *dst = val, an attacker can overwrite cur's list by [dst-8, val].
+</code></pre>
+<p>Before deleting a list entry, it firsts performs an integrity check,
+<code>__list_del_entry_valid()</code>, and after the deletion, it poisons
+the list entries to assist better debugging---it tends to prevent
+data pointer leaks when there is a dangling pointer to the freed object.</p>
+<pre><code class="language-c">// @include/linux/list.h
+void list_del(struct list_head *entry)
+{
+  __list_del_entry(entry);
+
+  entry-&gt;next = LIST_POISON1; // 0xdead000000000100 
+  entry-&gt;prev = LIST_POISON2; // 0xdead000000000200 
+}
+
+void __list_del_entry(struct list_head *entry)
+{
+  if (!__list_del_entry_valid(entry))
+    return;
+  __list_del(entry-&gt;prev, entry-&gt;next);
+}
+
+void __list_del(struct list_head * prev, struct list_head * next)
+{
+  next-&gt;prev = prev;
+  prev-&gt;next = next;
+}
+</code></pre>
+<p>Two conditions are checked:</p>
+<ol>
+<li>whether attempting to perform a deletion on a freed list entry
+(e.g., double delete);</li>
+<li>the indicated previous entry points to itself, vise versa for the
+indicated next entry.
+For 1), <code>POISON1/2</code> inserted during the deletion process help to
+recognize the invariant. These checks are similarly performed for the
+addition.</li>
+</ol>
+<pre><code class="language-c">bool __list_del_entry_valid(struct list_head *entry)
+{
+  struct list_head *prev, *next;
+
+  prev = entry-&gt;prev;
+  next = entry-&gt;next;
+
+  // NB. first check if we are attempting to delete
+  // previous deleted entry
+  if (CHECK_DATA_CORRUPTION(next == LIST_POISON1,
+       &quot;list_del corruption, %px-&gt;next is LIST_POISON1 (%px)\n&quot;,
+       entry, LIST_POISON1) ||
+      CHECK_DATA_CORRUPTION(prev == LIST_POISON2,
+       &quot;list_del corruption, %px-&gt;prev is LIST_POISON2 (%px)\n&quot;,
+       entry, LIST_POISON2) ||
+
+  // NB. check the integrity of the link chains; prev's next and
+  // next's prev correctly point to me
+
+      CHECK_DATA_CORRUPTION(prev-&gt;next != entry,
+       &quot;list_del corruption. prev-&gt;next should be %px, but was %px\n&quot;,
+       entry, prev-&gt;next) ||
+      CHECK_DATA_CORRUPTION(next-&gt;prev != entry,
+       &quot;list_del corruption. next-&gt;prev should be %px, but was %px\n&quot;,
+       entry, next-&gt;prev))
+    return false;
+  return true;
+}
+</code></pre>
+<p><strong>SLAB_FREELIST_RANDOM.</strong>
+The determinism (i.e., the deterministic order in allocated chunks)
+helps (a bit) an attacker
+in controlling the overflowing target.
+The simple way to disturb the determinism is to randomize
+its allocation order;
+it can be done by randomizing the free chunks
+when the kmem_cache structure is initialized.
+The Fisher-Yates algorithm implemented
+in <code>freelist_randomize()</code>
+can guarantee that each slot has
+the equal likelihood for being randomized.</p>
+<pre><code class="language-c">// @mm/slab_common.c
+// init_freelist_randomization()
+//   -&gt; init_cache_random_seq()
+//     -&gt; cache_random_seq_create()
+void freelist_randomize(struct rnd_state *state, unsigned int *list,
+                        unsigned int count)
+{
+  unsigned int rand;
+  unsigned int i;
+
+  for (i = 0; i &lt; count; i++)
+    list[i] = i;
+
+  /* Fisher-Yates shuffle */
+  for (i = count - 1; i &gt; 0; i--) {
+    rand = prandom_u32_state(state);
+    rand %= (i + 1);
+    swap(list[i], list[rand]);
+  }
+}
+</code></pre>
+<p><strong>CONFIG_SLAB_FREELIST_HARDENED.</strong>
+When a heap object is overflowed,
+there exist two classes of overflowing targets 
+(i.e., the nearby object located right after), namely,</p>
+<ol>
+<li>a free object, and 2) an allocated object,
+with the same type.
+In terms of exploits,
+one approach is to abuse some specific semantics
+of the target objects (e.g., crafting a function pointer in the <code>struct</code>),
+but another approach is to
+develop the overflow into
+more preferable primitives
+(e.g., arbitrary write)
+for exploitation.
+In case of the free object (the second case),
+there exists a <em>generic</em> approach,
+meaning that the metatdata of heap structures
+is abused for further exploitation.
+For example, the link structure, called <code>freelist</code>,
+that chains all free objects in the cache,
+can be overwritten in a way
+that can be crafted for creating dangling pointers
+(e.g., returning an arbitrary object pointer
+when <code>kmalloc()</code> is invoked).</li>
+</ol>
+<pre><code>// TODO. redraw a real figure
+
+ ---&gt; freelist that link all free chunks
+ 
+        head ---+
+                V
+ +------+       +------+       +------+
+ |      |&lt;------|-     |       |      |
+ +------+  ptr  +------+       +------+
+ |              (ptr_addr)     ^
+ +-----------------------------+ 
+</code></pre>
+<p><code>SLAB_FREELIST_HARDENED</code> is proposed to
+prevent this direct modification
+of the <code>freelist</code> structure.
+The basic approach is to <em>mangle</em>
+(xor)
+the pointer with a random canary value
+(<code>s-&gt;random</code>)
+created at the initialization of the cache.
+One interesting decision is to add <code>ptr_addr</code>
+to the mangled pointer.
+Its implication is subtle, but worth mentioning here.
+If <code>s-&gt;random</code> is leaked via another channel,
+an attacker can place
+an arbitrary value (i.e., the value xor-ed with the canary),
+allowing the aforementioned exploitation techniques possible again.
+The proposed solution is
+to mangle the value once more
+with another secrete value,
+the randomized address of the chunk itself (ptr_addr).
+To bypass this protection,
+the attacker should be able to locate
+the overflowing chunk precisely.
+However, one potential concern
+would be that
+an attacker can reuse its value in a simple arithmetic:
+e.g., adding the size of the heap object, say 0x100,
+to the leaked data
+would likely lead to a controllable situation,
+like two freed objects or one allocated object
+now in the <code>freelist</code>.</p>
+<pre><code class="language-c">/*
+ * Returns freelist pointer (ptr). With hardening, this is obfuscated
+ * with an XOR of the address where the pointer is held and a per-cache
+ * random number.
+ */
+void *freelist_ptr(const struct kmem_cache *s, void *ptr,
+                   unsigned long ptr_addr) {
+  return (void *)((unsigned long)ptr ^ s-&gt;random ^ ptr_addr));
+}
+</code></pre>
+<h3><a class="header" href="#performance-implication-3" id="performance-implication-3">Performance implication</a></h3>
+<p>TODO. set a target benchmarks in /bench</p>
+<h3><a class="header" href="#references-2" id="references-2">References</a></h3>
+<ol>
+<li>
+<p><a href="https://events.static.linuxfound.org/sites/events/files/slides/slaballocators.pdf">Slab allocators in the Linux Kernel:SLAB, SLOB, SLUB</a></p>
+</li>
+<li>
+<p><a href="https://events.static.linuxfound.org/images/stories/pdf/klf2012_kim.pdf">How does the SLUB allocator work</a></p>
+</li>
+<li>
+<p><a href="https://people.eecs.berkeley.edu/%7Ekubitron/courses/cs194-24-S14/hand-outs/bonwick_slab.pdf">The Slab Allocator:An Object-Caching Kernel Memory Allocator</a></p>
+</li>
+<li>
+<p><a href="https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=210e7a43fa905bccafa9bb5966fba1d71f33eb8b">mm: SLUB freelist randomization</a></p>
+</li>
+<li>
+<p><a href="https://patchwork.kernel.org/patch/9864165/">mm: Add SLUB free list pointer obfuscation</a></p>
+</li>
+<li>
+<p><a href="http://cyseclabs.com/blog/cve-2016-6187-heap-off-by-one-exploit">CVE-2016-6187: Exploiting Linux kernel heap off-by-one</a></p>
+</li>
+<li>
+<p><a href="https://jon.oberheide.org/blog/2010/09/10/linux-kernel-can-slub-overflow/">Linux Kernel CAN SLUB Overflow</a></p>
+</li>
+<li>
+<p><a href="http://phrack.org/issues/64/6.html">Attacking the Core : Kernel Exploiting Notes</a></p>
+</li>
+</ol>
+<h2><a class="header" href="#kernel-address-space-layout-randomization-kaslr" id="kernel-address-space-layout-randomization-kaslr">Kernel Address Space Layout Randomization (KASLR)</a></h2>
+<p>Kernel Address Space Layout Randomization(KASLR) is a feature that randomize kernel location itself in order to mitigate known exploits which relies on predictable kernel addresses such as retrun-oriented-programming. KASLR implementation for x86-64 randomize three main memory regions : physical mapping, vmalloc and vmemmap. </p>
+<pre><code>//@arch/x86/mm/kaslr.c
+
+/*
+ * Memory regions randomized by KASLR (except modules that use a separate logic
+ * earlier during boot). The list is ordered based on virtual addresses. This
+ * order is kept after randomization.
+ */
+static __initdata struct kaslr_memory_region {
+	unsigned long *base;
+	unsigned long size_tb;
+} kaslr_regions[] = {
+	{ &amp;page_offset_base, 0 },
+	{ &amp;vmalloc_base, 0 },
+	{ &amp;vmemmap_base, 0 },
+};
+
+/* Get size in bytes used by the memory region */
+static inline unsigned long get_padding(struct kaslr_memory_region *region)
+{
+	return (region-&gt;size_tb &lt;&lt; TB_SHIFT);
+}
+
+....
+
+void __init kernel_randomize_memory(void)
+{
+....
+....
+kaslr_regions[0].size_tb = 1 &lt;&lt; (MAX_PHYSMEM_BITS - TB_SHIFT);
+	kaslr_regions[1].size_tb = VMALLOC_SIZE_TB;
+
+	/*
+	 * Update Physical memory mapping to available and
+	 * add padding if needed (especially for memory hotplug support).
+	 */
+	BUG_ON(kaslr_regions[0].base != &amp;page_offset_base);
+	memory_tb = DIV_ROUND_UP(max_pfn &lt;&lt; PAGE_SHIFT, 1UL &lt;&lt; TB_SHIFT) +
+		CONFIG_RANDOMIZE_MEMORY_PHYSICAL_PADDING;
+
+	/* Adapt phyiscal memory region size based on available memory */
+	if (memory_tb &lt; kaslr_regions[0].size_tb)
+		kaslr_regions[0].size_tb = memory_tb;
+
+	/*
+	 * Calculate the vmemmap region size in TBs, aligned to a TB
+	 * boundary.
+	 */
+	vmemmap_size = (kaslr_regions[0].size_tb &lt;&lt; (TB_SHIFT - PAGE_SHIFT)) *
+			sizeof(struct page);
+	kaslr_regions[2].size_tb = DIV_ROUND_UP(vmemmap_size, 1UL &lt;&lt; TB_SHIFT);
+</code></pre>
+<p>Above code calculate size of memory region in terabytes for physical mapping, vmalloc and vmemmap. Those size of memory region are used to calculate <code>remain_entropy</code> below.</p>
+<pre><code>	/* Calculate entropy available between regions */
+	remain_entropy = vaddr_end - vaddr_start;
+	for (i = 0; i &lt; ARRAY_SIZE(kaslr_regions); i++)
+		remain_entropy -= get_padding(&amp;kaslr_regions[i]);
+
+	prandom_seed_state(&amp;rand_state, kaslr_get_random_long(&quot;Memory&quot;));
+
+	for (i = 0; i &lt; ARRAY_SIZE(kaslr_regions); i++) {
+		unsigned long entropy;
+
+		/*
+		 * Select a random virtual address using the extra entropy
+		 * available.
+		 */
+		entropy = remain_entropy / (ARRAY_SIZE(kaslr_regions) - i);
+		prandom_bytes_state(&amp;rand_state, &amp;rand, sizeof(rand));
+		entropy = (rand % (entropy + 1)) &amp; PUD_MASK;
+		vaddr += entropy;
+		*kaslr_regions[i].base = vaddr;
+
+		/*
+		 * Jump the region and add a minimum padding based on
+		 * randomization alignment.
+		 */
+		vaddr += get_padding(&amp;kaslr_regions[i]);
+		vaddr = round_up(vaddr + 1, PUD_SIZE);
+		remain_entropy -= entropy;
+	}
+}
+</code></pre>
+<p>In the last part of <code>kernel_randomize_memory()</code>, <code>remain_entropy</code> is initialized to available space of virtual memory. Actual randomization is done inside the for loop. Entropy is 'distributed' for each region and applied to their base. Note that it prevents monopoly of entropy by dividing <code>remain_entropy</code> to remain regions. <code>remain_entropy</code> is updated on each loop for the next region. </p>
+<h3><a class="header" href="#references-3" id="references-3">References</a></h3>
+<ul>
+<li><a href="http://www.workofard.com/2016/05/kaslr-in-the-arm64-kernel/">KASLR in the arm64 Linux kernel</a></li>
+</ul>
+<p><br/><table></p>
+<colgroup>
+<col width="40%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Kconfig</th>
+<th align="left">A</th>
+<th align="left">A+</th>
+<th align="left">F</th>
+<th align="left">U</th>
+<th align="left">U+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">REFCOUNT_FULL</td>
+<td align="left">N</td>
+<td align="left"><b>Y</b></td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+</tr>
+</tbody>
+</table>
+<center>
+<small>
+<p>
+<strong>A</strong>: Arch 5.1.8,<strong>A+</strong>: Arch Harden 5.1.11,<strong>F</strong>: Fedora 5.1.8,<strong>U</strong>: Ubuntu 5.0.0,<strong>U+</strong>: Ubuntu LTE 4.15.0
+</p>
+</small>
+</center>
+<br/>
+<h1><a class="header" href="#mitigating-integer-overflows" id="mitigating-integer-overflows">Mitigating Integer Overflows</a></h1>
+<h2><a class="header" href="#preventing-refcount-overflows" id="preventing-refcount-overflows">Preventing refcount overflows</a></h2>
+<p>A reference counter (i.e., <code>refcount</code>) can be overflowed if
+incorrectly managed, resulting in a few dangling pointers. Such a
+dangling pointer is relatively easy-to-exploit by leading it to a
+use-after-free bug (e.g., inserting a fake object to the dangled
+object via <code>msgsnd()</code>, see CVE-2016-0728).</p>
+<p>In CVE-2016-0728, a keyring is not correctly freed when joining a
+session keyring, and a function table pointing to <code>revoke()</code> in the
+dangled object can hijacked, resulting in a privileged escalation.</p>
+<p>If <code>REFCOUNT_FULL</code> is enabled, all <code>refcount_inc()</code> are replaced with a
+below call. It checked two conditions: 1) if full then remained topped
+(i.e., <code>UINT_MAX</code>) and continue to use the object (i.e., leak), and 2)
+if freed then do not use the object. Similarly
+<code>refcount_sub_and_test_checked()</code> checks a underflow condition.</p>
+<pre><code class="language-c">// @lib/refcount.c
+bool refcount_inc_not_zero_checked(refcount_t *r) {
+  unsigned int new, val = atomic_read(&amp;r-&gt;refs);
+  do {
+    new = val + 1;
+    if (!val)		// NB. refcount is already freed
+      return false;
+    if (unlikely(!new)) // NB. refcount is overflowed
+      return true;
+  } while (!atomic_try_cmpxchg_relaxed(&amp;r-&gt;refs, &amp;val, new));
+  return true;
+}
+</code></pre>
+<p><strong>Optimization.</strong> <code>PAX_REFCOUNT</code> and [2] propose a potential
+optimization by trading #refcount by a half, using a sign bit to
+indicate overflowed condition. However, the current implementation
+just uses a <code>cmpxchg()</code> with an explicit check of an overflow and
+use #refcount upto <code>UINT_MAX</code>.</p>
+<pre><code class="language-S">lock incl -0xc(%rbp)
+js overflowed ; NB. unlikely to be taken
+
+overflowed:
+lea -0xc(%rbp),%rcx ; NB. restored to an old refcount
+&lt;UD0&gt;
+</code></pre>
+<h3><a class="header" href="#performance-implication-4" id="performance-implication-4">Performance implication</a></h3>
+<p>TODO.</p>
+<h3><a class="header" href="#references-4" id="references-4">References</a></h3>
+<ol>
+<li><a href="https://perception-point.io/resources/research/analysis-and-exploitation-of-a-linux-kernel-vulnerability/">CVE-2016-0728: PoC exploit</a></li>
+<li><a href="https://lwn.net/Articles/724206/">Implement fast refcount overflow protection</a></li>
+</ol>
+<h2><a class="header" href="#tools-to-prevent-integer-overflows" id="tools-to-prevent-integer-overflows">Tools to prevent integer overflows</a></h2>
+<p>Developers have detected integer overflows as the following:</p>
+<pre><code class="language-c">x + y &lt; x //for addition
+x - y &gt; x //for substraction
+x != 0 &amp;&amp; y &gt; c/x //for multiplication
+</code></pre>
+<p>There are a few problems with the above techniques.
+In case of signed integers, it cannot guarantee the complete checking 
+because it relies on undefined behavior.</p>
+<p>Therefore, GCC5 has introduced built in macros to check for
+integer overflows without undefined behavior.
+For example, overflows in signed integers are detected like below.</p>
+<pre><code class="language-c">// @include/linux/overflow.h
+#define check_add_overflow(a, b, d)					\
+	__builtin_choose_expr(is_signed_type(typeof(a)),		\
+			__signed_add_overflow(a, b, d),			\
+			__unsigned_add_overflow(a, b, d))
+
+
+/* Checking for unsigned overflow is relatively easy without causing UB. */
+#define __unsigned_add_overflow(a, b, d) ({	\
+	typeof(a) __a = (a);			\
+	typeof(b) __b = (b);			\
+	typeof(d) __d = (d);			\
+	(void) (&amp;__a == &amp;__b);			\
+	(void) (&amp;__a == __d);			\
+	*__d = __a + __b;			\
+	*__d &lt; __a;				\
+})
+
+
+/*
+ * Adding two signed integers can overflow only if they have the same
+ * sign, and overflow has happened iff the result has the opposite
+ * sign.
+ */
+#define __signed_add_overflow(a, b, d) ({	\
+	typeof(a) __a = (a);			\
+	typeof(b) __b = (b);			\
+	typeof(d) __d = (d);			\
+	(void) (&amp;__a == &amp;__b);			\
+	(void) (&amp;__a == __d);			\
+	*__d = (u64)__a + (u64)__b;		\
+	(((~(__a ^ __b)) &amp; (*__d ^ __a))	\
+		&amp; type_min(typeof(__a))) != 0;	\
+})
+
+</code></pre>
+<h3><a class="header" href="#performance-implication-5" id="performance-implication-5">Performance implication</a></h3>
+<h3><a class="header" href="#references-5" id="references-5">References</a></h3>
+<ol>
+<li><a href="https://lwn.net/Articles/623368/">compiler: use compiler to detect integer overflows</a></li>
+</ol>
+<p><br/><table></p>
+<colgroup>
+<col width="40%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Kconfig</th>
+<th align="left">A</th>
+<th align="left">A+</th>
+<th align="left">F</th>
+<th align="left">U</th>
+<th align="left">U+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">HARDENED_USERCOPY</td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+</tr>
+<tr class="even">
+<td align="left">SECURITY_DMESG_RESTRICT</td>
+<td align="left">N</td>
+<td align="left"><b>Y</b></td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+</tr>
+</tbody>
+</table>
+<center>
+<small>
+<p>
+<strong>A</strong>: Arch 5.1.8,<strong>A+</strong>: Arch Harden 5.1.11,<strong>F</strong>: Fedora 5.1.8,<strong>U</strong>: Ubuntu 5.0.0,<strong>U+</strong>: Ubuntu LTE 4.15.0
+</p>
+</small>
+</center>
+<br/>
+<h1><a class="header" href="#preventing-information-leaks" id="preventing-information-leaks">Preventing information leaks</a></h1>
+<h2><a class="header" href="#hardening-usercopy" id="hardening-usercopy">Hardening <code>usercopy()</code></a></h2>
+<p>To prevent the leakage from the kernel objects,
+the slab interface provides a way to specify the region
+of each object that is allowed for usercopy.
+For example, to protect <code>task_struct</code> from unintended leakage
+(e.g., out-of-bound read beyond the usercopy region of the heap object),
+a tuple of <code>useroffset</code> and <code>userisze</code> should be provided via
+<code>kmem_cache_create_usercopy()</code>.</p>
+<pre><code class="language-c">void __init fork_init(void) {
+  ...
+  // NB. calculate the offset and size of the fpu states
+  task_struct_whitelist(&amp;useroffset, &amp;usersize);
+  task_struct_cachep = kmem_cache_create_usercopy(&quot;task_struct&quot;,
+                         arch_task_struct_size, align,
+                         SLAB_PANIC|SLAB_ACCOUNT,
+                         useroffset, usersize, NULL);
+}
+</code></pre>
+<p>In <code>task_struct</code>, <code>fpu</code> state is allowed for usercopy (see, below),
+which are accessed from/to via the <code>ptrace()</code> syscall.</p>
+<pre><code class="language-c">// @x86_64
+//   task_struct_cachep-&gt;useroffset = 2624 :&amp;fxregs_state
+//   task_struct_cachep-&gt;usersize   =  960 :fpu_kernel_xstate_size
+
+//
+// arch_ptrace
+// -&gt; copy_regset_from_user
+//   -&gt; xfpregs_get()
+//      -&gt; user_regset_copyout()
+//         -&gt; copy_to_user()
+int xfpregs_get(struct task_struct *target, const struct user_regset *regset,
+                unsigned int pos, unsigned int count,
+                void *kbuf, void __user *ubuf)
+{
+  struct fpu *fpu = &amp;target-&gt;thread.fpu;
+  ...
+  return user_regset_copyout(&amp;pos, &amp;count, &amp;kbuf, &amp;ubuf,
+                             &amp;fpu-&gt;state.fxsave, 0, -1);
+}
+</code></pre>
+<p>When <code>HARDENED_USERCOPY</code> enabled,
+<code>copy_from/to_user</code> performs various sanity checks,
+including the check for the <code>useroffset</code> and <code>usersize</code>.</p>
+<pre><code>// copy_from/to_user()
+//   -&gt; check_object_size()
+//     -&gt; check_heap_object()
+//       -&gt; __check_heap_object()
+void __check_heap_object(const void *ptr, unsigned long n, struct page *page,
+       bool to_user)
+{
+  struct kmem_cache *s;
+  unsigned int offset;
+  size_t object_size;
+
+  /* NB. Fetch kmem_cache to find the object size/redzone. */
+  s = page-&gt;slab_cache;
+
+  /* NB. Reject if ptr is not possible to point to the page,
+   * but the page is directly converted from ptr of its caller,
+   * this path won't be taken in the current implementation. */
+  if (ptr &lt; page_address(page))
+    usercopy_abort(&quot;SLUB object not in SLUB page?!&quot;, NULL,
+             to_user, 0, n);
+
+  /* Find offset within object. */
+  offset = (ptr - page_address(page)) % s-&gt;size;
+
+  /* Adjust for redzone and reject if within the redzone. */
+  if (kmem_cache_debug(s) &amp;&amp; s-&gt;flags &amp; SLAB_RED_ZONE) {
+    if (offset &lt; s-&gt;red_left_pad)
+      usercopy_abort(&quot;SLUB object in left red zone&quot;,
+               s-&gt;name, to_user, offset, n);
+    offset -= s-&gt;red_left_pad;
+  }
+
+  /* NB. Allow address range falling entirely within usercopy region.
+  
+   useroffset +   +-- offset (from ptr)
+              |   v
+              v   +--n--&gt;|
+              [   [      ]   ]
+              |&lt;--usersize---&gt;|
+   */
+  if (offset &gt;= s-&gt;useroffset &amp;&amp;
+      offset - s-&gt;useroffset &lt;= s-&gt;usersize &amp;&amp;
+      n &lt;= s-&gt;useroffset - offset + s-&gt;usersize)
+    return;
+
+  /*
+   * If the copy is still within the allocated object, produce
+   * a warning instead of rejecting the copy. This is intended
+   * to be a temporary method to find any missing usercopy
+   * whitelists.
+   */
+  object_size = slab_ksize(s);
+  if (usercopy_fallback &amp;&amp;
+      offset &lt;= object_size &amp;&amp; n &lt;= object_size - offset) {
+    usercopy_warn(&quot;SLUB object&quot;, s-&gt;name, to_user, offset, n);
+    return;
+  }
+
+  usercopy_abort(&quot;SLUB object&quot;, s-&gt;name, to_user, offset, n);
+}
+</code></pre>
+<p>There are a few other similar mitigation schemes
+to avoid such a mistake
+when performing a <code>copy_to/from_user()</code>.
+For example,
+if an object is stack allocated,
+then it checks if the object properly locates in the stack
+as well as in the proper frame of the stack,
+if the architecture provides a simple way
+to walk the stack frames (e.g., frame pointer).</p>
+<pre><code class="language-c">// __check_object_size
+//  -&gt; check_stack_object
+//    -&gt; arch_within_stack_frames
+static inline
+int arch_within_stack_frames(const void * const stack,
+                             const void * const stackend,
+                             const void *obj, unsigned long len)
+{
+  const void *frame = NULL;
+  const void *oldframe;
+
+  // NB. return address of the caller
+  oldframe = __builtin_frame_address(1);
+  if (oldframe)
+    // NB. return address of the caller's caller
+    frame = __builtin_frame_address(2);
+
+  /*
+   * low ----------------------------------------------&gt; high
+   * [saved bp][saved ip][args][local vars][saved bp][saved ip]
+   *                     ^----------------^
+   *               allow copies only within here
+   */
+  while (stack &lt;= frame &amp;&amp; frame &lt; stackend) {
+    /*
+     * If obj + len extends past the last frame, this
+     * check won't pass and the next frame will be 0,
+     * causing us to bail out and correctly report
+     * the copy as invalid.
+     */
+    if (obj + len &lt;= frame)
+      // NB. 2 * sizeof(void*): frame pointer + return address
+      return obj &gt;= oldframe + 2 * sizeof(void *) ?
+        GOOD_FRAME : BAD_STACK;
+    oldframe = frame;
+    frame = *(const void * const *)frame;
+  }
+  return BAD_STACK;
+}
+</code></pre>
+<h2><a class="header" href="#restricting-kernel-pointers" id="restricting-kernel-pointers">Restricting kernel pointers</a></h2>
+<p><code>dmesg</code> command prints debug messages of the kernel buffer. However, the kernel message buffer sometimes contains sensitive information such as register values which is not allowed to users. This makes much easier for an attacker makes an exploit as in CVE-2018-17182. Thus <code>DMESG_RESTRICT</code> prevents unprivileged users from viewing those messages using dmesg command. When <code>DMESG_RESTRICT</code> is enabled, only users with system administration privileges are  allowed to see the messages. When <code>DMESG_RESTRICT</code> is not enabled, every user can see the messages.</p>
+<p><code>KPTR_RESTRICT</code> works as similar to <code>DMESG_RESTRICT</code>. Kernel pointer is another sensitive information that might have chances of using by malicious users. When <code>KPTR_RESTRICT</code> is set to 1, %pK format specifier hides kernel pointers to unprivileged users by printing 0s. When <code>KPTR_RESTRICT</code> is set to 0, %pK works as same as %p which means there is no restriction on printing pointers. When <code>KPTR_RESTRICT</code> is set to 2, %pK hides pointers regardless of privileges.</p>
+<h3><a class="header" href="#references-6" id="references-6">References</a></h3>
+<ul>
+<li><a href="https://schd.ws/hosted_files/lssna18/b7/stackleak_LSS_NA_2018.pdf">STACKLEAK: A Long Way to the Linux Kernel Mainline</a></li>
+<li><a href="https://lwn.net/Articles/712161/">A pair of GCC plugins</a></li>
+<li><a href="https://googleprojectzero.blogspot.com/2018/09/a-cache-invalidation-bug-in-linux.html">CVE-2018-17182: A Cache Invalidation Bug in Linux Memory Management</a></li>
+</ul>
+<p><br/><table></p>
+<colgroup>
+<col width="40%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Kconfig</th>
+<th align="left">A</th>
+<th align="left">A+</th>
+<th align="left">F</th>
+<th align="left">U</th>
+<th align="left">U+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">PAGE_TABLE_ISOLATION</td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+</tr>
+<tr class="even">
+<td align="left">RETPOLINE</td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+</tr>
+</tbody>
+</table>
+<center>
+<small>
+<p>
+<strong>A</strong>: Arch 5.1.8,<strong>A+</strong>: Arch Harden 5.1.11,<strong>F</strong>: Fedora 5.1.8,<strong>U</strong>: Ubuntu 5.0.0,<strong>U+</strong>: Ubuntu LTE 4.15.0
+</p>
+</small>
+</center>
+<br/>
+<h1><a class="header" href="#mitigating-microarchitecture-side-channel" id="mitigating-microarchitecture-side-channel">Mitigating Microarchitecture Side-channel</a></h1>
+<h2><a class="header" href="#mitigating-kaslr-and-meltdown" id="mitigating-kaslr-and-meltdown">Mitigating KASLR and Meltdown</a></h2>
+<p>Mapping both user-space and kernel-space in one page-table
+takes a lot of advantages to the linux kernel.
+But on the other side, it has negative impact on security.
+Many researchers have exploited that for a profit
+via a variety of side channels.
+It allows an attacker to bypass KASLR, even worse,
+to read kernel memory from user-space
+that is known as Meltdown.
+So the linux kernel ended up to isolate the page-table
+based on its execution mode, either user or kernel.
+That is dubbed as page table isolation or pti.
+The implementation of pti is straightforward.
+allocate two page tables for a process,
+one is for user mode, another one is for kernel mode,
+and kernel mode can see entire memory space,
+on the other hand,
+user mode is limited not to see kernel space.
+It effectively closes both KASLR-attacks and Meltdown.</p>
+<p>Allocating two page tables in a contiguous area.</p>
+<pre><code class="language-c">// arch/x86/include/asm/pgalloc.h
+// #ifdef CONFIG_PAGE_TABLE_ISOLATION
+// #define PGD_ALLOCATION_ORDER 1
+// #else
+// #define PGD_ALLOCATION_ORDER 0
+// #endif
+....
+....
+// arch/x86/mm/pgtable.c
+static inline pgd_t *_pgd_alloc(void)
+{
+  return (pgd_t *)__get_free_pages(PGALLOC_GFP, PGD_ALLOCATION_ORDER);
+  // NB. CONFIG_PAGE_TABLE_ISOLATION --&gt; 8kb, two page tables.
+  // !CONFIG_PAGE_TABLE_ISOLATION --&gt; 4kb, one page table.
+}
+</code></pre>
+<p>Locating the page table at a syscall entry,
+either user-to-kernel or kernel-to-user.</p>
+<pre><code class="language-c">ENTRY(entry_SYSCALL_64)
+    UNWIND_HINT_EMPTY
+
+    swapgs
+    // NB. percpu-access before SWITCH_TO_KERNEL_CR3
+    // the percpu-area should be mapped in user page table.
+    movq    %rsp, PER_CPU_VAR(cpu_tss_rw + TSS_sp2)
+    // NB. locating the page table, user-to-kernel.
+    SWITCH_TO_KERNEL_CR3 scratch_reg=%rsp
+    movq    PER_CPU_VAR(cpu_current_top_of_stack), %rsp
+</code></pre>
+<p>As shown in above code,
+the kernel entry code accesses per-cpu areas before
+locating the page table.
+So the per-cpu areas are needed to be mapped
+in the page table for user mode.</p>
+<pre><code class="language-c">static void __init setup_cpu_entry_area(unsigned int cpu)
+{
+....
+....
+// NB. create a mapping for per-cpu areas
+ cea_set_pte(&amp;cea-&gt;gdt, get_cpu_gdt_paddr(cpu), gdt_prot);
+
+    cea_map_percpu_pages(&amp;cea-&gt;entry_stack_page,
+                 per_cpu_ptr(&amp;entry_stack_storage, cpu), 1,
+                 PAGE_KERNEL);
+....
+ cea_map_percpu_pages(&amp;cea-&gt;tss, &amp;per_cpu(cpu_tss_rw, cpu),
+                 sizeof(struct tss_struct) / PAGE_SIZE, tss_prot);
+}
+....
+....
+void cea_set_pte(void *cea_vaddr, phys_addr_t pa, pgprot_t flags)
+{
+    unsigned long va = (unsigned long) cea_vaddr;
+    pte_t pte = pfn_pte(pa &gt;&gt; PAGE_SHIFT, flags);
+
+    // NB. _PAGE_GLOBAL indicates a mapping for all page tables
+    // including both user and kernel.
+    if (boot_cpu_has(X86_FEATURE_PGE) &amp;&amp;
+        (pgprot_val(flags) &amp; _PAGE_PRESENT))
+        pte = pte_set_flags(pte, _PAGE_GLOBAL);
+</code></pre>
+<p>Lastly, the pti leverages PCID or Process Context IDentifier
+to avoid a TLB collision between user-space and kernel-space.
+It works by assigning a different PCID to each execution mode.
+With this hardware support of Intel,
+the pti has a negligible performance impact.</p>
+<pre><code class="language-c">.macro ADJUST_KERNEL_CR3 reg:req
+    ALTERNATIVE &quot;&quot;, &quot;SET_NOFLUSH_BIT \reg&quot;, X86_FEATURE_PCID
+    // NB. CR3 register contains an address of page table.
+    // Since the lowest 12 bits are unused, (page-aligned)
+    // they are used to represent a PCID.
+    andq    $(~PTI_USER_PGTABLE_AND_PCID_MASK), \reg
+.endm
+
+.macro SWITCH_TO_KERNEL_CR3 scratch_reg:req
+    ALTERNATIVE &quot;jmp .Lend_\@&quot;, &quot;&quot;, X86_FEATURE_PTI
+    mov %cr3, \scratch_reg
+    ADJUST_KERNEL_CR3 \scratch_reg
+    mov \scratch_reg, %cr3
+.Lend_\@:
+.endm
+</code></pre>
+<h3><a class="header" href="#references-7" id="references-7">References</a></h3>
+<ol>
+<li><a href="https://gruss.cc/files/kaiser.pdf">KASLR is Dead: Long Live KASLR</a></li>
+<li><a href="https://meltdownattack.com/meltdown.pdf">Meltdown: Reading Kernel Memory from User Space</a></li>
+<li><a href="https://jinb-park.blogspot.com/2019/06/side-channel-attacks-on-linux-kernel.html">Side Channel Attacks on Linux Kernel</a></li>
+<li><a href="https://jinb-park.blogspot.com/2019/06/deep-dive-into-page-table-isolation.html">Deep dive into Page Table Isolation</a></li>
+<li><a href="https://jinb-park.blogspot.com/2019/06/deep-dive-into-defense-against-btb.html">Deep dive into Defense against BTB attacks</a></li>
+</ol>
+<h2><a class="header" href="#mitigating-spectre" id="mitigating-spectre">Mitigating Spectre</a></h2>
+<p>Modren CPUs have a branch predictor
+to optimize their performance.
+It works by referencing Branch Target Buffer or BTB
+that is a storage for a key(PC)-value(Target PC) pair.
+But its size limitation causes a BTB collision
+that leads to a new side-channel attack.
+The root cause of the attack is that
+BTB stores some parts of the bits of PC,
+not the full bits of PC.
+Using this primitive, an attacker is able to inject
+an indirect branch target into the BTB,
+and consequently run some codes in a speculative context.
+It can leak a sensitive data across some boundaries.
+(e.g. between VMs, Processes, ...)
+The attack is called Spectre Variant2.
+and retpoline has been introducted to stop the attack.
+The concept of retpoline is straightforward,
+but the implementation is a little tricky.
+Retpoline aims to eliminate all speculating behaviors
+that can be controlled by an attacker.</p>
+<p>Indirect jump replacement with Retpoline.
+Take a look at how to implement
+an indirect branch with no speculation.</p>
+<pre><code class="language-c">// Before Retpoline
+jmp *%rax
+
+// After Retpoline
+(1) call load_label
+    capture_ret_spec:
+(2) pause; LFENCE
+(3) jmp capture_ret_spec
+    load_label:
+(4) mov %rax, (%rsp)
+(5) ret
+
+// NB. Let's follow a Retpoline gadget.
+// two executions are performing in parallel.
+// o: original execution
+// s: speculative execution
+// (1-o) Direct branch to (4).
+//     Push (2) onto the stack as a return.
+// (4-o) Overwrite the return with the real target.
+// (5-o) Load the real target from the stack memory.
+// (5-s) If speculating here by RSB (Return Stack Buffer),
+//     consumes RSB entry created in (1-o),
+//     jumps to (2)
+// (2-s) relaxing cpu for the spin-wait loop.
+// (3-s) jumps to (2) again.
+//     it forces the speculative execution
+//     not be outside of (2)-(3).
+// (5-o) Jump to the real target.
+// --&gt; There are no speculation!
+</code></pre>
+<p>The linux kernel supports Retpoline
+as an alternaitve section, which means that
+an admin can determine to enable/disable retpoline
+when boot-time via a kernel command-line.</p>
+<pre><code class="language-c">// NB. A retpoline gadget replacing an indirect branch.
+.macro RETPOLINE_JMP reg:req
+ call    .Ldo_rop_\@
+.Lspec_trap_\@:
+ pause
+ lfence
+ jmp .Lspec_trap_\@
+.Ldo_rop_\@:
+ mov \reg, (%_ASM_SP)
+ ret
+.endm
+
+.macro JMP_NOSPEC reg:req
+#ifdef CONFIG_RETPOLINE
+// NB. register an indirect branch as an alternative insn.
+    ANNOTATE_NOSPEC_ALTERNATIVE
+    ALTERNATIVE_2 __stringify(ANNOTATE_RETPOLINE_SAFE; jmp *\reg),  \
+        __stringify(RETPOLINE_JMP \reg), X86_FEATURE_RETPOLINE, \
+        __stringify(lfence; ANNOTATE_RETPOLINE_SAFE; jmp *\reg), X86_FEATURE_RETPOLINE_AMD
+#else
+    jmp *\reg
+#endif
+.endm
+
+void __init alternative_instructions(void)
+{
+  ...
+  // NB. runtime patching to apply retpoline gadgets.
+  // (__alt_instructions ~ __alt_instructions_end) includes
+  // a lot of sites for indirect branches.
+  apply_alternatives(__alt_instructions, __alt_instructions_end);
+  ...
+}
+</code></pre>
+<p><strong>MDS (Microarchitectural Data Sampling).</strong></p>
+<p>When performing store, load, L1 refill,
+processors write data into a variety of temporary buffers
+defined by microarchitecture such as
+Load Buffer, Store Buffer, Line Fill Buffer.
+The data in the buffers can be forwarded to load operations
+as an optimization.
+Unfortunately this kind of forwarding can across boundary,
+which means a kernel data can be forwarded to a load operation
+inside user space.
+If an attacker can stick the data
+into a leak gadget inside user space,
+it eventually leaks a kernel memory.
+The mitigation against this attack is very straightforward.
+It's to clear the cpu buffers when returning to user.</p>
+<pre><code class="language-c">static inline void mds_clear_cpu_buffers(void)
+{
+    static const u16 ds = __KERNEL_DS;
+    ....
+    asm volatile(&quot;verw %[ds]&quot; : : [ds] &quot;m&quot; (ds) : &quot;cc&quot;);
+}
+
+static inline void mds_user_clear_cpu_buffers(void)
+{
+    if (static_branch_likely(&amp;mds_user_clear))
+        mds_clear_cpu_buffers();
+}
+
+__visible inline void prepare_exit_to_usermode(struct pt_regs *regs)
+{
+    ....
+    // NB. When returning from kernel to user,
+    // it clears cpu buffers that contain in-fligt data.
+    mds_user_clear_cpu_buffers();
+}
+</code></pre>
+<p><strong>L1TF - L1 Terminal Fault.</strong>
+L1TF is a hardware vulnerability which allows
+unprivileged speculative access to data
+in the Level 1 Data Cache.
+The root cause in it is that
+a physical address in a PTE (page table entry) could be
+speculative accessed despite the PTE is invalid
+when peforming page table walk.</p>
+<p>Linux kernel applies PTE inversion to
+some codes relevant to page table maintenance.
+That modifies PTE to make sure that
+a physical address in a invalid PTE
+always points to invalid physical memory.
+This is an unconditional defense.</p>
+<pre><code class="language-c">// PTE inversion
+
+static inline bool __pte_needs_invert(u64 val)
+{
+    // NB. PTE is exist, but invalid.
+    return val &amp;&amp; !(val &amp; _PAGE_PRESENT);
+}
+
+static inline u64 protnone_mask(u64 val)
+{
+    // NB. If PTE inversion needed,
+    // return the mask for PTE to point to invalid memory.
+    return __pte_needs_invert(val) ?  ~0ull : 0;
+}
+
+static inline unsigned long pte_pfn(pte_t pte)
+{
+    phys_addr_t pfn = pte_val(pte);
+    // NB. Masking PFN (physical address)
+    // after masking, it's pointing to invalid memory.
+    pfn ^= protnone_mask(pfn);
+    return (pfn &amp; PTE_PFN_MASK) &gt;&gt; PAGE_SHIFT;
+}
+</code></pre>
+<h3><a class="header" href="#references-8" id="references-8">References</a></h3>
+<ol>
+<li><a href="https://security.googleblog.com/2018/01/more-details-about-mitigations-for-cpu_4.html">More details about mitigations for the CPU Speculative Execution issue</a></li>
+<li><a href="https://support.google.com/faqs/answer/7625886">Retpoline: a software construct for preventing branch-target-injection</a></li>
+<li><a href="https://www.usenix.org/system/files/conference/woot18/woot18-paper-koruyeh.pdf">Spectre Returns! Speculation Attacks using the Return Stack Buffer</a></li>
+<li><a href="Documentation/admin-guide/hw-vuln/mds.rst">MDS - Microarchitectural Data Sampling</a></li>
+<li><a href="Documentation/admin-guide/hw-vuln/l1tf.rst">L1TF - L1 Terminal Fault</a></li>
+<li><a href="https://lwn.net/Articles/762570/">Meltdown strikes back: the L1 terminal fault vulnerability</a></li>
+</ol>
+<p><br/><table></p>
+<colgroup>
+<col width="40%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Kconfig</th>
+<th align="left">A</th>
+<th align="left">A+</th>
+<th align="left">F</th>
+<th align="left">U</th>
+<th align="left">U+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">BPF</td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left">N</td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+</tr>
+<tr class="even">
+<td align="left">BPF_SYSCALL</td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+</tr>
+<tr class="odd">
+<td align="left">BPF_JIT</td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+</tr>
+<tr class="even">
+<td align="left">BPF_JIT_ALWAYS_ON</td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+</tr>
+</tbody>
+</table>
+<center>
+<small>
+<p>
+<strong>A</strong>: Arch 5.1.8,<strong>A+</strong>: Arch Harden 5.1.11,<strong>F</strong>: Fedora 5.1.8,<strong>U</strong>: Ubuntu 5.0.0,<strong>U+</strong>: Ubuntu LTE 4.15.0
+</p>
+</small>
+</center>
+<br/>
+<h1><a class="header" href="#hardening-hostile-code-in-ebpf" id="hardening-hostile-code-in-ebpf">Hardening Hostile Code in eBPF</a></h1>
+<h2><a class="header" href="#constant-blinding-in-jit" id="constant-blinding-in-jit">Constant blinding in JIT</a></h2>
+<p>The JIT-ed memory is a common target 
+for an attacker 
+to place an arbitrary gadget 
+(e.g., <code>syscall</code> in userspace).
+One popular technique 
+is to encode a desirable sequence of instructions 
+as part of immediate values,
+as x86-like CISC architectures 
+provide a way to encode long bytes
+into one instruction.
+Constant blinding, 
+as also known as constant folding,
+is a technique 
+to break immediate values,
+avoiding the use of attacker-chosen constants
+in the executable region.
+It's worth noting that
+there are numerous other techniques
+(e.g., controlling the constant offset of direct branches)
+but most of well-known attacks 
+in the user space 
+might not be too effective 
+in the kernel space
+as BPF provides only a smaller region 
+with a smaller set of instructions available.
+The implementation of constant blinding
+is straightforward; xor the chosen immediate value 
+with a random constant and before using it,
+xor with the mangled value again with the random constant.</p>
+<pre><code class="language-c">int bpf_jit_blind_insn(const struct bpf_insn *from,
+                       const struct bpf_insn *aux,
+                       struct bpf_insn *to_buff)
+{
+  u32 imm_rnd = get_random_int();
+
+  switch (from-&gt;code) {
+  case BPF_ALU | BPF_ADD | BPF_K:
+  case BPF_ALU | BPF_SUB | BPF_K:
+  case BPF_ALU | BPF_AND | BPF_K:
+  case BPF_ALU | BPF_OR  | BPF_K:
+  case BPF_ALU | BPF_XOR | BPF_K:
+  case BPF_ALU | BPF_MUL | BPF_K:
+  case BPF_ALU | BPF_MOV | BPF_K:
+  case BPF_ALU | BPF_DIV | BPF_K:
+  case BPF_ALU | BPF_MOD | BPF_K:
+    // NB. no more attack controllable instructions inserted
+    // in the jitted, executable space (e.g., jump in the middle
+    // of the immediate value)
+    //
+    //    MOV _, 0xdeadbeef
+    // =&gt; MOV AX, [imm_rnd ^ 0xdeadbeef]
+    //    XOR AX, imm_rnd
+    //    MOV _, AX
+    *to++ = BPF_ALU32_IMM(BPF_MOV, BPF_REG_AX, imm_rnd ^ from-&gt;imm);
+    *to++ = BPF_ALU32_IMM(BPF_XOR, BPF_REG_AX, imm_rnd);
+    *to++ = BPF_ALU32_REG(from-&gt;code, from-&gt;dst_reg, BPF_REG_AX);
+    break;
+  ...
+  }
+  ...
+}
+</code></pre>
+<h2><a class="header" href="#preventing-spectre" id="preventing-spectre">Preventing Spectre</a></h2>
+<p>For non-privileged BPF programs,
+the JIT engine 
+applies mitigation schemes
+against microarchitectural side-channel attacks,
+such as Spectre.</p>
+<p><strong>Variant 1 (Bounds Check Bypass).</strong>
+To prevent a speculator from performing an out-of-bound array access, 
+it restricts its uses of an index on arrays that are accessible by 
+an unprivileged user. 
+The Linux kernel places such an check for
+both its BPF interpreter and JIT code.</p>
+<pre><code class="language-c">// NB. in JIT-ed code:
+//   array[index] -&gt; array[index &amp; mask]
+u32 array_map_gen_lookup(struct bpf_map *map, struct bpf_insn *insn_buf) {
+ ...
+  if (map-&gt;unpriv_array) {
+    *insn++ = BPF_JMP_IMM(BPF_JGE, ret, map-&gt;max_entries, 4);
+    *insn++ = BPF_ALU32_IMM(BPF_AND, ret, array-&gt;index_mask);
+  } else {
+    *insn++ = BPF_JMP_IMM(BPF_JGE, ret, map-&gt;max_entries, 3);
+  }
+...
+}
+
+// NB. in an fuction called from an eBPF program
+static void *percpu_array_map_lookup_elem(struct bpf_map *map, void *key)
+{
+  struct bpf_array *array = container_of(map, struct bpf_array, map);
+  u32 index = *(u32 *)key;
+
+  if (unlikely(index &gt;= array-&gt;map.max_entries))
+    return NULL;
+
+  // NB. even after a speculator reaches here, it won't access
+  // beyond the region of array-&gt;pptrs
+  return this_cpu_ptr(array-&gt;pptrs[index &amp; array-&gt;index_mask]);
+}
+</code></pre>
+<p>Recently, more sophisticated mitigation to 
+thwart generic gadgets for V1
+is introduced, 
+which simulates the behavior of a speculator 
+and detects a potential out-of-bound memory access.
+Please refer to [2] for in-depth explanation.</p>
+<p><strong>Variant 2 (Branch Target Injection).</strong>
+For indirect jumps introduced during the jitting, 
+BPF applies the Retpoline mitigation, 
+like the Linux kernel code.
+For example, when the <code>BPF_JMP</code> instruction is a tail call,
+it invokes the same bpf program again,
+which is commonly implemented with an indirect jump 
+(jumping right after the prologue).
+<code>RETPOLINE_RAX_BPF_JIT</code> is 
+introduced to produce 
+a retpoline-enabled jump gadget
+that can replace an indirect call with <code>rax</code>.</p>
+<pre><code class="language-c">// do_jit() {
+//   ...
+//   case BPF_JMP | BPF_TAIL_CALL:
+//     emit_bpf_tail_call(&amp;prog);
+//     break;
+// }
+void emit_bpf_tail_call(u8 **pprog) {
+   ...
+  /*
+   * Wow we're ready to jump into next BPF program
+   * rdi == ctx (1st arg)
+   * rax == prog-&gt;bpf_func + prologue_size
+   */
+  RETPOLINE_RAX_BPF_JIT();
+  ..
+} 
+  
+#  define RETPOLINE_RAX_BPF_JIT()                       \
+do {                                                    \
+  EMIT1_off32(0xE8, 7);    /* callq do_rop */           \
+  /* spec_trap: */                                      \
+  EMIT2(0xF3, 0x90);       /* pause */                  \
+  EMIT3(0x0F, 0xAE, 0xE8); /* lfence */                 \
+  EMIT2(0xEB, 0xF9);       /* jmp spec_trap */          \
+  /* do_rop: */                                         \
+  EMIT4(0x48, 0x89, 0x04, 0x24); /* mov %rax,(%rsp) */  \
+  EMIT1(0xC3);             /* retq */                   \
+} while (0)
+</code></pre>
+<p><strong>Variant 4 (Speculative Store Bypass).</strong>
+To prevent a speculative memory disambiguation
+from performing an arbitrary kernel memory read,
+BPF verifier detects the malicious patterns
+to trigger the speculation
+at the time of loading a BPF program,
+and sanitize the patterns.</p>
+<pre><code class="language-c">// NB: Safe execution flow by sanitizing a pattern
+// Detect a case of reusing stack slot, and sanitize it.
+// (1) r8 = *(u64 *)(r7 +0)   // slow read
+// (2) *(u64 *)(r10 -72) = 0  // instruction for sanitizing
+//     - this store becomes fast due to no depency on (1)
+// (3) *(u64 *)(r8 +0) = r3   // this store becomes slow due to r8
+// ---- at this time, (2) is likely to be completed before (3),
+// ---- so it can perfectly eliminate an arbitrary unsafe address.
+// (4) r1 = *(u64 *)(r6 +0)   // loads from either sanitized or safe address
+// (5) r2 = *(u8 *)(r1 +0)    // no leak happens
+
+struct bpf_insn_aux_data {
+  ....
+  int sanitize_stack_off; /* stack slot to be cleared */
+  ....
+}
+
+static int check_stack_write(struct bpf_verifier_env *env, ....
+{
+  ....
+  for (i = 0; i &lt; BPF_REG_SIZE; i++) {
+    if (state-&gt;stack[spi].slot_type[i] == STACK_MISC &amp;&amp;
+        !env-&gt;allow_ptr_leaks) {
+        int *poff = &amp;env-&gt;insn_aux_data[insn_idx].sanitize_stack_off;
+        int soff = (-spi - 1) * BPF_REG_SIZE;
+        ....
+        ....
+        // NB: examine a store instruction writing to a stack slot.
+        //     record this offset for detecting reused stack slot. 
+        *poff = soff;
+    }
+    state-&gt;stack[spi].slot_type[i] = STACK_SPILL;
+  }
+  ....
+}
+
+static int convert_ctx_accesses(struct bpf_verifier_env *env)
+{
+  ....
+  // NB: Is it a reused stack slot?
+  if (type == BPF_WRITE &amp;&amp;
+    env-&gt;insn_aux_data[i + delta].sanitize_stack_off) {
+    struct bpf_insn patch[] = {
+      ....
+      // NB: Sanitize it with 0.
+      BPF_ST_MEM(BPF_DW, BPF_REG_FP,
+        env-&gt;insn_aux_data[i + delta].sanitize_stack_off,
+        0),
+      ....
+    };
+  }
+}
+</code></pre>
+<h3><a class="header" href="#references-9" id="references-9">References</a></h3>
+<ul>
+<li><a href="https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=b2157399cc9898260d6031c5bfe45fe137c1fbe7">bpf: prevent out-of-bounds speculation</a></li>
+<li><a href="https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=979d63d50c0c0f7bc537bf821e056cc9fe5abd38">bpf: prevent out of bounds speculation on pointer arithmetic</a></li>
+<li><a href="https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=af86ca4e3088fe5eacf2f7e58c01fa68ca067672">bpf: Prevent memory disambiguation attack</a></li>
+<li><a href="https://arxiv.org/pdf/1801.04084.pdf">Speculose: Analyzing the Security Implications of Speculative Execution in CPUs</a></li>
+<li><a href="https://arxiv.org/pdf/1811.05441.pdf">A Systematic Evaluation of Transient Execution Attacks and Defenses</a></li>
+</ul>
+<h1><a class="header" href="#preventing-code-reuse-attack" id="preventing-code-reuse-attack">Preventing Code Reuse Attack</a></h1>
+<p>The System programming languages such as C and C++ give a freedom to optimize
+and control their resource. It requires the programmer to manually manage
+memory and observe typing rules leads to security vulnerabilities.<br>
+Memory corruptions are routinely exploited by attackers. Following defenses are
+introduced to mitigate such attacks:</p>
+<ul>
+<li>Address Space Layout Randomization (ASLR)</li>
+<li>Stack canaries</li>
+<li>Data Execution Prevention (DEP)</li>
+</ul>
+<p>They protects against <strong>code injection</strong> attack, but not fully prevent
+<strong>code reuse</strong> attack, e.g. ROP.</p>
+<h2><a class="header" href="#return-oriented-programming-rop" id="return-oriented-programming-rop">Return Oriented Programming (ROP)</a></h2>
+<p>In a ROP attack, the attacker does not inject new code; instead, the malicious
+computation is performed by chaining together existing sequences of instructions
+(called gadgets).</p>
+<pre><code>        Stack                     Instructions
+ +-----------------+
+ |                 | -----------&gt;  pop eax
+ |-----------------|        /----  ret
+ |       v1        |       /
+ |-----------------| &lt;----/
+ |                 | -----------&gt;  pop ebx
+ |-----------------|        /----  ret
+ |       v2        |       /
+ |-----------------| &lt;----/
+ |                 | -----------&gt;  add eax, ebx
+ |                 |       /-----  ret
+ |-----------------| &lt;----/
+ |                 | -----------&gt;  pop ecx
+ |-----------------|        /----  ret
+ |       v3        |       /
+ |-----------------| &lt;----/
+ |                 | -----------&gt;  mov [ecx], eax
+ +-----------------+               ret
+
+ -&gt; Result: mem[v3] = v1 + v2
+</code></pre>
+<p>The attacker finds gadgets within the original program text and causes them
+to be executed in sequence to perform a task other than what was intended.
+Common objectives of such malicious payloads include arbitrary code execution,
+privilege escalation, and exfiltration of sensitive information.<br>
+Many ROP attacks use unintended instruction sequences. CFI mitigates such
+attacks by guaranteeing the program is in intended execution flow.</p>
+<h2><a class="header" href="#control-flow-integrity-cfi" id="control-flow-integrity-cfi">Control Flow Integrity (CFI)</a></h2>
+<p>CFI is to restrict the set of possible control-flow transfers to those that are
+trictly required for correct program execution. This prevents code-reuse
+techniques such as ROP from working because they would cause the program to
+execute control-flow transfers which are illegal under CFI.<br>
+Most CFI mechanisms follow a two-phase process:</p>
+<ol>
+<li>An <em>analysis phase</em> constructs the Control-Flow Graph (CFG) which
+approximates the set of legitimate control-flow transfers</li>
+<li>The CFG is used at runtime by an <em>enforcement component</em> to ensure that all
+executed branches correspond to edges in the CFG</li>
+</ol>
+<pre><code>      &lt;Control Flow Graph&gt;
+
+           func1()
+           /    \
+          /      \
+         v        v             - function call 2 from 1 is allowed
+      func2()   func3()         - function call 4 from 3 is forbidden
+         |
+         |
+         V
+      func4()
+</code></pre>
+<p>However, it is hard to construct fine grained CFG because of indirect branches
+that are not determined at static analysis so there are approximation in most
+CFG. In case of RAP, it implements type-based approximated CFG.</p>
+<h2><a class="header" href="#pax-reuse-attack-protector-rap" id="pax-reuse-attack-protector-rap">PaX Reuse Attack Protector (RAP)</a></h2>
+<p>RAP is a defense mechanism against code reuse attack. It is a CFI technology
+developed by PaX. RAP is included in grsecurity patch for linux kernel security,
+but only the commercial version provides its full functionalities.<br>
+RAP is implemented as a GCC compiler plugin, and it consists of two components:</p>
+<ol>
+<li>A deterministic defense limiting function call and return location</li>
+<li>A probabilistic defense to help ensure that a function can return to the
+location where the function was called</li>
+</ol>
+<h3><a class="header" href="#indirect-control-transfer-protection" id="indirect-control-transfer-protection">Indirect Control Transfer Protection</a></h3>
+<p>RAP implements CFI based on type-based indirect control flow graph (ICFG). It is
+based on the idea that the ICFG <strong>vertex categorization</strong> can have the ICFG
+approximation emerge automatically. It means that the analysis can be conducted
+in function level without knowledge of the entire program.<br>
+It categorizes functions by type: return type, function name and function
+parameters. The type information extracted from each function and function
+pointer is used to verify matching between function and function pointer
+dereference (indirect call, function return, etc). Type matching uses hash
+value calculated from appropriate type part of each function.<br></p>
+<p>A different set of type parts can be used for type hash by the sort of function.</p>
+<table><thead><tr><th>Usable parts in type hash</th><th align="center">Return</th><th align="center">Name</th><th align="center">’this’</th><th align="center">Parameters</th></tr></thead><tbody>
+<tr><td>non-class or static member function/ptr</td><td align="center">Y</td><td align="center">N</td><td align="center">N/A</td><td align="center">Y</td></tr>
+<tr><td>non-virtual method/ptr</td><td align="center">Y</td><td align="center">N</td><td align="center">N</td><td align="center">Y</td></tr>
+<tr><td>virtual method/ptr</td><td align="center">N</td><td align="center">N</td><td align="center">N</td><td align="center">Y</td></tr>
+<tr><td>ancestor method/virtual method call</td><td align="center">Y</td><td align="center">Y</td><td align="center">Y</td><td align="center">Y</td></tr>
+</tbody></table>
+<p>Table: (RAP: RIP ROP) Type Hash Parts</p>
+<p>Plugin code for function pointer protection:</p>
+<pre><code class="language-c">// @rap_plugin/rap_fptr_pass.c
+static unsigned int rap_fptr_execute(void)
+{
+  ...
+  // ... through a function pointer
+  fntype = TREE_TYPE(fntype);
+  gcc_assert(TREE_CODE(fntype) == FUNCTION_TYPE || TREE_CODE(fntype) ==
+   METHOD_TYPE);
+
+  if (enable_type_call) {
+    rap_instrument_fptr(&amp;gsi);
+    bb = gsi_bb(gsi);
+    gcc_assert(call_stmt == gsi_stmt(gsi));
+  }
+
+  if (enable_type_ret) {
+    hash = rap_hash_function_type(fntype, imprecise_rap_hash_flags);
+    computed_hash = build_int_cst_type(rap_hash_type_node, -hash.hash);
+    rap_mark_retloc(&amp;gsi, computed_hash);
+  }
+}
+
+...
+
+// check the function hash of the target of the fptr
+static void rap_instrument_fptr(gimple_stmt_iterator *gsi)
+{
+  ...
+  if (TREE_CODE(fntype) == FUNCTION_TYPE) {
+    computed_hash = build_rap_hash(call_stmt, fntype);
+  } else {
+    debug_tree(fntype);
+    gcc_unreachable();
+  }
+  ...
+  target_hash = get_rap_hash(&amp;stmts, loc, fptr, -rap_hash_offset);
+  gsi_insert_seq_before(gsi, stmts, GSI_SAME_STMT);
+
+  // compare target_hash against computed function hash
+  // bail out on mismatch
+  check_hash = gimple_build_cond(NE_EXPR, target_hash, computed_hash, NULL_TREE,
+    NULL_TREE);
+  gimple_set_location(check_hash, loc);
+  gsi_insert_before(gsi, check_hash, GSI_NEW_STMT);
+  ...
+</code></pre>
+<p>Plugin code for return location protection:</p>
+<pre><code class="language-c">// @rap_plugin/rap_ret_pass.c
+/*
+ * insert the equivalent of
+ * if (*(long *)((void *)retaddr+N) != (long)-function_hash) abort();
+ */
+static void check_retaddr(gimple_stmt_iterator *gsi, tree new_retaddr)
+{
+  ...
+#ifdef TARGET_386
+	if (TARGET_64BIT)
+		target_hash = get_rap_hash(&amp;stmts, loc, new_retaddr, -16);
+	else
+		target_hash = get_rap_hash(&amp;stmts, loc, new_retaddr, -10);
+#else
+  ...
+  hash = rap_hash_function_type(TREE_TYPE(current_function_decl),
+    imprecise_rap_hash_flags);
+  computed_hash = build_int_cst_type(rap_hash_type_node, -hash.hash);
+
+  stmt = gimple_build_cond(NE_EXPR, target_hash, computed_hash, NULL_TREE,
+    NULL_TREE);
+  gimple_set_location(stmt, loc);
+  gsi_insert_after(gsi, stmt, GSI_CONTINUE_LINKING);
+  ...
+</code></pre>
+<h3><a class="header" href="#return-address-protection" id="return-address-protection">Return Address Protection</a></h3>
+<p>Return Address Protection is an another defense mechanism of RAP. It is
+conceptually based on the XOR canary approach. RAP encrypts the return address
+with a key which is stored in a reserved register (<strong>r12</strong> on amd64). This key is
+highly resistant to leaking as it shouldn't be stored or spilled into memory.
+In addition to this, grsecurity says <em>RAP cookie</em> (the encryption key) does not
+stay, but changes per task, system call, and iteration in some infinite loops.</p>
+<p>Following is an example for RAP: Return Address Protection. Its full
+implementation is not revealed at PaX test patch.</p>
+<pre><code class="language-c">// RAP example
+push %rbx
+mov 8(%rsp),%rbx
+xor %r12,%rbx
+...
+xor %r12,%rbx
+cmp %rbx,8(%rsp)
+jnz .error
+pop %rbx
+retn
+.error:
+ud2
+</code></pre>
+<h3><a class="header" href="#references-10" id="references-10">References</a></h3>
+<ul>
+<li><a href="https://nebelwelt.net/publications/files/17CSUR.pdf">Control-Flow Integrity: Precision, Security, andPerformance</a></li>
+<li><a href="https://www.usenix.org/system/files/conference/usenixsecurity14/sec14-paper-carlini.pdf">ROP is Still Dangerous: Breaking Modern Defenses</a></li>
+<li><a href="https://arxiv.org/pdf/1810.10649">On the Effectiveness of Type-based Control Flow Integrity (TROP)</a></li>
+<li><a href="https://pax.grsecurity.net/docs/PaXTeam-H2HC15-RAP-RIP-ROP.pdf">RAP: RIP ROP</a></li>
+<li><a href="https://grsecurity.net/rap_faq.php">PAX RAP FAQ</a></li>
+<li><a href="https://github.com/linux-scraping/pax-patches/raw/master/pax-4.9/pax-linux-4.9.24-test7.patch">PAX linux patch: test version</a></li>
+</ul>
+<h2><a class="header" href="#arms-memory-tagging-extensions-mte" id="arms-memory-tagging-extensions-mte">ARM's Memory Tagging Extensions (MTE)</a></h2>
+<p>XXX. write here</p>
+<h3><a class="header" href="#references-11" id="references-11">References</a></h3>
+<ul>
+<li><a href="https://developer.arm.com/-/media/Arm%20Developer%20Community/PDF/Arm_Memory_Tagging_Extension_Whitepaper.pdf?revision=ef3521b9-322c-4536-a800-5ee35a0e7665&amp;la=en">MTE White Paper</a></li>
+<li><a href="https://lkml.org/lkml/2019/7/25/725">MTE Patch</a></li>
+</ul>
+<p><br/><table></p>
+<colgroup>
+<col width="40%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Kconfig</th>
+<th align="left">A</th>
+<th align="left">A+</th>
+<th align="left">F</th>
+<th align="left">U</th>
+<th align="left">U+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">GIN_STACKLEAK</td>
+<td align="left">N</td>
+<td align="left"><b>Y</b></td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+</tr>
+<tr class="even">
+<td align="left">GIN_STRUCTLEAK_USER</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+</tr>
+<tr class="odd">
+<td align="left">GIN_STRUCTLEAK_BYREF</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+</tr>
+<tr class="even">
+<td align="left">GIN_STRUCTLEAK_BYREF_ALL</td>
+<td align="left">N</td>
+<td align="left"><b>Y</b></td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+</tr>
+<tr class="odd">
+<td align="left">ACK_ALL</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+</tr>
+<tr class="even">
+<td align="left">GIN_RANDSTRUCT</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+</tr>
+<tr class="odd">
+<td align="left">GIN_RANDSTRUCT_PERFORMANCE</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+</tr>
+</tbody>
+</table>
+<center>
+<small>
+<p>
+<strong>A</strong>: Arch 5.1.8,<strong>A+</strong>: Arch Harden 5.1.11,<strong>F</strong>: Fedora 5.1.8,<strong>U</strong>: Ubuntu 5.0.0,<strong>U+</strong>: Ubuntu LTE 4.15.0
+</p>
+</small>
+</center>
+<br/>
+<h1><a class="header" href="#compiler-based-security-checkers" id="compiler-based-security-checkers">Compiler-based Security Checkers</a></h1>
+<h2><a class="header" href="#preventing-information-leaks-1" id="preventing-information-leaks-1">Preventing information leaks</a></h2>
+<p><strong>Stackleak Plugin.</strong></p>
+<p>There are three kinds of vulnerabilities that STACKLEAK kernel security feature
+wants to defend against: 1) Information disclosure coming frome leaving data on 
+the stack that can be exfiltrated to user space, 2) Targeting Uninitialized 
+variable on the kernel stack to get the stack location, and 3) Stack clash.</p>
+<p>The first two of the vulnerabilities are closely related. Chaining attacks 
+like getting information from left over values on the stack and targeting the 
+address could happen. These two vulnerabilities are blocked by the feature 
+called <code>stack poisoning</code>. This feature overwrites STACKLEAK_POISON(-0xBEEF) to 
+the used portion of the stack at the end of the syscall, before returning to 
+the caller. Below is the implementation of stack poisoning. This code checks 
+the count of unpoisoned space in the kernel stack, and then fills the
+STACKLEAK_POISON value from the lowest boundary of the current used stack.</p>
+<pre><code class="language-c">asmlinkage void stackleak_erase(void)
+{
+    unsigned long kstack_ptr = current -&gt; lowest_stack;
+    unsigned long boundary = (unsigned long)end_of_stack(current);
+    unsigned int poison_count = 0;
+    const unsigned int depth = STACKLEAK_SEARCH_DEPTH / sizeof(unsigned long);
+
+    if (skip_erasing())
+        return;
+
+    while (kstack_ptr &gt; boundary &amp;&amp; poison_count &lt;= depth) { 
+        if (*(unsigned long *)kstack_ptr == STACKLEAK_POISON)
+            poison_count++;
+        else
+            poison_count = 0;
+
+        kstack_ptr -= sizeof(unsigned long);
+    }
+
+    if (kstack_ptr == boundary)
+        kstack_ptr += sizeof(unsigned long);
+
+    ...
+    if (on_thread_stack())
+        boundary = current_stack_pointer;
+    else
+        boundary = current_top_of_stack();
+
+    while (kstack_ptr &lt; boundary) {
+        *(unsigned long *)kstack_ptr = STACKLEAK_POISON;
+        kstack_ptr += sizeof(unsigned long);
+    }
+
+    current-&gt;lowest_stack = current_top_of_stack() - THREAD_SIZE/64;
+}
+
+</code></pre>
+<p>Stack poisoning prevents the stack from leaving space to be exposed, but it 
+only works for multi-system-call attacks; it cannot protect against attacks 
+that complete during a single system call, since the stack poisoning is done at 
+the end of the system call. And one more, since the stack poison value could be 
+a valid pointer to the stack since the user space address range from 0x0000 to
+0x0fff and the kernel space address range from 0xf000 to 0xffff.</p>
+<p>The third vulnerability, stack clash, is about prohibiting the memory region. 
+It includes clashing the stack with another memory region, jumping over the 
+stack guard page, and smashing the stack(overwriting the stack with other memory 
+region). When the stack is full, it is automatically extended by using the page 
+fault. If the end of the current stack access to the already allocated page, 
+page fault will not happen and kernel cannot notice that they have reached the 
+stack's end so the stack clash would happen.</p>
+<p>Usually, variable length array like alloca() function call is used to consume 
+the stack's allocated space. So the STACKLEAK plugin tried to prevent stack 
+clash by checking all the alloca() calls using panic() and BUG_ON() function. 
+Now Stack-poisoning is included in linux kernel mainline, but alloca() checking 
+has been dropped since it is believed that all VLAs are removed instead.</p>
+<p><strong>Structleak Plugin.</strong></p>
+<p>There are many structures that are not initialized in kernel code. This may have 
+interesting values from kernel when copied to user space without initialization. 
+One example arised in CVE-2013-2141. According to CVE-2013-2141 report, <code>do_tkill</code>
+function in kernel/signal.c before kernel 3.8.9 did not initialize a data structure 
+variable <code>siginfo</code>. The function <code>do_tkill</code> is called in system calls tkill and tgkill 
+which can be invoked by user-level processes. When handling signals delivered 
+from tkill, kernel memory is visible. </p>
+<p>Structleak plugin resolves this issue by initializing uninitialized structures 
+in the kernel. After gcc finishes type parsing, plugin is invoked. The plugin 
+currently has three modes: Disabled, BYREF and <code>BYREF_ALL</code>. When BYREF is marked, 
+the plugin initializes structures which may had passed by reference and had not 
+been initialized. When <code>BYREF_ALL</code> is marked, the plugin initializes any stack 
+variables passed by reference. </p>
+<p>First, <code>PLUGIN_FINISH_TYPE</code> callback is called after finishing parsing type of code. 
+Function finish_type()  sets <code>TYPE_USERSPACE</code> on structure variables of interests 
+which have <code>__user</code> attribute on declaration.</p>
+<pre><code class="language-c">static bool is_userspace_type(tree type)
+{
+	tree field;
+
+	for (field = TYPE_FIELDS(type); field; field = TREE_CHAIN(field)) {
+		tree fieldtype = get_field_type(field);
+		enum tree_code code = TREE_CODE(fieldtype);
+
+		if (code == RECORD_TYPE || code == UNION_TYPE)
+			if (is_userspace_type(fieldtype))
+				return true;
+
+		if (lookup_attribute(&quot;user&quot;, DECL_ATTRIBUTES(field)))
+			return true;
+	}
+	return false;
+}
+
+</code></pre>
+<p>After some declarations are marked as interests, structleak_execute() is executed. 
+Execution function iterates all local variables and initialize the targets. Execeptions are 
+auto variables (local variables which are stored in stack region), record or union types 
+unless <code>BYREF_ALL</code> is set. If the local declaration is type of our interest(user annotated), 
+or addressable structures with BYREF set, plugin call initialize functions. </p>
+<pre><code class="language-c">static unsigned int structleak_execute(void)
+{
+    ...
+
+	/* enumerate all local variables and forcibly initialize our targets */
+	FOR_EACH_LOCAL_DECL(cfun, i, var) {
+		tree type = TREE_TYPE(var);
+
+		gcc_assert(DECL_P(var));
+		if (!auto_var_in_fn_p(var, current_function_decl))
+			continue;
+
+		if (byref != BYREF_ALL &amp;&amp; TREE_CODE(type) != RECORD_TYPE &amp;&amp; TREE_CODE(type) != UNION_TYPE)
+			continue;
+
+		if (TYPE_USERSPACE(type) ||
+		    (byref &amp;&amp; TREE_ADDRESSABLE(var)))
+			initialize(var);
+	}
+
+	return ret;
+}
+</code></pre>
+<p>However, the plugin has false positive problems because <code>__user</code> attribute is just for kernel 
+static analysis tool such as Sparse, but not an true indication of pointers whether the pointer will 
+be copied to user space or not. Conversely, there might be another pointers 
+without <code>__user</code> attribute but copied to user space. </p>
+<p>PaX team, who originally proposed the plugin, are aware of the false positive problems and 
+suggests better solutions to analyzing calls to copy_to_user(). 
+But it seems that they do no longer pay attention to this problem since the original problem CVE-2013-2141 is solved. </p>
+<p>Since the plugin initializes structrues passed by reference if <code>BYREF</code> is set as stated 
+in the function structleak_execute(), it is highly suggested to set <code>BYREF</code> or <code>BYREF_ALL</code> 
+when using this plugin to make it work as expected. </p>
+<h2><a class="header" href="#randomizing-kernel-data-structures" id="randomizing-kernel-data-structures">Randomizing kernel data structures</a></h2>
+<p>There are lots of juicy target members for attackers in kernel structures
+(struct or union), for example, function pointers, stack pointers, process
+credentials, and important flags etc.. Attackers usually try to trick kernel
+into executing their exploit code by overwriting such members in structures.</p>
+<p><strong>Randstruct plugin.</strong>
+In order to mitigate such attacks, <code>Randstruct</code> plugin randomizes structure
+layout at compile time. Once structure layout is randomized, it will be much
+harder for attackers to overwrite specific members of those structure since
+they now do not know the layout of the structure.</p>
+<p><code>Randstruct</code> plugin works in three steps:</p>
+<ol>
+<li>Detect structure to randomize.</li>
+<li>Randomize layout of the structure.</li>
+<li>Find bad casts from/to randomized structure pointer and notify it.</li>
+</ol>
+<p><em>Note: Step 3 works after step 1 and 2 are done for all structures.</em>
+<br />
+<br />
+<br />
+Let's see what it does at each step with code.</p>
+<p><strong>1. Detection.</strong></p>
+<p>When detecting target structure, plugin picks the structure marked with
+&quot;__randomize_layout&quot; attribute on its declaration, or the structure which
+contain only function pointers automatically.</p>
+<pre><code class="language-c">static int is_pure_ops_struct(const_tree node)
+{
+...
+  (Return 1 if the structure contains only function pointers.)
+  (There was a bug here which could cause false negative, and we patched it.)
+  (See `Bug patch` below.)
+...
+}
+
+static void randomize_type(tree type)
+{
+...
+  if (lookup_attribute(&quot;randomize_layout&quot;, TYPE_ATTRIBUTES(TYPE_MAIN_VARIANT(type))) || is_pure_ops_struct(type))
+    relayout_struct(type);
+...
+}
+</code></pre>
+<p><strong>2. Randomization.</strong></p>
+<p>Once it has picked the target structure, it randomizes the position of fields
+with modern in-place Fisher-Yates shuffle algorithm. If the target structure
+has flexible array member, however, the plugin does not randomize the member
+(field).</p>
+<pre><code class="language-c">static int relayout_struct(tree type){
+...
+  /*
+   * enforce that we don't randomize the layout of the last
+   * element of a struct if it's a 0 or 1-length array
+   * or a proper flexible array
+   */
+  if (is_flexible_array(newtree[num_fields - 1])) {
+    has_flexarray = true;
+    shuffle_length--;
+  }
+
+  shuffle(type, (tree *)newtree, shuffle_length);
+...
+}
+</code></pre>
+<p><strong>3. Bad casts notification.</strong></p>
+<p>\textbf{\textcolor{red}{TODO: M(odot@}}</p>
+<h3><a class="header" href="#references-12" id="references-12">References</a></h3>
+<ul>
+<li><a href="https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next/+/60f2c82ed20bde57c362e66f796cf9e0e38a6dbb">Check member structs in is_pure_ops_struct()</a></li>
+<li><a href="https://lwn.net/Articles/722293/">Randomizing structure layout</a></li>
+<li><a href="https://lwn.net/Articles/719732/">Introduce struct layout randomization plugin</a></li>
+</ul>
+<p><br/><table></p>
+<colgroup>
+<col width="40%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Kconfig</th>
+<th align="left">A</th>
+<th align="left">A+</th>
+<th align="left">F</th>
+<th align="left">U</th>
+<th align="left">U+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">FORTIFY_SOURCE</td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+</tr>
+<tr class="even">
+<td align="left">LIVEPATCH</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+</tr>
+</tbody>
+</table>
+<center>
+<small>
+<p>
+<strong>A</strong>: Arch 5.1.8,<strong>A+</strong>: Arch Harden 5.1.11,<strong>F</strong>: Fedora 5.1.8,<strong>U</strong>: Ubuntu 5.0.0,<strong>U+</strong>: Ubuntu LTE 4.15.0
+</p>
+</small>
+</center>
+<br/>
+<h1><a class="header" href="#miscellaneous-topics" id="miscellaneous-topics">Miscellaneous Topics</a></h1>
+<h2><a class="header" href="#eliminating-variable-length-arrays-vla" id="eliminating-variable-length-arrays-vla">Eliminating Variable-length Arrays (VLA)</a></h2>
+<p>VLA allows programmers to specify the length of an array 
+at runtime: 
+e.g., using a variable instead of a constant 
+for the array size.
+This makes it easier to write certain types of programming logics 
+such as packet/buffer handling or string manipulation, 
+but has two critical problems, 
+namely security and performance. </p>
+<pre><code class="language-c">void test_vla(int i) {
+  long buf[i];
+
+  // =&gt; 30 instructions w/ div/mul
+  // char *buf;
+  // buf -= ((i &lt;&lt; 0x3) + 0xf) / 0x10 * 0x10
+}
+</code></pre>
+<p>In terms of security, 
+such a code pattern makes it hard 
+to estimate the stack usage, 
+otherwise incurring a stack clash in the kernel space.
+Also, although often not emphasized enough,
+this pattern 
+makes it easier to exploit the uninitialized-use vulnerability: 
+e.g., placing arbitrary data to the proper offset
+of the kernel stack.
+In terms of performance,
+this benign looking code 
+is translated to 
+a set of about 30 native instructions 
+that calculate the proper offset size 
+and enforce alignment of the stack, 
+otherwise incurring an exception 
+in many architectures.
+The translated instructions 
+include a few computational intensive instructions 
+such as <code>div</code> and <code>imul</code>,
+so impose unwanted performance overheads
+in a common path.
+Since v4.20 [1], 
+the compilation warning on the usage of VLA (i.e., <code>-Wvla</code>)
+has been globally turned on; 
+any use of VLA prevents 
+the kernel from compilation,
+thereby guiding developers to properly fix 
+the use of VLA.</p>
+<h2><a class="header" href="#preventing-mistakes-in-switchcase" id="preventing-mistakes-in-switchcase">Preventing mistakes in <code>switch/case</code></a></h2>
+<p>The usage of <code>switch</code> <code>case</code> in C is rather error-prone:
+an optional <code>break</code> statement can be used
+in each <code>case</code> block to indicate the break 
+of the logic, 
+otherwise simply executing the next <code>case</code> block. 
+As both usage patterns are prevalent,
+it is hard to recognize
+whether which one is intended code flow or not.
+The most recent <code>break</code> mistake (04/2019 at the time of writing)
+is in <code>sock_ioctl()</code> 
+that is widely used and heavily audited function!</p>
+<pre><code class="language-c">// @net/socket.c
+long sock_ioctl(struct file *file, unsigned cmd, unsigned long arg) {
+...
+    case SIOCGSTAMP_OLD:
+    case SIOCGSTAMPNS_OLD:
+      if (!sock-&gt;ops-&gt;gettstamp) {
+        err = -ENOIOCTLCMD;
+        break;
+      }
+      err = sock-&gt;ops-&gt;gettstamp(sock, argp,
+               cmd == SIOCGSTAMP_OLD,
+               !IS_ENABLED(CONFIG_64BIT));
++    break;
+    case SIOCGSTAMP_NEW:
+    case SIOCGSTAMPNS_NEW:
+      ...
+      break;
+</code></pre>
+<p>To address this error-prone situation,
+GCC introduces a compilation warning 
+on an implicit use of case fall through 
+(i.e., <code>-Wimplicit-fallthrough</code>):
+to avoid the warning of the fall through case,
+developers should <em>explicitly</em> express 
+the intention, either as a comment 
+(<code>/* fall through */</code>) or 
+as an attribute (<code>__attribute__((fallthrough))</code>).</p>
+<pre><code class="language-diff">+++ b/kernel/compat.c
+@@ -346,8 +346,11 @@ get_compat_sigset(...)
+                return -EFAULT;
+        switch (_NSIG_WORDS) {
+        case 4: set-&gt;sig[3] = v.sig[6] | (((long)v.sig[7]) &lt;&lt; 32 );
++               /* fall through */
+        case 3: set-&gt;sig[2] = v.sig[4] | (((long)v.sig[5]) &lt;&lt; 32 );
++               /* fall through */
+</code></pre>
+<h2><a class="header" href="#fortify" id="fortify">Fortify</a></h2>
+<p>FORTIFY_SOURCE was originally feature from gcc, but adopted to linux kernel later. This option provides support for detecting buffer overflows within various functions. Unfortunately, this option cannot detect all types of buffer overflows(will be discussed in below), but it is useful since it provides extra level of validation with low performance overhead. 
+FORTIFY_SOURCE checks buffer overflow for functions below : </p>
+<pre><code>memcpy, mempcpy, memmove, memset, strcpy, stpcpy, strncpy, strcat, 
+strncat, sprintf, vsprintf, snprintf, vsnprintf, gets
+</code></pre>
+<p>Let's dive into some functions : strcpy() and memcpy().</p>
+<p>At first, strcpy() checks object size via __butiltin_object_size(). This function returns object size that is determined on compile-time. However, if the object size is determined on run-time, e.g. object is allocated via kmalloc(), __butiltin_object_size() just returns -1. If both object size determined on run-time, strcpy() skips the overflow tests and passes objects to __builtin_strcpy(). Otherwise, it passes objects to memcpy() which is also fortified. Actual buffer-overflow checks would be done in memcpy(). As you can imagine, fortified strcpy() cannot detect buffer-overflows if size of both objects are determined on run-time, i.e. the case that strcpy passes objects to __builtin_strcpy().</p>
+<pre><code class="language-c">/* defined after fortified strlen and memcpy to reuse them */
+__FORTIFY_INLINE char *strcpy(char *p, const char *q)
+{
+	size_t p_size = __builtin_object_size(p, 0);
+	size_t q_size = __builtin_object_size(q, 0);
+	if (p_size == (size_t)-1 &amp;&amp; q_size == (size_t)-1)
+		return __builtin_strcpy(p, q);
+	memcpy(p, q, strlen(q) + 1);
+	return p;
+}
+</code></pre>
+<p>memcpy() also checks object size via __butiltin_object_size(). Both read-overflow and write-overflow check are performed here. If no overflow detected, then it assumes overflow-safe and runs __builtin_memcpy().</p>
+<pre><code class="language-c">__FORTIFY_INLINE void *memcpy(void *p, const void *q, __kernel_size_t size)
+{
+	size_t p_size = __builtin_object_size(p, 0);
+	size_t q_size = __builtin_object_size(q, 0);
+	if (__builtin_constant_p(size)) {
+		if (p_size &lt; size)
+			__write_overflow();
+		if (q_size &lt; size)
+			__read_overflow2();
+	}
+	if (p_size &lt; size || q_size &lt; size)
+		fortify_panic(__func__);
+	return __builtin_memcpy(p, q, size);
+}
+</code></pre>
+<h3><a class="header" href="#references-13" id="references-13">References</a></h3>
+<ol>
+<li><a href="http://lkml.iu.edu/hypermail/linux/kernel/1810.3/02834.html">VLA removal for v4.20-rc1</a></li>
+</ol>
+<h2><a class="header" href="#livepatch" id="livepatch">Livepatch</a></h2>
+<p>Livepatch is a feature that applies kernel patches without any system reboot. There are many situations where systems have to keep running and up because of some critical issues such as huge economical costs. For example, In Facebook, it would take about over than 20 minutes to reboot for just one machine. But it is reluctant not to apply patches on kernel when some bugs were found as soon as possible. In order to meet these two requirements, livepatch gives the ways to redirect the buggy code to new code with keeping running.</p>
+<h3><a class="header" href="#consistency-model" id="consistency-model">Consistency model</a></h3>
+<p>\textbf{\textcolor{red}{Assigned to Sungbae Yoo}}</p>
+<h3><a class="header" href="#design-pattern-for-modules" id="design-pattern-for-modules">Design pattern for modules</a></h3>
+<p>\textbf{\textcolor{red}{Assigned to Sungbae Yoo}}</p>
+<h3><a class="header" href="#how-it-works" id="how-it-works">How it works</a></h3>
+<p>\textbf{\textcolor{red}{Assigned to Sungbae Yoo}}</p>
+<h3><a class="header" href="#shadow-data" id="shadow-data">Shadow data</a></h3>
+<p>\textbf{\textcolor{red}{Assigned to Sungbae Yoo}}</p>
+<h3><a class="header" href="#userspace-toolkpatch" id="userspace-toolkpatch">Userspace tool(kpatch)</a></h3>
+<p><a href="https://github.com/dynup/kpatch">Kpatch</a> is a feature of the Linux kernel for livepatching made by Red Hat.<br />
+kpatch-build is one of the kpatch modules that convert patch files into kernel module.</p>
+<pre><code class="language-c">+---------+    +---------------------+    +--------------+
+| patch   |    | kpatch-build        |    | patch module |
++---------+ =&gt; | ============        | =&gt; +--------------+
+| *.patch |    | Create patch module |    | *.ko         |
++---------+    +---------------------+    +--------------+
+</code></pre>
+<h4><a class="header" href="#how-to-make-kernel-module" id="how-to-make-kernel-module">How to make kernel module</a></h4>
+<ol>
+<li>Download and unpack kernel source matching with patches's distro.</li>
+<li>Test patch file with option <a href="https://www.gnu.org/software/diffutils/manual/html_node/Dry-Runs.html">dry-run</a></li>
+<li>Read special section data with command (readelf -wi &quot;$VMLINUX&quot;)
+<ul>
+<li>alt_instr, bug_entry size,  jump_entry size ...</li>
+</ul>
+</li>
+<li>Build original source with compile options &quot;-ffunction-sections and -fdata-sections&quot;</li>
+<li>Build patched source with compile options &quot;-ffunction-sections and -fdata-sections&quot;</li>
+<li>Extract new and modified ELF sections
+<ul>
+<li>Compare #4's output and #5's output at a section level</li>
+<li>Result: Elf object included {.kpatch.strings, .kpatch.symbols, .kpatch.relocations}</li>
+</ul>
+</li>
+<li>Build patch module with #6's output</li>
+</ol>
+<h4><a class="header" href="#core-data-structure-a-href5bhttpsgithubcomdynupkpatchblobmasterkpatch-buildkpatch-elfh5dhttpsgithubcomdynupkpatchblobmasterkpatch-buildkpatch-elfhkpatch-elfa" id="core-data-structure-a-href5bhttpsgithubcomdynupkpatchblobmasterkpatch-buildkpatch-elfh5dhttpsgithubcomdynupkpatchblobmasterkpatch-buildkpatch-elfhkpatch-elfa">Core data structure: <a href="%5Bhttps://github.com/dynup/kpatch/blob/master/kpatch-build/kpatch-elf.h%5D(https://github.com/dynup/kpatch/blob/master/kpatch-build/kpatch-elf.h)">kpatch-elf</a></a></h4>
+<p>kpatch-build uses own data structure which added special data structures to elf format. The special data structures are able to include difference section between the origin object and the patched object.<br />
+The intermediate objects of kpatch-build are used in the form of kpatch-elf.</p>
+<pre><code class="language-c">struct kpatch_elf {
+  Elf *elf;
+  struct list_head sections;
+  struct list_head symbols;
+  struct list_head strings;
+  int fd;
+};
+</code></pre>
+<h4><a class="header" href="#core-module-a-href5bhttpsgithubcomdynupkpatchblobmasterkpatch-buildcreate-diff-objectc5dhttpsgithubcomdynupkpatchblobmasterkpatch-buildcreate-diff-objectccreate-diff-objectca" id="core-module-a-href5bhttpsgithubcomdynupkpatchblobmasterkpatch-buildcreate-diff-objectc5dhttpsgithubcomdynupkpatchblobmasterkpatch-buildcreate-diff-objectccreate-diff-objectca">Core module: <a href="%5Bhttps://github.com/dynup/kpatch/blob/master/kpatch-build/create-diff-object.c%5D(https://github.com/dynup/kpatch/blob/master/kpatch-build/create-diff-object.c)">create-diff-object.c</a></a></h4>
+<p>This file contains the heart of the ELF object differencing engine.</p>
+<ul>
+<li>The tool takes two ELF objects from two versions of the same source file.
+<ul>
+<li>a &quot;base&quot; object and a &quot;patched&quot; object</li>
+</ul>
+</li>
+<li>These object need to have been compiled with the GCC options.
+<ul>
+<li>-ffunction-sections and -fdata-sections</li>
+</ul>
+</li>
+<li>The tool compares the objects at a section level to determine what sections have changed.</li>
+<li>Once a list of changed sections has been generated, various rules are applied.</li>
+</ul>
+<h3><a class="header" href="#references-14" id="references-14">References</a></h3>
+<ol>
+<li><a href="https://lkml.org/lkml/2014/11/7/354">Kernel Live Patching: Consistency Model</a></li>
+<li><a href="https://github.com/dynup/kpatch">kpatch - live kernel patching</a></li>
+<li><a href="http://bitboom.github.io/anatomy-of-kpatch">Anatomy of kpatch</a></li>
+<li><a href="http://bitboom.github.io/kpatch-build-internal">An overview of kpatch-build</a></li>
+</ol>
+<ul>
+<li><a href="https://taesoo.kim">Taesoo Kim</a>, <a href="mailto:taesoo@gatech.edu">taesoo@gatech.edu</a></li>
+<li><a href="https://jinb-park.github.io">Jinbum Park</a>, <a href="mailto:jinb.park@samsung.com">jinb.park@samsung.com</a></li>
+<li>Jaemin Ryu, <a href="mailto:jm77.ryu@samsung.com">jm77.ryu@samsung.com</a></li>
+<li><a href="https://freest4r.github.io">Jonghyuk Song</a>, <a href="mailto:jonghyk.song@gmail.com">jonghyk.song@gmail.com</a></li>
+<li><a href="https://www.linkedin.com/in/heeill395519173">Heeill Wang</a>, <a href="mailto:showx0123@gmail.com">showx0123@gmail.com</a></li>
+<li>Yujeong Lee, <a href="mailto:yujeong.lee.14@gmail.com">yujeong.lee.14@gmail.com</a></li>
+<li>Joonwon Kang, <a href="mailto:kjw1627@gmail.com">kjw1627@gmail.com</a></li>
+<li>Yeonju Ro, &lt;yeonju.ro@samsung.com, yeonju.samsung@gmail.com&gt;</li>
+<li>Sungbae Yoo, <a href="mailto:ysbnim@gmail.com">ysbnim@gmail.com</a></li>
+<li><a href="https://sangwan.dev">Sangwan Kwon</a>, <a href="mailto:bitboom9@gmail.com">bitboom9@gmail.com</a></li>
+<li>Yeji Kim, <a href="mailto:yeji01.kim@samsung.com">yeji01.kim@samsung.com</a></li>
+<li>Sunmin Lee, <a href="mailto:sunm.lee@samsung.com">sunm.lee@samsung.com</a></li>
+<li><a href="https://www.linkedin.com/in/daehwan-oh-1004b1144/">Daehwan Oh</a>, <a href="mailto:returnwellbeing@gmail.com">returnwellbeing@gmail.com</a></li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+        <script type="text/javascript" src="assets/js/custom.js"></script>
+        
+
+        
+        
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+        
+        
+
+    </body>
+</html>

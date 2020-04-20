@@ -1,0 +1,468 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Preventing Code Reuse Attack - Analysis on Kernel Self-Protection: Understanding Security and Performance Implication</title>
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+        <link rel="stylesheet" href="assets/css/custom.css">
+        
+
+        
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+<div class="sidebar-scrollbox"><ol class="chapter">
+<li><a href="stack-ovfl.html"><strong aria-hidden="true">1.&nbsp;</strong>Stack Overflows</a></li>
+  <li><ol class="section">
+<li><a href="stack-ovfl.html#preventing-stack-clash"><strong aria-hidden="true">1.1.&nbsp;</strong>Stack Clash</a></li>
+<li><a href="stack-ovfl.html#protecting-thread_info"><strong aria-hidden="true">1.2.&nbsp;</strong>Hardening thread_info</a></li>
+<li><a href="stack-ovfl.html#stack-canary-ssp"><strong aria-hidden="true">1.3.&nbsp;</strong>SSP</a></li>
+  </li></ol>
+<li><a href="heap-ovfl.html"><strong aria-hidden="true">2.&nbsp;</strong>Heap Overflows</a></li>
+  <li><ol class="section">
+<li><a href="heap-ovfl.html#kernel-address-space-layout-randomization-kaslr"><strong aria-hidden="true">2.1.&nbsp;</strong>KASLR</a></li>
+  </li></ol>
+<li><a href="int-ovfl.html"><strong aria-hidden="true">3.&nbsp;</strong>Integer Overflows</a></li>
+  <li><ol class="section">
+<li><a href="int-ovfl.html#preventing-refcount-overflows"><strong aria-hidden="true">3.1.&nbsp;</strong>Refcount</a></li>
+<li><a href="int-ovfl.html#tools-to-prevent-integer-overflows"><strong aria-hidden="true">3.2.&nbsp;</strong>Safe Interfaces</a></li>
+  </li></ol>
+<li><a href="infoleak.html"><strong aria-hidden="true">4.&nbsp;</strong>Information Leaks</a></li>
+<li><a href="side-channel.html"><strong aria-hidden="true">5.&nbsp;</strong>Side-channel Attacks</a></li>
+  <li><ol class="section">
+<li><a href="side-channel.html#mitigating-kaslr-and-meltdown"><strong aria-hidden="true">5.1.&nbsp;</strong>Meltdown</a></li>
+<li><a href="side-channel.html#mitigating-spectre"><strong aria-hidden="true">5.2.&nbsp;</strong>Spectre</a></li>
+  </li></ol>
+<li><a href="bpf.html"><strong aria-hidden="true">6.&nbsp;</strong>eBPF Security</a></li>
+  <li><ol class="section">
+<li><a href="bpf.html#constant-blinding-in-jit"><strong aria-hidden="true">6.1.&nbsp;</strong>Constant Blinding</a></li>
+<li><a href="bpf.html#preventing-spectre"><strong aria-hidden="true">6.2.&nbsp;</strong>Spectre</a></li>
+  </li></ol>
+<li><a href="rop.html"><strong aria-hidden="true">7.&nbsp;</strong>Code Reuse Attack</a></li>
+  <li><ol class="section">
+<li><a href="rop.html#pax-reuse-attack-protector-rap"><strong aria-hidden="true">7.1.&nbsp;</strong>PAX RAP</a></li>
+<li><a href="rop.html#arm's-memory-tagging-extensions-mte"><strong aria-hidden="true">7.2.&nbsp;</strong>MTE</a></li>
+  </li></ol>
+<li><a href="compiler.html"><strong aria-hidden="true">8.&nbsp;</strong>GCC Plugins</a></li>
+  <li><ol class="section">
+<li><a href="compiler.html#preventing-information-leaks"><strong aria-hidden="true">8.1.&nbsp;</strong>Information Leak Prevention</a></li>
+<li><a href="compiler.html#randomizing-kernel-data-structures"><strong aria-hidden="true">8.2.&nbsp;</strong>Kernel Structure Attack Mitigation</a></li>
+  </li></ol>
+<li><a href="misc.html"><strong aria-hidden="true">9.&nbsp;</strong>Miscellaneous Topics</a></li>
+  <li><ol class="section">
+<li><a href="misc.html#eliminating-variable-length-arrays-vla"><strong aria-hidden="true">9.1.&nbsp;</strong>VLA</a></li>
+<li><a href="misc.html#preventing-mistakes-in-switchcase"><strong aria-hidden="true">9.2.&nbsp;</strong>Fallthrough</a></li>
+<li><a href="misc.html#fortify"><strong aria-hidden="true">9.3.&nbsp;</strong>Fortify</a></li>
+<li><a href="misc.html#livepatch"><strong aria-hidden="true">9.4.&nbsp;</strong>Livepatch</a></li>
+  </li></ol>
+<li class="spacer"></li><li class="affix">
+<a href="authors.html">Contributors</a></li>
+</ol></div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title">Analysis on Kernel Self-Protection: Understanding Security and Performance Implication</h1>
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#preventing-code-reuse-attack" id="preventing-code-reuse-attack">Preventing Code Reuse Attack</a></h1>
+<p>The System programming languages such as C and C++ give a freedom to optimize
+and control their resource. It requires the programmer to manually manage
+memory and observe typing rules leads to security vulnerabilities.<br>
+Memory corruptions are routinely exploited by attackers. Following defenses are
+introduced to mitigate such attacks:</p>
+<ul>
+<li>Address Space Layout Randomization (ASLR)</li>
+<li>Stack canaries</li>
+<li>Data Execution Prevention (DEP)</li>
+</ul>
+<p>They protects against <strong>code injection</strong> attack, but not fully prevent
+<strong>code reuse</strong> attack, e.g. ROP.</p>
+<h2><a class="header" href="#return-oriented-programming-rop" id="return-oriented-programming-rop">Return Oriented Programming (ROP)</a></h2>
+<p>In a ROP attack, the attacker does not inject new code; instead, the malicious
+computation is performed by chaining together existing sequences of instructions
+(called gadgets).</p>
+<pre><code>        Stack                     Instructions
+ +-----------------+
+ |                 | -----------&gt;  pop eax
+ |-----------------|        /----  ret
+ |       v1        |       /
+ |-----------------| &lt;----/
+ |                 | -----------&gt;  pop ebx
+ |-----------------|        /----  ret
+ |       v2        |       /
+ |-----------------| &lt;----/
+ |                 | -----------&gt;  add eax, ebx
+ |                 |       /-----  ret
+ |-----------------| &lt;----/
+ |                 | -----------&gt;  pop ecx
+ |-----------------|        /----  ret
+ |       v3        |       /
+ |-----------------| &lt;----/
+ |                 | -----------&gt;  mov [ecx], eax
+ +-----------------+               ret
+
+ -&gt; Result: mem[v3] = v1 + v2
+</code></pre>
+<p>The attacker finds gadgets within the original program text and causes them
+to be executed in sequence to perform a task other than what was intended.
+Common objectives of such malicious payloads include arbitrary code execution,
+privilege escalation, and exfiltration of sensitive information.<br>
+Many ROP attacks use unintended instruction sequences. CFI mitigates such
+attacks by guaranteeing the program is in intended execution flow.</p>
+<h2><a class="header" href="#control-flow-integrity-cfi" id="control-flow-integrity-cfi">Control Flow Integrity (CFI)</a></h2>
+<p>CFI is to restrict the set of possible control-flow transfers to those that are
+trictly required for correct program execution. This prevents code-reuse
+techniques such as ROP from working because they would cause the program to
+execute control-flow transfers which are illegal under CFI.<br>
+Most CFI mechanisms follow a two-phase process:</p>
+<ol>
+<li>An <em>analysis phase</em> constructs the Control-Flow Graph (CFG) which
+approximates the set of legitimate control-flow transfers</li>
+<li>The CFG is used at runtime by an <em>enforcement component</em> to ensure that all
+executed branches correspond to edges in the CFG</li>
+</ol>
+<pre><code>      &lt;Control Flow Graph&gt;
+
+           func1()
+           /    \
+          /      \
+         v        v             - function call 2 from 1 is allowed
+      func2()   func3()         - function call 4 from 3 is forbidden
+         |
+         |
+         V
+      func4()
+</code></pre>
+<p>However, it is hard to construct fine grained CFG because of indirect branches
+that are not determined at static analysis so there are approximation in most
+CFG. In case of RAP, it implements type-based approximated CFG.</p>
+<h2><a class="header" href="#pax-reuse-attack-protector-rap" id="pax-reuse-attack-protector-rap">PaX Reuse Attack Protector (RAP)</a></h2>
+<p>RAP is a defense mechanism against code reuse attack. It is a CFI technology
+developed by PaX. RAP is included in grsecurity patch for linux kernel security,
+but only the commercial version provides its full functionalities.<br>
+RAP is implemented as a GCC compiler plugin, and it consists of two components:</p>
+<ol>
+<li>A deterministic defense limiting function call and return location</li>
+<li>A probabilistic defense to help ensure that a function can return to the
+location where the function was called</li>
+</ol>
+<h3><a class="header" href="#indirect-control-transfer-protection" id="indirect-control-transfer-protection">Indirect Control Transfer Protection</a></h3>
+<p>RAP implements CFI based on type-based indirect control flow graph (ICFG). It is
+based on the idea that the ICFG <strong>vertex categorization</strong> can have the ICFG
+approximation emerge automatically. It means that the analysis can be conducted
+in function level without knowledge of the entire program.<br>
+It categorizes functions by type: return type, function name and function
+parameters. The type information extracted from each function and function
+pointer is used to verify matching between function and function pointer
+dereference (indirect call, function return, etc). Type matching uses hash
+value calculated from appropriate type part of each function.<br></p>
+<p>A different set of type parts can be used for type hash by the sort of function.</p>
+<table><thead><tr><th>Usable parts in type hash</th><th align="center">Return</th><th align="center">Name</th><th align="center">’this’</th><th align="center">Parameters</th></tr></thead><tbody>
+<tr><td>non-class or static member function/ptr</td><td align="center">Y</td><td align="center">N</td><td align="center">N/A</td><td align="center">Y</td></tr>
+<tr><td>non-virtual method/ptr</td><td align="center">Y</td><td align="center">N</td><td align="center">N</td><td align="center">Y</td></tr>
+<tr><td>virtual method/ptr</td><td align="center">N</td><td align="center">N</td><td align="center">N</td><td align="center">Y</td></tr>
+<tr><td>ancestor method/virtual method call</td><td align="center">Y</td><td align="center">Y</td><td align="center">Y</td><td align="center">Y</td></tr>
+</tbody></table>
+<p>Table: (RAP: RIP ROP) Type Hash Parts</p>
+<p>Plugin code for function pointer protection:</p>
+<pre><code class="language-c">// @rap_plugin/rap_fptr_pass.c
+static unsigned int rap_fptr_execute(void)
+{
+  ...
+  // ... through a function pointer
+  fntype = TREE_TYPE(fntype);
+  gcc_assert(TREE_CODE(fntype) == FUNCTION_TYPE || TREE_CODE(fntype) ==
+   METHOD_TYPE);
+
+  if (enable_type_call) {
+    rap_instrument_fptr(&amp;gsi);
+    bb = gsi_bb(gsi);
+    gcc_assert(call_stmt == gsi_stmt(gsi));
+  }
+
+  if (enable_type_ret) {
+    hash = rap_hash_function_type(fntype, imprecise_rap_hash_flags);
+    computed_hash = build_int_cst_type(rap_hash_type_node, -hash.hash);
+    rap_mark_retloc(&amp;gsi, computed_hash);
+  }
+}
+
+...
+
+// check the function hash of the target of the fptr
+static void rap_instrument_fptr(gimple_stmt_iterator *gsi)
+{
+  ...
+  if (TREE_CODE(fntype) == FUNCTION_TYPE) {
+    computed_hash = build_rap_hash(call_stmt, fntype);
+  } else {
+    debug_tree(fntype);
+    gcc_unreachable();
+  }
+  ...
+  target_hash = get_rap_hash(&amp;stmts, loc, fptr, -rap_hash_offset);
+  gsi_insert_seq_before(gsi, stmts, GSI_SAME_STMT);
+
+  // compare target_hash against computed function hash
+  // bail out on mismatch
+  check_hash = gimple_build_cond(NE_EXPR, target_hash, computed_hash, NULL_TREE,
+    NULL_TREE);
+  gimple_set_location(check_hash, loc);
+  gsi_insert_before(gsi, check_hash, GSI_NEW_STMT);
+  ...
+</code></pre>
+<p>Plugin code for return location protection:</p>
+<pre><code class="language-c">// @rap_plugin/rap_ret_pass.c
+/*
+ * insert the equivalent of
+ * if (*(long *)((void *)retaddr+N) != (long)-function_hash) abort();
+ */
+static void check_retaddr(gimple_stmt_iterator *gsi, tree new_retaddr)
+{
+  ...
+#ifdef TARGET_386
+	if (TARGET_64BIT)
+		target_hash = get_rap_hash(&amp;stmts, loc, new_retaddr, -16);
+	else
+		target_hash = get_rap_hash(&amp;stmts, loc, new_retaddr, -10);
+#else
+  ...
+  hash = rap_hash_function_type(TREE_TYPE(current_function_decl),
+    imprecise_rap_hash_flags);
+  computed_hash = build_int_cst_type(rap_hash_type_node, -hash.hash);
+
+  stmt = gimple_build_cond(NE_EXPR, target_hash, computed_hash, NULL_TREE,
+    NULL_TREE);
+  gimple_set_location(stmt, loc);
+  gsi_insert_after(gsi, stmt, GSI_CONTINUE_LINKING);
+  ...
+</code></pre>
+<h3><a class="header" href="#return-address-protection" id="return-address-protection">Return Address Protection</a></h3>
+<p>Return Address Protection is an another defense mechanism of RAP. It is
+conceptually based on the XOR canary approach. RAP encrypts the return address
+with a key which is stored in a reserved register (<strong>r12</strong> on amd64). This key is
+highly resistant to leaking as it shouldn't be stored or spilled into memory.
+In addition to this, grsecurity says <em>RAP cookie</em> (the encryption key) does not
+stay, but changes per task, system call, and iteration in some infinite loops.</p>
+<p>Following is an example for RAP: Return Address Protection. Its full
+implementation is not revealed at PaX test patch.</p>
+<pre><code class="language-c">// RAP example
+push %rbx
+mov 8(%rsp),%rbx
+xor %r12,%rbx
+...
+xor %r12,%rbx
+cmp %rbx,8(%rsp)
+jnz .error
+pop %rbx
+retn
+.error:
+ud2
+</code></pre>
+<h3><a class="header" href="#references" id="references">References</a></h3>
+<ul>
+<li><a href="https://nebelwelt.net/publications/files/17CSUR.pdf">Control-Flow Integrity: Precision, Security, andPerformance</a></li>
+<li><a href="https://www.usenix.org/system/files/conference/usenixsecurity14/sec14-paper-carlini.pdf">ROP is Still Dangerous: Breaking Modern Defenses</a></li>
+<li><a href="https://arxiv.org/pdf/1810.10649">On the Effectiveness of Type-based Control Flow Integrity (TROP)</a></li>
+<li><a href="https://pax.grsecurity.net/docs/PaXTeam-H2HC15-RAP-RIP-ROP.pdf">RAP: RIP ROP</a></li>
+<li><a href="https://grsecurity.net/rap_faq.php">PAX RAP FAQ</a></li>
+<li><a href="https://github.com/linux-scraping/pax-patches/raw/master/pax-4.9/pax-linux-4.9.24-test7.patch">PAX linux patch: test version</a></li>
+</ul>
+<h2><a class="header" href="#arms-memory-tagging-extensions-mte" id="arms-memory-tagging-extensions-mte">ARM's Memory Tagging Extensions (MTE)</a></h2>
+<p>XXX. write here</p>
+<h3><a class="header" href="#references-1" id="references-1">References</a></h3>
+<ul>
+<li><a href="https://developer.arm.com/-/media/Arm%20Developer%20Community/PDF/Arm_Memory_Tagging_Extension_Whitepaper.pdf?revision=ef3521b9-322c-4536-a800-5ee35a0e7665&amp;la=en">MTE White Paper</a></li>
+<li><a href="https://lkml.org/lkml/2019/7/25/725">MTE Patch</a></li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="bpf.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="compiler.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="bpf.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="compiler.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+        <script type="text/javascript" src="assets/js/custom.js"></script>
+        
+
+        
+
+    </body>
+</html>

@@ -1,0 +1,466 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Preventing information leaks - Analysis on Kernel Self-Protection: Understanding Security and Performance Implication</title>
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+        <link rel="stylesheet" href="assets/css/custom.css">
+        
+
+        
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+<div class="sidebar-scrollbox"><ol class="chapter">
+<li><a href="stack-ovfl.html"><strong aria-hidden="true">1.&nbsp;</strong>Stack Overflows</a></li>
+  <li><ol class="section">
+<li><a href="stack-ovfl.html#preventing-stack-clash"><strong aria-hidden="true">1.1.&nbsp;</strong>Stack Clash</a></li>
+<li><a href="stack-ovfl.html#protecting-thread_info"><strong aria-hidden="true">1.2.&nbsp;</strong>Hardening thread_info</a></li>
+<li><a href="stack-ovfl.html#stack-canary-ssp"><strong aria-hidden="true">1.3.&nbsp;</strong>SSP</a></li>
+  </li></ol>
+<li><a href="heap-ovfl.html"><strong aria-hidden="true">2.&nbsp;</strong>Heap Overflows</a></li>
+  <li><ol class="section">
+<li><a href="heap-ovfl.html#kernel-address-space-layout-randomization-kaslr"><strong aria-hidden="true">2.1.&nbsp;</strong>KASLR</a></li>
+  </li></ol>
+<li><a href="int-ovfl.html"><strong aria-hidden="true">3.&nbsp;</strong>Integer Overflows</a></li>
+  <li><ol class="section">
+<li><a href="int-ovfl.html#preventing-refcount-overflows"><strong aria-hidden="true">3.1.&nbsp;</strong>Refcount</a></li>
+<li><a href="int-ovfl.html#tools-to-prevent-integer-overflows"><strong aria-hidden="true">3.2.&nbsp;</strong>Safe Interfaces</a></li>
+  </li></ol>
+<li><a href="infoleak.html"><strong aria-hidden="true">4.&nbsp;</strong>Information Leaks</a></li>
+<li><a href="side-channel.html"><strong aria-hidden="true">5.&nbsp;</strong>Side-channel Attacks</a></li>
+  <li><ol class="section">
+<li><a href="side-channel.html#mitigating-kaslr-and-meltdown"><strong aria-hidden="true">5.1.&nbsp;</strong>Meltdown</a></li>
+<li><a href="side-channel.html#mitigating-spectre"><strong aria-hidden="true">5.2.&nbsp;</strong>Spectre</a></li>
+  </li></ol>
+<li><a href="bpf.html"><strong aria-hidden="true">6.&nbsp;</strong>eBPF Security</a></li>
+  <li><ol class="section">
+<li><a href="bpf.html#constant-blinding-in-jit"><strong aria-hidden="true">6.1.&nbsp;</strong>Constant Blinding</a></li>
+<li><a href="bpf.html#preventing-spectre"><strong aria-hidden="true">6.2.&nbsp;</strong>Spectre</a></li>
+  </li></ol>
+<li><a href="rop.html"><strong aria-hidden="true">7.&nbsp;</strong>Code Reuse Attack</a></li>
+  <li><ol class="section">
+<li><a href="rop.html#pax-reuse-attack-protector-rap"><strong aria-hidden="true">7.1.&nbsp;</strong>PAX RAP</a></li>
+<li><a href="rop.html#arm's-memory-tagging-extensions-mte"><strong aria-hidden="true">7.2.&nbsp;</strong>MTE</a></li>
+  </li></ol>
+<li><a href="compiler.html"><strong aria-hidden="true">8.&nbsp;</strong>GCC Plugins</a></li>
+  <li><ol class="section">
+<li><a href="compiler.html#preventing-information-leaks"><strong aria-hidden="true">8.1.&nbsp;</strong>Information Leak Prevention</a></li>
+<li><a href="compiler.html#randomizing-kernel-data-structures"><strong aria-hidden="true">8.2.&nbsp;</strong>Kernel Structure Attack Mitigation</a></li>
+  </li></ol>
+<li><a href="misc.html"><strong aria-hidden="true">9.&nbsp;</strong>Miscellaneous Topics</a></li>
+  <li><ol class="section">
+<li><a href="misc.html#eliminating-variable-length-arrays-vla"><strong aria-hidden="true">9.1.&nbsp;</strong>VLA</a></li>
+<li><a href="misc.html#preventing-mistakes-in-switchcase"><strong aria-hidden="true">9.2.&nbsp;</strong>Fallthrough</a></li>
+<li><a href="misc.html#fortify"><strong aria-hidden="true">9.3.&nbsp;</strong>Fortify</a></li>
+<li><a href="misc.html#livepatch"><strong aria-hidden="true">9.4.&nbsp;</strong>Livepatch</a></li>
+  </li></ol>
+<li class="spacer"></li><li class="affix">
+<a href="authors.html">Contributors</a></li>
+</ol></div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title">Analysis on Kernel Self-Protection: Understanding Security and Performance Implication</h1>
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p><br/><table></p>
+<colgroup>
+<col width="40%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Kconfig</th>
+<th align="left">A</th>
+<th align="left">A+</th>
+<th align="left">F</th>
+<th align="left">U</th>
+<th align="left">U+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">HARDENED_USERCOPY</td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+</tr>
+<tr class="even">
+<td align="left">SECURITY_DMESG_RESTRICT</td>
+<td align="left">N</td>
+<td align="left"><b>Y</b></td>
+<td align="left">N</td>
+<td align="left">N</td>
+<td align="left">N</td>
+</tr>
+</tbody>
+</table>
+<center>
+<small>
+<p>
+<strong>A</strong>: Arch 5.1.8,<strong>A+</strong>: Arch Harden 5.1.11,<strong>F</strong>: Fedora 5.1.8,<strong>U</strong>: Ubuntu 5.0.0,<strong>U+</strong>: Ubuntu LTE 4.15.0
+</p>
+</small>
+</center>
+<br/>
+<h1><a class="header" href="#preventing-information-leaks" id="preventing-information-leaks">Preventing information leaks</a></h1>
+<h2><a class="header" href="#hardening-usercopy" id="hardening-usercopy">Hardening <code>usercopy()</code></a></h2>
+<p>To prevent the leakage from the kernel objects,
+the slab interface provides a way to specify the region
+of each object that is allowed for usercopy.
+For example, to protect <code>task_struct</code> from unintended leakage
+(e.g., out-of-bound read beyond the usercopy region of the heap object),
+a tuple of <code>useroffset</code> and <code>userisze</code> should be provided via
+<code>kmem_cache_create_usercopy()</code>.</p>
+<pre><code class="language-c">void __init fork_init(void) {
+  ...
+  // NB. calculate the offset and size of the fpu states
+  task_struct_whitelist(&amp;useroffset, &amp;usersize);
+  task_struct_cachep = kmem_cache_create_usercopy(&quot;task_struct&quot;,
+                         arch_task_struct_size, align,
+                         SLAB_PANIC|SLAB_ACCOUNT,
+                         useroffset, usersize, NULL);
+}
+</code></pre>
+<p>In <code>task_struct</code>, <code>fpu</code> state is allowed for usercopy (see, below),
+which are accessed from/to via the <code>ptrace()</code> syscall.</p>
+<pre><code class="language-c">// @x86_64
+//   task_struct_cachep-&gt;useroffset = 2624 :&amp;fxregs_state
+//   task_struct_cachep-&gt;usersize   =  960 :fpu_kernel_xstate_size
+
+//
+// arch_ptrace
+// -&gt; copy_regset_from_user
+//   -&gt; xfpregs_get()
+//      -&gt; user_regset_copyout()
+//         -&gt; copy_to_user()
+int xfpregs_get(struct task_struct *target, const struct user_regset *regset,
+                unsigned int pos, unsigned int count,
+                void *kbuf, void __user *ubuf)
+{
+  struct fpu *fpu = &amp;target-&gt;thread.fpu;
+  ...
+  return user_regset_copyout(&amp;pos, &amp;count, &amp;kbuf, &amp;ubuf,
+                             &amp;fpu-&gt;state.fxsave, 0, -1);
+}
+</code></pre>
+<p>When <code>HARDENED_USERCOPY</code> enabled,
+<code>copy_from/to_user</code> performs various sanity checks,
+including the check for the <code>useroffset</code> and <code>usersize</code>.</p>
+<pre><code>// copy_from/to_user()
+//   -&gt; check_object_size()
+//     -&gt; check_heap_object()
+//       -&gt; __check_heap_object()
+void __check_heap_object(const void *ptr, unsigned long n, struct page *page,
+       bool to_user)
+{
+  struct kmem_cache *s;
+  unsigned int offset;
+  size_t object_size;
+
+  /* NB. Fetch kmem_cache to find the object size/redzone. */
+  s = page-&gt;slab_cache;
+
+  /* NB. Reject if ptr is not possible to point to the page,
+   * but the page is directly converted from ptr of its caller,
+   * this path won't be taken in the current implementation. */
+  if (ptr &lt; page_address(page))
+    usercopy_abort(&quot;SLUB object not in SLUB page?!&quot;, NULL,
+             to_user, 0, n);
+
+  /* Find offset within object. */
+  offset = (ptr - page_address(page)) % s-&gt;size;
+
+  /* Adjust for redzone and reject if within the redzone. */
+  if (kmem_cache_debug(s) &amp;&amp; s-&gt;flags &amp; SLAB_RED_ZONE) {
+    if (offset &lt; s-&gt;red_left_pad)
+      usercopy_abort(&quot;SLUB object in left red zone&quot;,
+               s-&gt;name, to_user, offset, n);
+    offset -= s-&gt;red_left_pad;
+  }
+
+  /* NB. Allow address range falling entirely within usercopy region.
+  
+   useroffset +   +-- offset (from ptr)
+              |   v
+              v   +--n--&gt;|
+              [   [      ]   ]
+              |&lt;--usersize---&gt;|
+   */
+  if (offset &gt;= s-&gt;useroffset &amp;&amp;
+      offset - s-&gt;useroffset &lt;= s-&gt;usersize &amp;&amp;
+      n &lt;= s-&gt;useroffset - offset + s-&gt;usersize)
+    return;
+
+  /*
+   * If the copy is still within the allocated object, produce
+   * a warning instead of rejecting the copy. This is intended
+   * to be a temporary method to find any missing usercopy
+   * whitelists.
+   */
+  object_size = slab_ksize(s);
+  if (usercopy_fallback &amp;&amp;
+      offset &lt;= object_size &amp;&amp; n &lt;= object_size - offset) {
+    usercopy_warn(&quot;SLUB object&quot;, s-&gt;name, to_user, offset, n);
+    return;
+  }
+
+  usercopy_abort(&quot;SLUB object&quot;, s-&gt;name, to_user, offset, n);
+}
+</code></pre>
+<p>There are a few other similar mitigation schemes
+to avoid such a mistake
+when performing a <code>copy_to/from_user()</code>.
+For example,
+if an object is stack allocated,
+then it checks if the object properly locates in the stack
+as well as in the proper frame of the stack,
+if the architecture provides a simple way
+to walk the stack frames (e.g., frame pointer).</p>
+<pre><code class="language-c">// __check_object_size
+//  -&gt; check_stack_object
+//    -&gt; arch_within_stack_frames
+static inline
+int arch_within_stack_frames(const void * const stack,
+                             const void * const stackend,
+                             const void *obj, unsigned long len)
+{
+  const void *frame = NULL;
+  const void *oldframe;
+
+  // NB. return address of the caller
+  oldframe = __builtin_frame_address(1);
+  if (oldframe)
+    // NB. return address of the caller's caller
+    frame = __builtin_frame_address(2);
+
+  /*
+   * low ----------------------------------------------&gt; high
+   * [saved bp][saved ip][args][local vars][saved bp][saved ip]
+   *                     ^----------------^
+   *               allow copies only within here
+   */
+  while (stack &lt;= frame &amp;&amp; frame &lt; stackend) {
+    /*
+     * If obj + len extends past the last frame, this
+     * check won't pass and the next frame will be 0,
+     * causing us to bail out and correctly report
+     * the copy as invalid.
+     */
+    if (obj + len &lt;= frame)
+      // NB. 2 * sizeof(void*): frame pointer + return address
+      return obj &gt;= oldframe + 2 * sizeof(void *) ?
+        GOOD_FRAME : BAD_STACK;
+    oldframe = frame;
+    frame = *(const void * const *)frame;
+  }
+  return BAD_STACK;
+}
+</code></pre>
+<h2><a class="header" href="#restricting-kernel-pointers" id="restricting-kernel-pointers">Restricting kernel pointers</a></h2>
+<p><code>dmesg</code> command prints debug messages of the kernel buffer. However, the kernel message buffer sometimes contains sensitive information such as register values which is not allowed to users. This makes much easier for an attacker makes an exploit as in CVE-2018-17182. Thus <code>DMESG_RESTRICT</code> prevents unprivileged users from viewing those messages using dmesg command. When <code>DMESG_RESTRICT</code> is enabled, only users with system administration privileges are  allowed to see the messages. When <code>DMESG_RESTRICT</code> is not enabled, every user can see the messages.</p>
+<p><code>KPTR_RESTRICT</code> works as similar to <code>DMESG_RESTRICT</code>. Kernel pointer is another sensitive information that might have chances of using by malicious users. When <code>KPTR_RESTRICT</code> is set to 1, %pK format specifier hides kernel pointers to unprivileged users by printing 0s. When <code>KPTR_RESTRICT</code> is set to 0, %pK works as same as %p which means there is no restriction on printing pointers. When <code>KPTR_RESTRICT</code> is set to 2, %pK hides pointers regardless of privileges.</p>
+<h3><a class="header" href="#references" id="references">References</a></h3>
+<ul>
+<li><a href="https://schd.ws/hosted_files/lssna18/b7/stackleak_LSS_NA_2018.pdf">STACKLEAK: A Long Way to the Linux Kernel Mainline</a></li>
+<li><a href="https://lwn.net/Articles/712161/">A pair of GCC plugins</a></li>
+<li><a href="https://googleprojectzero.blogspot.com/2018/09/a-cache-invalidation-bug-in-linux.html">CVE-2018-17182: A Cache Invalidation Bug in Linux Memory Management</a></li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="int-ovfl.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="side-channel.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="int-ovfl.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="side-channel.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+        <script type="text/javascript" src="assets/js/custom.js"></script>
+        
+
+        
+
+    </body>
+</html>

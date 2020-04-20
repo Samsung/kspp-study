@@ -1,0 +1,13 @@
+- [Taesoo Kim](https://taesoo.kim), <taesoo@gatech.edu>
+- [Jinbum Park](https://jinb-park.github.io), <jinb.park@samsung.com>
+- Jaemin Ryu, <jm77.ryu@samsung.com>
+- [Jonghyuk Song](https://freest4r.github.io), <jonghyk.song@gmail.com>
+- [Heeill Wang](https://www.linkedin.com/in/heeill395519173), <showx0123@gmail.com>
+- Yujeong Lee, <yujeong.lee.14@gmail.com>
+- Joonwon Kang, <kjw1627@gmail.com>
+- Yeonju Ro, <yeonju.ro@samsung.com, yeonju.samsung@gmail.com>
+- Sungbae Yoo, <ysbnim@gmail.com>
+- [Sangwan Kwon](https://sangwan.dev), <bitboom9@gmail.com>
+- Yeji Kim, <yeji01.kim@samsung.com>
+- Sunmin Lee, <sunm.lee@samsung.com>
+- [Daehwan Oh](https://www.linkedin.com/in/daehwan-oh-1004b1144/), <returnwellbeing@gmail.com>

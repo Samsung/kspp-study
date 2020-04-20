@@ -1,0 +1,624 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Mitigating Heap Overflows - Analysis on Kernel Self-Protection: Understanding Security and Performance Implication</title>
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+        <link rel="stylesheet" href="assets/css/custom.css">
+        
+
+        
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+<div class="sidebar-scrollbox"><ol class="chapter">
+<li><a href="stack-ovfl.html"><strong aria-hidden="true">1.&nbsp;</strong>Stack Overflows</a></li>
+  <li><ol class="section">
+<li><a href="stack-ovfl.html#preventing-stack-clash"><strong aria-hidden="true">1.1.&nbsp;</strong>Stack Clash</a></li>
+<li><a href="stack-ovfl.html#protecting-thread_info"><strong aria-hidden="true">1.2.&nbsp;</strong>Hardening thread_info</a></li>
+<li><a href="stack-ovfl.html#stack-canary-ssp"><strong aria-hidden="true">1.3.&nbsp;</strong>SSP</a></li>
+  </li></ol>
+<li><a href="heap-ovfl.html"><strong aria-hidden="true">2.&nbsp;</strong>Heap Overflows</a></li>
+  <li><ol class="section">
+<li><a href="heap-ovfl.html#kernel-address-space-layout-randomization-kaslr"><strong aria-hidden="true">2.1.&nbsp;</strong>KASLR</a></li>
+  </li></ol>
+<li><a href="int-ovfl.html"><strong aria-hidden="true">3.&nbsp;</strong>Integer Overflows</a></li>
+  <li><ol class="section">
+<li><a href="int-ovfl.html#preventing-refcount-overflows"><strong aria-hidden="true">3.1.&nbsp;</strong>Refcount</a></li>
+<li><a href="int-ovfl.html#tools-to-prevent-integer-overflows"><strong aria-hidden="true">3.2.&nbsp;</strong>Safe Interfaces</a></li>
+  </li></ol>
+<li><a href="infoleak.html"><strong aria-hidden="true">4.&nbsp;</strong>Information Leaks</a></li>
+<li><a href="side-channel.html"><strong aria-hidden="true">5.&nbsp;</strong>Side-channel Attacks</a></li>
+  <li><ol class="section">
+<li><a href="side-channel.html#mitigating-kaslr-and-meltdown"><strong aria-hidden="true">5.1.&nbsp;</strong>Meltdown</a></li>
+<li><a href="side-channel.html#mitigating-spectre"><strong aria-hidden="true">5.2.&nbsp;</strong>Spectre</a></li>
+  </li></ol>
+<li><a href="bpf.html"><strong aria-hidden="true">6.&nbsp;</strong>eBPF Security</a></li>
+  <li><ol class="section">
+<li><a href="bpf.html#constant-blinding-in-jit"><strong aria-hidden="true">6.1.&nbsp;</strong>Constant Blinding</a></li>
+<li><a href="bpf.html#preventing-spectre"><strong aria-hidden="true">6.2.&nbsp;</strong>Spectre</a></li>
+  </li></ol>
+<li><a href="rop.html"><strong aria-hidden="true">7.&nbsp;</strong>Code Reuse Attack</a></li>
+  <li><ol class="section">
+<li><a href="rop.html#pax-reuse-attack-protector-rap"><strong aria-hidden="true">7.1.&nbsp;</strong>PAX RAP</a></li>
+<li><a href="rop.html#arm's-memory-tagging-extensions-mte"><strong aria-hidden="true">7.2.&nbsp;</strong>MTE</a></li>
+  </li></ol>
+<li><a href="compiler.html"><strong aria-hidden="true">8.&nbsp;</strong>GCC Plugins</a></li>
+  <li><ol class="section">
+<li><a href="compiler.html#preventing-information-leaks"><strong aria-hidden="true">8.1.&nbsp;</strong>Information Leak Prevention</a></li>
+<li><a href="compiler.html#randomizing-kernel-data-structures"><strong aria-hidden="true">8.2.&nbsp;</strong>Kernel Structure Attack Mitigation</a></li>
+  </li></ol>
+<li><a href="misc.html"><strong aria-hidden="true">9.&nbsp;</strong>Miscellaneous Topics</a></li>
+  <li><ol class="section">
+<li><a href="misc.html#eliminating-variable-length-arrays-vla"><strong aria-hidden="true">9.1.&nbsp;</strong>VLA</a></li>
+<li><a href="misc.html#preventing-mistakes-in-switchcase"><strong aria-hidden="true">9.2.&nbsp;</strong>Fallthrough</a></li>
+<li><a href="misc.html#fortify"><strong aria-hidden="true">9.3.&nbsp;</strong>Fortify</a></li>
+<li><a href="misc.html#livepatch"><strong aria-hidden="true">9.4.&nbsp;</strong>Livepatch</a></li>
+  </li></ol>
+<li class="spacer"></li><li class="affix">
+<a href="authors.html">Contributors</a></li>
+</ol></div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title">Analysis on Kernel Self-Protection: Understanding Security and Performance Implication</h1>
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p><br/><table></p>
+<colgroup>
+<col width="40%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Kconfig</th>
+<th align="left">A</th>
+<th align="left">A+</th>
+<th align="left">F</th>
+<th align="left">U</th>
+<th align="left">U+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">DEBUG_LIST</td>
+<td align="left">N</td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left">N</td>
+<td align="left">N</td>
+</tr>
+<tr class="even">
+<td align="left">SLAB_FREELIST_HARDENED</td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+</tr>
+<tr class="odd">
+<td align="left">SLAB_FREELIST_RANDOM</td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+<td align="left"><b>Y</b></td>
+</tr>
+</tbody>
+</table>
+<center>
+<small>
+<p>
+<strong>A</strong>: Arch 5.1.8,<strong>A+</strong>: Arch Harden 5.1.11,<strong>F</strong>: Fedora 5.1.8,<strong>U</strong>: Ubuntu 5.0.0,<strong>U+</strong>: Ubuntu LTE 4.15.0
+</p>
+</small>
+</center>
+<br/>
+<h1><a class="header" href="#mitigating-heap-overflows" id="mitigating-heap-overflows">Mitigating Heap Overflows</a></h1>
+<h2><a class="header" href="#protecting-the-integrity-of-heap-metadata" id="protecting-the-integrity-of-heap-metadata">Protecting the integrity of heap metadata</a></h2>
+<p>Manipulating a list entry, if crafted, introduces a traditionally,
+well-known attack vector, as known as <em>usafe unlink</em>. Simply put, an
+attacker can launch an semi-arbitrary memory write by overwriting the
+list entry (e.g., via heap overflow), illustrated like below:</p>
+<pre><code># TODO. draw a real figure
+
+  prev           cur            next
+ +------+       +------+       +------+
+ |      |------&gt;| PPPP-|------&gt;|      |
+ |      |&lt;------|-VVVV |&lt;------|      |
+ +------+       +------+       +------+
+
+ *(PPPP+8) = VVVV
+ *VVVV = PPPP (restricted)
+
+ so to do *dst = val, an attacker can overwrite cur's list by [dst-8, val].
+</code></pre>
+<p>Before deleting a list entry, it firsts performs an integrity check,
+<code>__list_del_entry_valid()</code>, and after the deletion, it poisons
+the list entries to assist better debugging---it tends to prevent
+data pointer leaks when there is a dangling pointer to the freed object.</p>
+<pre><code class="language-c">// @include/linux/list.h
+void list_del(struct list_head *entry)
+{
+  __list_del_entry(entry);
+
+  entry-&gt;next = LIST_POISON1; // 0xdead000000000100 
+  entry-&gt;prev = LIST_POISON2; // 0xdead000000000200 
+}
+
+void __list_del_entry(struct list_head *entry)
+{
+  if (!__list_del_entry_valid(entry))
+    return;
+  __list_del(entry-&gt;prev, entry-&gt;next);
+}
+
+void __list_del(struct list_head * prev, struct list_head * next)
+{
+  next-&gt;prev = prev;
+  prev-&gt;next = next;
+}
+</code></pre>
+<p>Two conditions are checked:</p>
+<ol>
+<li>whether attempting to perform a deletion on a freed list entry
+(e.g., double delete);</li>
+<li>the indicated previous entry points to itself, vise versa for the
+indicated next entry.
+For 1), <code>POISON1/2</code> inserted during the deletion process help to
+recognize the invariant. These checks are similarly performed for the
+addition.</li>
+</ol>
+<pre><code class="language-c">bool __list_del_entry_valid(struct list_head *entry)
+{
+  struct list_head *prev, *next;
+
+  prev = entry-&gt;prev;
+  next = entry-&gt;next;
+
+  // NB. first check if we are attempting to delete
+  // previous deleted entry
+  if (CHECK_DATA_CORRUPTION(next == LIST_POISON1,
+       &quot;list_del corruption, %px-&gt;next is LIST_POISON1 (%px)\n&quot;,
+       entry, LIST_POISON1) ||
+      CHECK_DATA_CORRUPTION(prev == LIST_POISON2,
+       &quot;list_del corruption, %px-&gt;prev is LIST_POISON2 (%px)\n&quot;,
+       entry, LIST_POISON2) ||
+
+  // NB. check the integrity of the link chains; prev's next and
+  // next's prev correctly point to me
+
+      CHECK_DATA_CORRUPTION(prev-&gt;next != entry,
+       &quot;list_del corruption. prev-&gt;next should be %px, but was %px\n&quot;,
+       entry, prev-&gt;next) ||
+      CHECK_DATA_CORRUPTION(next-&gt;prev != entry,
+       &quot;list_del corruption. next-&gt;prev should be %px, but was %px\n&quot;,
+       entry, next-&gt;prev))
+    return false;
+  return true;
+}
+</code></pre>
+<p><strong>SLAB_FREELIST_RANDOM.</strong>
+The determinism (i.e., the deterministic order in allocated chunks)
+helps (a bit) an attacker
+in controlling the overflowing target.
+The simple way to disturb the determinism is to randomize
+its allocation order;
+it can be done by randomizing the free chunks
+when the kmem_cache structure is initialized.
+The Fisher-Yates algorithm implemented
+in <code>freelist_randomize()</code>
+can guarantee that each slot has
+the equal likelihood for being randomized.</p>
+<pre><code class="language-c">// @mm/slab_common.c
+// init_freelist_randomization()
+//   -&gt; init_cache_random_seq()
+//     -&gt; cache_random_seq_create()
+void freelist_randomize(struct rnd_state *state, unsigned int *list,
+                        unsigned int count)
+{
+  unsigned int rand;
+  unsigned int i;
+
+  for (i = 0; i &lt; count; i++)
+    list[i] = i;
+
+  /* Fisher-Yates shuffle */
+  for (i = count - 1; i &gt; 0; i--) {
+    rand = prandom_u32_state(state);
+    rand %= (i + 1);
+    swap(list[i], list[rand]);
+  }
+}
+</code></pre>
+<p><strong>CONFIG_SLAB_FREELIST_HARDENED.</strong>
+When a heap object is overflowed,
+there exist two classes of overflowing targets 
+(i.e., the nearby object located right after), namely,</p>
+<ol>
+<li>a free object, and 2) an allocated object,
+with the same type.
+In terms of exploits,
+one approach is to abuse some specific semantics
+of the target objects (e.g., crafting a function pointer in the <code>struct</code>),
+but another approach is to
+develop the overflow into
+more preferable primitives
+(e.g., arbitrary write)
+for exploitation.
+In case of the free object (the second case),
+there exists a <em>generic</em> approach,
+meaning that the metatdata of heap structures
+is abused for further exploitation.
+For example, the link structure, called <code>freelist</code>,
+that chains all free objects in the cache,
+can be overwritten in a way
+that can be crafted for creating dangling pointers
+(e.g., returning an arbitrary object pointer
+when <code>kmalloc()</code> is invoked).</li>
+</ol>
+<pre><code>// TODO. redraw a real figure
+
+ ---&gt; freelist that link all free chunks
+ 
+        head ---+
+                V
+ +------+       +------+       +------+
+ |      |&lt;------|-     |       |      |
+ +------+  ptr  +------+       +------+
+ |              (ptr_addr)     ^
+ +-----------------------------+ 
+</code></pre>
+<p><code>SLAB_FREELIST_HARDENED</code> is proposed to
+prevent this direct modification
+of the <code>freelist</code> structure.
+The basic approach is to <em>mangle</em>
+(xor)
+the pointer with a random canary value
+(<code>s-&gt;random</code>)
+created at the initialization of the cache.
+One interesting decision is to add <code>ptr_addr</code>
+to the mangled pointer.
+Its implication is subtle, but worth mentioning here.
+If <code>s-&gt;random</code> is leaked via another channel,
+an attacker can place
+an arbitrary value (i.e., the value xor-ed with the canary),
+allowing the aforementioned exploitation techniques possible again.
+The proposed solution is
+to mangle the value once more
+with another secrete value,
+the randomized address of the chunk itself (ptr_addr).
+To bypass this protection,
+the attacker should be able to locate
+the overflowing chunk precisely.
+However, one potential concern
+would be that
+an attacker can reuse its value in a simple arithmetic:
+e.g., adding the size of the heap object, say 0x100,
+to the leaked data
+would likely lead to a controllable situation,
+like two freed objects or one allocated object
+now in the <code>freelist</code>.</p>
+<pre><code class="language-c">/*
+ * Returns freelist pointer (ptr). With hardening, this is obfuscated
+ * with an XOR of the address where the pointer is held and a per-cache
+ * random number.
+ */
+void *freelist_ptr(const struct kmem_cache *s, void *ptr,
+                   unsigned long ptr_addr) {
+  return (void *)((unsigned long)ptr ^ s-&gt;random ^ ptr_addr));
+}
+</code></pre>
+<h3><a class="header" href="#performance-implication" id="performance-implication">Performance implication</a></h3>
+<p>TODO. set a target benchmarks in /bench</p>
+<h3><a class="header" href="#references" id="references">References</a></h3>
+<ol>
+<li>
+<p><a href="https://events.static.linuxfound.org/sites/events/files/slides/slaballocators.pdf">Slab allocators in the Linux Kernel:SLAB, SLOB, SLUB</a></p>
+</li>
+<li>
+<p><a href="https://events.static.linuxfound.org/images/stories/pdf/klf2012_kim.pdf">How does the SLUB allocator work</a></p>
+</li>
+<li>
+<p><a href="https://people.eecs.berkeley.edu/%7Ekubitron/courses/cs194-24-S14/hand-outs/bonwick_slab.pdf">The Slab Allocator:An Object-Caching Kernel Memory Allocator</a></p>
+</li>
+<li>
+<p><a href="https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=210e7a43fa905bccafa9bb5966fba1d71f33eb8b">mm: SLUB freelist randomization</a></p>
+</li>
+<li>
+<p><a href="https://patchwork.kernel.org/patch/9864165/">mm: Add SLUB free list pointer obfuscation</a></p>
+</li>
+<li>
+<p><a href="http://cyseclabs.com/blog/cve-2016-6187-heap-off-by-one-exploit">CVE-2016-6187: Exploiting Linux kernel heap off-by-one</a></p>
+</li>
+<li>
+<p><a href="https://jon.oberheide.org/blog/2010/09/10/linux-kernel-can-slub-overflow/">Linux Kernel CAN SLUB Overflow</a></p>
+</li>
+<li>
+<p><a href="http://phrack.org/issues/64/6.html">Attacking the Core : Kernel Exploiting Notes</a></p>
+</li>
+</ol>
+<h2><a class="header" href="#kernel-address-space-layout-randomization-kaslr" id="kernel-address-space-layout-randomization-kaslr">Kernel Address Space Layout Randomization (KASLR)</a></h2>
+<p>Kernel Address Space Layout Randomization(KASLR) is a feature that randomize kernel location itself in order to mitigate known exploits which relies on predictable kernel addresses such as retrun-oriented-programming. KASLR implementation for x86-64 randomize three main memory regions : physical mapping, vmalloc and vmemmap. </p>
+<pre><code>//@arch/x86/mm/kaslr.c
+
+/*
+ * Memory regions randomized by KASLR (except modules that use a separate logic
+ * earlier during boot). The list is ordered based on virtual addresses. This
+ * order is kept after randomization.
+ */
+static __initdata struct kaslr_memory_region {
+	unsigned long *base;
+	unsigned long size_tb;
+} kaslr_regions[] = {
+	{ &amp;page_offset_base, 0 },
+	{ &amp;vmalloc_base, 0 },
+	{ &amp;vmemmap_base, 0 },
+};
+
+/* Get size in bytes used by the memory region */
+static inline unsigned long get_padding(struct kaslr_memory_region *region)
+{
+	return (region-&gt;size_tb &lt;&lt; TB_SHIFT);
+}
+
+....
+
+void __init kernel_randomize_memory(void)
+{
+....
+....
+kaslr_regions[0].size_tb = 1 &lt;&lt; (MAX_PHYSMEM_BITS - TB_SHIFT);
+	kaslr_regions[1].size_tb = VMALLOC_SIZE_TB;
+
+	/*
+	 * Update Physical memory mapping to available and
+	 * add padding if needed (especially for memory hotplug support).
+	 */
+	BUG_ON(kaslr_regions[0].base != &amp;page_offset_base);
+	memory_tb = DIV_ROUND_UP(max_pfn &lt;&lt; PAGE_SHIFT, 1UL &lt;&lt; TB_SHIFT) +
+		CONFIG_RANDOMIZE_MEMORY_PHYSICAL_PADDING;
+
+	/* Adapt phyiscal memory region size based on available memory */
+	if (memory_tb &lt; kaslr_regions[0].size_tb)
+		kaslr_regions[0].size_tb = memory_tb;
+
+	/*
+	 * Calculate the vmemmap region size in TBs, aligned to a TB
+	 * boundary.
+	 */
+	vmemmap_size = (kaslr_regions[0].size_tb &lt;&lt; (TB_SHIFT - PAGE_SHIFT)) *
+			sizeof(struct page);
+	kaslr_regions[2].size_tb = DIV_ROUND_UP(vmemmap_size, 1UL &lt;&lt; TB_SHIFT);
+</code></pre>
+<p>Above code calculate size of memory region in terabytes for physical mapping, vmalloc and vmemmap. Those size of memory region are used to calculate <code>remain_entropy</code> below.</p>
+<pre><code>	/* Calculate entropy available between regions */
+	remain_entropy = vaddr_end - vaddr_start;
+	for (i = 0; i &lt; ARRAY_SIZE(kaslr_regions); i++)
+		remain_entropy -= get_padding(&amp;kaslr_regions[i]);
+
+	prandom_seed_state(&amp;rand_state, kaslr_get_random_long(&quot;Memory&quot;));
+
+	for (i = 0; i &lt; ARRAY_SIZE(kaslr_regions); i++) {
+		unsigned long entropy;
+
+		/*
+		 * Select a random virtual address using the extra entropy
+		 * available.
+		 */
+		entropy = remain_entropy / (ARRAY_SIZE(kaslr_regions) - i);
+		prandom_bytes_state(&amp;rand_state, &amp;rand, sizeof(rand));
+		entropy = (rand % (entropy + 1)) &amp; PUD_MASK;
+		vaddr += entropy;
+		*kaslr_regions[i].base = vaddr;
+
+		/*
+		 * Jump the region and add a minimum padding based on
+		 * randomization alignment.
+		 */
+		vaddr += get_padding(&amp;kaslr_regions[i]);
+		vaddr = round_up(vaddr + 1, PUD_SIZE);
+		remain_entropy -= entropy;
+	}
+}
+</code></pre>
+<p>In the last part of <code>kernel_randomize_memory()</code>, <code>remain_entropy</code> is initialized to available space of virtual memory. Actual randomization is done inside the for loop. Entropy is 'distributed' for each region and applied to their base. Note that it prevents monopoly of entropy by dividing <code>remain_entropy</code> to remain regions. <code>remain_entropy</code> is updated on each loop for the next region. </p>
+<h3><a class="header" href="#references-1" id="references-1">References</a></h3>
+<ul>
+<li><a href="http://www.workofard.com/2016/05/kaslr-in-the-arm64-kernel/">KASLR in the arm64 Linux kernel</a></li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="stack-ovfl.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="int-ovfl.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="stack-ovfl.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="int-ovfl.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+        <script type="text/javascript" src="assets/js/custom.js"></script>
+        
+
+        
+
+    </body>
+</html>

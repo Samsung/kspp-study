@@ -1,0 +1,8 @@
+*~
+/out-pdf/
+/out-html/
+/src-pdf/
+/src-html/
+__pycache__
+/out.md
+/out.pdf
